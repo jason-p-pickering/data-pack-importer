@@ -1,0 +1,12 @@
+Package: datapackimporter
+Type: Package
+Title: Utilities for importing the ICPI Data pack into DAITM
+Version: 0.0.1
+Date: 2017-01-11
+Author: Jason P. Pickering, Scott Jackson, Aaron Chafetz
+Maintainer: Jason P. Pickering <jason.p.pickering@gmail.com>
+Description: External validation routines for data payloads in DATIM.
+License: file LICENSE
+Imports: readxl, jsonlite, rlist, magrittr, datimvalidation
+LazyData: true
+RoxygenNote: 6.0.1
