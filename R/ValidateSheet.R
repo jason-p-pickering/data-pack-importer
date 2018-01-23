@@ -70,9 +70,9 @@ ValidateWorkbook <- function(wb_path,wb_type="NORMAL") {
 #' @param sheet_name Name of the sheet to import. 
 #' @param wb_type Should be either NORMAL or HTS.
 #' @return Returns a data frame with the following columns:
-#' #' \itemize{
-#'   \item First item
-#'   \item Second item
+#' #' \itemize{psnuuid,mechid,type,variable,value
+#'   \item psnuid: Name of the PSNU or cluster
+#'   \item mechid: Mechanism number
 #' }
 #'
 
@@ -88,7 +88,6 @@ ImportSheet <- function(wb_path, sheet_name,wb_type="NORMAL") {
     tidyr::gather(variable, value, -c(1:7)) %>% 
     dplyr::filter(., value != 0) %>% 
     dplyr::filter(., !is.na(value))
-  #MOre remapping here
   return(d)
   
 }
@@ -123,6 +122,10 @@ ImportSheets <- function(wb_path,wb_type="NORMAL") {
     d <- ImportSheet(wb_path, sheets_to_import[i])
     df <- dplyr::bind_rows(df, d)
   }
+  #Remap the mechanisms from codes to uids
+  mechs<-datimvalidation::getMechanismsMap()
   
-  return( dplyr::select(df,psnuuid,mechid,type,variable,value) )
+  dplyr::select(df,psnuuid,mechid,type,variable,value) %>% 
+    dplyr::mutate(attributeoptioncomboid = 
+                plyr::mapvalues(mechid,mechs$code,mechs$id,warn_missing = FALSE))
 }
