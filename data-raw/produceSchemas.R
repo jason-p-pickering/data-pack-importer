@@ -1,10 +1,26 @@
+library(readxl)
+library(rlist)
+require(jsonlite)
 
-ProduceJSON <-
+ProduceSchema <-
   function(row = 6,
            start_col = 3,
            end_col = 1000,
            sheet_name,
            sheet_path) {
+    
+    if (sheet_name == "Follow on Mech List") {
+      
+      foo <-
+        list(
+          sheet = "Follow on Mech List",
+          row = 3,
+          start_col = 3,
+          end_col = 5,
+          fields = as.list(c("Closing Out","Follow on","Notes")))
+      
+    } else {
+      
     foo <-
       list(
         sheet = sheet_name,
@@ -20,34 +36,36 @@ ProduceJSON <-
           )
         )))
       )
-    
+    #Remove any unnamed columns
     foo$fields <- foo$fields[!grepl("X_", foo$fields)]
     foo$end_col = start_col + length(foo$fields)-1
     
+        }
     return(foo)
-    
   }
 
-produceSchema <- function(sheet_path,mode) {
+produceSchemas <- function(sheet_path,mode) {
   
   sheets <- excel_sheets(sheet_path)
-  sheets <- sheets[grepl("Targets", sheets)]
-  
+  #Exclude these two , as they are custom
+  custom_sheets<-c("Home")
+  sheets <-sheets[!(sheets %in% custom_sheets)]
   foo <- list()
   for (i in 1:length(sheets)) {
-    bar <- ProduceJSON(sheet_path = sheet_path, sheet_name = sheets[i])
+    bar <- ProduceSchema(sheet_path = sheet_path, sheet_name = sheets[i])
     foo <- list.append(foo, bar)
   }
   return(list(mode=mode,schema=foo))
 }
 
-sheet_path = "/home/jason/development/data-pack-importer/data-raw/COP18DisaggToolTemplate_HTS v2018.01.02.xlsx"
-mode="HTS"
-hts_schema<-produceSchema(sheet_path,mode)
 
-sheet_path = "/home/jason/development/data-pack-importer/data-raw/KenyaCOP18DisaggToolv2018.01.19.xlsx"
+sheet_path = "/home/jason/development/data-pack-importer/data-raw/KenyaCOP18DisaggTool_HTSv2018.01.26.xlsx"
+mode="HTS"
+hts_schema<-produceSchemas(sheet_path,mode)
+
+sheet_path = "/home/jason/development/data-pack-importer/data-raw/KenyaCOP18DisaggToolv2018.01.26.xlsx"
 mode="NORMAL"
-main_schema<-produceSchema(sheet_path,mode)
+main_schema<-produceSchemas(sheet_path,mode)
 
 schemas<-list(hts=hts_schema,normal=main_schema)
 names(schemas)<-c("hts","normal")
