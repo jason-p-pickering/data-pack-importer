@@ -14,19 +14,47 @@ ProduceSchema <-
       foo <-
         list(
           sheet = "Follow on Mech List",
-          row = 3,
+          row = 4,
           start_col = 3,
           end_col = 5,
+          method ='follow_on',
           fields = as.list(c("Closing Out","Follow on","Notes")))
       
-    } else {
-      
+    } else if (sheet_name = 'Allocation by SNUxIM') {
+      row=6
+      start_col = 2
+      end_col = 232
+      sheet=sheet_name
+      foo<-list(sheet=sheet,
+                row=row,
+                start_col = start_col,
+                end_col = end_col,
+                method = 'skip',
+      fields = as.list(names(as.list(
+        read_excel(
+          path = sheet_path,
+          sheet = sheet_name,
+          range = cell_limits(c(row, start_col),
+                              c(row, end_col)))))))
+    } else if (sheet_name = "IMPATT Table") {
+      row=6
+      start_col = 3
+      end_col = 6
+      sheet=sheet_name
+      foo<-list(sheet=sheet,
+                row=row,
+                start_col = start_col,
+                end_col = end_col,
+                method = 'skip',
+                fields = as.list(c("psnu","psnuuid","snu_priotization_fy19","plhiv_fy19")))
+    } else {  
     foo <-
       list(
         sheet = sheet_name,
         row = row,
         start_col = start_col,
         end_col = end_col,
+        method = 'standard',
         fields = as.list(names(as.list(
           read_excel(
             path = sheet_path,
@@ -59,16 +87,35 @@ produceSchemas <- function(sheet_path,mode) {
 }
 
 
-sheet_path = "/home/jason/development/data-pack-importer/data-raw/KenyaCOP18DisaggTool_HTSv2018.01.26.xlsx"
+processMechs<-function() {
+  
+  url<-"https://www.datim.org/api/sqlViews/fgUtV6e9YIX/data.csv"
+  d<-read.csv(url,stringsAsFactors = FALSE)
+  return(d[,c("code","uid")])
+}
+
+
+processDataElements<-function() {
+  d<-read.csv("data-raw/DataPackCodes.csv",stringsAsFactors = FALSE,na="")
+  d<-d[,c("DataPackCode","pd_2019_P")] %>% filter(.,complete.cases(.))
+  names(d)<-c("code","combi")
+  return(d)
+}
+
+
+sheet_path = "data-raw/KenyaCOP18DisaggTool_HTSv2018.01.26.xlsx"
 mode="HTS"
 hts_schema<-produceSchemas(sheet_path,mode)
 
-sheet_path = "/home/jason/development/data-pack-importer/data-raw/KenyaCOP18DisaggToolv2018.01.26.xlsx"
+sheet_path = "data-raw/KenyaCOP18DisaggToolv2018.01.26.xlsx"
 mode="NORMAL"
 main_schema<-produceSchemas(sheet_path,mode)
 
 schemas<-list(hts=hts_schema,normal=main_schema)
 names(schemas)<-c("hts","normal")
 
+mechs<-processMechs()
+des<-processDataElements()
+
 cat(toJSON(schemas,auto_unbox = TRUE),file="schemas.json")
-devtools::use_data(hts_schema,main_schema,internal = TRUE,overwrite = TRUE)
+devtools::use_data(hts_schema,main_schema,mechs,des,internal = TRUE,overwrite = TRUE)
