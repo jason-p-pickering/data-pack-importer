@@ -154,7 +154,7 @@ ImportSheets <- function(wb_path) {
     "dataelement" = character(),
     "period" = character(),
     "orgunit" = character(),
-    "categoryoptioncombo" = numeric(),
+    "categoryoptioncombo" = character(),
     "attributeoptioncombo" = character(),
     "value" = numeric()
   )
@@ -165,5 +165,5 @@ ImportSheets <- function(wb_path) {
     d <- ImportSheet(wb_path, sheets_to_import[i])
     df <- dplyr::bind_rows(df, d)
   }
-
+return(df)
 }

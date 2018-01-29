@@ -17,10 +17,10 @@ ProduceSchema <-
           row = 4,
           start_col = 3,
           end_col = 5,
-          method ='follow_on',
+          method ='skip',
           fields = as.list(c("Closing Out","Follow on","Notes")))
       
-    } else if (sheet_name = 'Allocation by SNUxIM') {
+    } else if (sheet_name == 'Allocation by SNUxIM') {
       row=6
       start_col = 2
       end_col = 232
@@ -36,7 +36,7 @@ ProduceSchema <-
           sheet = sheet_name,
           range = cell_limits(c(row, start_col),
                               c(row, end_col)))))))
-    } else if (sheet_name = "IMPATT Table") {
+    } else if (sheet_name == "IMPATT Table") {
       row=6
       start_col = 3
       end_col = 6
