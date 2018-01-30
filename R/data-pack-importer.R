@@ -186,9 +186,9 @@ ImportFollowOnMechs<-function(wb_path) {
 #' @export
 #' @title ImportSheets(wb_path,wb_type)
 #'
-#' @description Imports a single sheet from a workbook.
+#' @description Imports all sheets from the workbook
 #' @param wb_path  The absolute file path to the workbook.
-#' @return Returns a boolean value TRUE if the the workbook is valid, otherwise false
+#' @return Returns a list of data frames.
 #'
 ImportSheets <- function(wb_path) {
   wb_type = GetWorkbookType(wb_path)
@@ -214,8 +214,13 @@ ImportSheets <- function(wb_path) {
   }
   
   #Import the follow on mechs
+  if (wb_type == "NORMAL") {
   follow_on_mechs<-ImportFollowOnMechs(wb_path)
-  
+  } else {
+    follow_on_mechs<-NULL
+  }
+   
+    
   foo <- list(follow_on_mechs=follow_on_mechs,
               data = df)
   
