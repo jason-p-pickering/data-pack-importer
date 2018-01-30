@@ -158,6 +158,30 @@ ImportSheet <- function(wb_path, schema) {
   
 }
 
+#' @export
+#' @title ImportFollowOnMechs(wb_path)
+#'
+#' @description Imports the follow on mechs sheet.
+#' @param wb_path  The absolute file path to the workbook.
+#' @return A data  frame with three columns Closing Out, Follow On, Notes
+#'
+
+ImportFollowOnMechs<-function(wb_path) {
+  wb_type = GetWorkbookType(wb_path)
+  if (wb_type == "NORMAL") { schemas <-datapackimporter::main_schema } else {
+    stop("Only Normal Disagg tools with follow on mechs are supported!")
+  }
+  sheet_to_import = "Follow on Mech List"
+  schema<-rlist::list.find(schemas$schema,sheet==sheet_to_import)[[1]]
+  cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
+                                   c(NA, schema$end_col))
+  d<-readxl::read_excel(wb_path, sheet = schema$sheet, range = cell_range)
+  if (!is.null(d) & nrow(d) > 0) {
+    return(d)
+  } else {
+    return(NULL)
+  }
+}
 
 #' @export
 #' @title ImportSheets(wb_path,wb_type)
@@ -188,5 +212,12 @@ ImportSheets <- function(wb_path) {
     d <- ImportSheet(wb_path, schema)
     df <- dplyr::bind_rows(df, d)
   }
-return(df)
+  
+  #Import the follow on mechs
+  follow_on_mechs<-ImportFollowOnMechs(wb_path)
+  
+  foo <- list(follow_on_mechs=follow_on_mechs,
+              data = df)
+  
+return(foo)
 }
