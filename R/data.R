@@ -24,6 +24,14 @@
 "mechs"
 
 #' @export
+#' @title impatt
+#'
+#' @description List of option codes for PSNU prioritization
+#' @return Returns a three column data frame with code,name and Data Pack code (dp_code)
+#'
+"impatt"
+
+#' @export
 #' @title des
 #'
 #' @description List of DataPack codes and DATIM DE.COC combinations

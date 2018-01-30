@@ -1,0 +1,39 @@
+{
+    "options": [
+      {
+        "code": "1",
+        "name": "Scale Up: Saturation",
+        "dp_code": "ScaleUp Sat"
+      },
+      {
+        "code": "2",
+        "name": "Scale Up: Aggressive",
+        "dp_code" : "ScaleUp Agg"
+      },
+      {
+        "code": "4",
+        "name": "Sustained",
+        "dp_code" : "Sustained"
+      },
+      {
+        "code": "5",
+        "name": "Centrally Supported",
+        "dp_code": "CtrlSupported"
+      },
+      {
+        "code": "6",
+        "name": "Sustained: Commodities",
+        "dp_code": "Sustained Com"
+      },
+      {
+        "code": "7",
+        "name": "Attained",
+        "dp_code": "Attained"
+      },
+      {
+        "code": "8",
+        "name": "Not PEPFAR Supported",
+        "dp_code" : "NOT DEFINED"
+      }
+    ]
+  }

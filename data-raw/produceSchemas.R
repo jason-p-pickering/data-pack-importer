@@ -45,10 +45,9 @@ ProduceSchema <-
                 row=row,
                 start_col = start_col,
                 end_col = end_col,
-                method = 'skip',
+                method = 'impatt',
                 fields = as.list(c("psnu","psnuuid","snu_priotization_fy19","plhiv_fy19")))
-    } else {  
-    foo <-
+    } else {  foo <-
       list(
         sheet = sheet_name,
         row = row,
@@ -96,11 +95,11 @@ processMechs<-function() {
 
 
 processDataElements<-function() {
-  d<-read.csv("data-raw/DataPackCodes.csv",stringsAsFactors = FALSE,na="")
-  d<-d[,c("DataPackCode","pd_2019_P")] %>% filter(.,complete.cases(.))
-  names(d)<-c("code","combi")
-  return(d)
-}
+  read.csv("data-raw/DataPackCodes.csv",stringsAsFactors = FALSE,na="") %>%
+  dplyr::select(.,code=DataPackCode,combi=pd_2019_P) %>% 
+    dplyr::filter(.,complete.cases(.))
+  }
+
 
 
 sheet_path = "data-raw/KenyaCOP18DisaggTool_HTSv2018.01.26.xlsx"
@@ -117,5 +116,6 @@ names(schemas)<-c("hts","normal")
 mechs<-processMechs()
 des<-processDataElements()
 
-cat(toJSON(schemas,auto_unbox = TRUE),file="schemas.json")
-devtools::use_data(hts_schema,main_schema,mechs,des,internal = TRUE,overwrite = TRUE)
+impatt<-fromJSON("data-raw/impatt_option_set.json")
+
+devtools::use_data(hts_schema,main_schema,mechs,des,impatt,internal = TRUE,overwrite = TRUE)

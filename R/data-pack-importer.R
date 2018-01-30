@@ -96,17 +96,15 @@ ValidateWorkbook <- function(wb_path) {
 #'
 
 
-ImportSheet <- function(wb_path, sheet_name,wb_type="NORMAL") {
-  if (wb_type == "HTS") { schemas <- datapackimporter::hts_schema }
-  if (wb_type == "NORMAL") { schemas <-datapackimporter::main_schema }
-  schema <- schema<-rlist::list.find(schemas$schema,sheet==sheet_name)[[1]]
+ImportSheet <- function(wb_path, schema) {
+
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(NA, schema$end_col))
   mechs<-datapackimporter::mechs
   des<-datapackimporter::des
   if ( schema$method == "standard") {
   d <-
-    readxl::read_excel(wb_path, sheet = sheet_name, range = cell_range) %>%
+    readxl::read_excel(wb_path, sheet = schema$sheet, range = cell_range) %>%
     tidyr::gather(variable, value, -c(1:7)) %>% 
     dplyr::filter(.,  value != 0) %>% 
     dplyr::filter(!is.na(value)) %>%
@@ -122,6 +120,27 @@ ImportSheet <- function(wb_path, sheet_name,wb_type="NORMAL") {
     dplyr::inner_join(.,des,by="code") %>%
     tidyr::separate(.,combi,c("dataelement","categoryoptioncombo")) %>%
     dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
+  } else if (schema$method == "impatt"){
+    from<-c("snu_priotization_fy19","plhiv_fy19")
+    #IMPATT.PRIORITY_SNU (SUBNAT), IMPATT.PLHIV (SUBNAT, Age/Sex)
+    to<-c("r4zbW3owX9n","Rom79qVjNVb")
+    #https://www.datim.org/api/optionSets/mvbwbgbJgXr.json?fields=options[code,name]
+    d <-
+      readxl::read_excel(wb_path, sheet = schema$sheet, range = cell_range) %>%
+      dplyr::mutate(.,
+                    snu_priotization_fy19 =  plyr::mapvalues(snu_priotization_fy19,
+                                              datapackimporter::impatt$options$dp_code,
+                                              datapackimporter::impatt$options$code,
+                                              warn_missing = FALSE)) %>% 
+      tidyr::gather(variable, value, -c(1:2)) %>%
+      dplyr::filter(complete.cases(.)) %>% 
+      dplyr::mutate(., dataelement = plyr::mapvalues(variable,from,to),
+                    orgunit = psnuuid,
+                    period = "2018Oct",
+                    attributeoptioncombo = "HllvX50cXC0",
+                    categoryoptioncombo = "HllvX50cXC0") %>%
+    dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
+      
   } else {
       d<- tibble::tibble(
         "dataelement" = character(),
@@ -162,7 +181,9 @@ ImportSheets <- function(wb_path) {
   sheets_to_import<-actual_sheets[actual_sheets %in% sheets]
   
   for (i in 1:length(sheets_to_import)) {
-    d <- ImportSheet(wb_path, sheets_to_import[i])
+    
+    schema<-rlist::list.find(schemas$schema,sheet==sheets_to_import[i])[[1]]
+    d <- ImportSheet(wb_path, schema)
     df <- dplyr::bind_rows(df, d)
   }
 return(df)

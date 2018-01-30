@@ -4,7 +4,7 @@
 \name{des}
 \alias{des}
 \title{des}
-\format{An object of class \code{data.frame} with 1821 rows and 2 columns.}
+\format{An object of class \code{data.frame} with 1683 rows and 2 columns.}
 \usage{
 des
 }

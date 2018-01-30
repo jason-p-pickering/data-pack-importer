@@ -4,7 +4,7 @@
 \alias{ImportSheet}
 \title{ImportSheet(wb_path,sheet_name,wb_type)}
 \usage{
-ImportSheet(wb_path, sheet_name, wb_type = "NORMAL")
+ImportSheet(wb_path, schema)
 }
 \arguments{
 \item{wb_path}{The absolute file path to the workbook.}
