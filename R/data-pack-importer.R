@@ -116,7 +116,8 @@ ImportSheet <- function(wb_path, schema) {
                              mechs$uid,
                              warn_missing = FALSE),
            code = paste0(variable,"_",tolower(type)),
-           period = "2018Oct") %>%
+           period = "2018Oct",
+           value = as.character(value)) %>%
     dplyr::inner_join(.,des,by="code") %>%
     tidyr::separate(.,combi,c("dataelement","categoryoptioncombo")) %>%
     dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
@@ -138,7 +139,8 @@ ImportSheet <- function(wb_path, schema) {
                     orgunit = psnuuid,
                     period = "2018Oct",
                     attributeoptioncombo = "HllvX50cXC0",
-                    categoryoptioncombo = "HllvX50cXC0") %>%
+                    categoryoptioncombo = "HllvX50cXC0",
+                    value = as.character(value) ) %>%
     dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
       
   } else {
@@ -146,9 +148,9 @@ ImportSheet <- function(wb_path, schema) {
         "dataelement" = character(),
         "period" = character(),
         "orgunit" = character(),
-        "categoryoptioncombo" = numeric(),
+        "categoryoptioncombo" = character(),
         "attributeoptioncombo" = character(),
-        "value" = numeric()
+        "value" = character()
       )
     }
   
@@ -175,7 +177,7 @@ ImportSheets <- function(wb_path) {
     "orgunit" = character(),
     "categoryoptioncombo" = character(),
     "attributeoptioncombo" = character(),
-    "value" = numeric()
+    "value" = character()
   )
   actual_sheets<-readxl::excel_sheets(wb_path)
   sheets_to_import<-actual_sheets[actual_sheets %in% sheets]
