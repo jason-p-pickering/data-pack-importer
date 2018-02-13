@@ -2,7 +2,7 @@
 % Please edit documentation in R/data-pack-importer.R
 \name{ImportSheets}
 \alias{ImportSheets}
-\title{ImportSheets(wb_path,wb_type)}
+\title{ImportSheets(wb_path)}
 \usage{
 ImportSheets(wb_path)
 }
@@ -10,8 +10,13 @@ ImportSheets(wb_path)
 \item{wb_path}{The absolute file path to the workbook.}
 }
 \value{
-Returns a boolean value TRUE if the the workbook is valid, otherwise false
+Returns a list of data frames: 
+#'  \itemize{
+           \item wb_info: Workbook Info
+           \item data: Standard d2importer data frame
+           \item follow_on_mechs: Data frame of follow on mechs.
+           }
 }
 \description{
-Imports a single sheet from a workbook.
+Imports all sheets from the workbook
 }

@@ -2,22 +2,26 @@
 % Please edit documentation in R/data-pack-importer.R
 \name{ImportSheet}
 \alias{ImportSheet}
-\title{ImportSheet(wb_path,sheet_name,wb_type)}
+\title{ImportSheet(wb_path,schema)}
 \usage{
 ImportSheet(wb_path, schema)
 }
 \arguments{
 \item{wb_path}{The absolute file path to the workbook.}
 
-\item{sheet_name}{Name of the sheet to import.}
-
-\item{wb_type}{Should be either NORMAL or HTS.}
+\item{schema}{Schema of the sheet}
 }
 \value{
-Returns a data frame with the following columns:
-#' \itemize{psnuuid,mechid,type,variable,value
-  \item psnuid: Name of the PSNU or cluster
-  \item mechid: Mechanism number
+Returns a data frame with the following columns. 
+Will return an empty data frame if the sheet cannot be processed.
+
+#' \itemize{
+  \item datalement: UID of the data elememnt
+  \item period: ISO string of the period
+  \item orgunit: UID of the organisation unit
+  \item categoryoptioncombo: UID of the category option combo
+  \item attributeoptioncombo: UID of the mechanism
+  \item value: Value as a string.
 }
 }
 \description{

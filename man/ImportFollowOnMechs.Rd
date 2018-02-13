@@ -10,7 +10,8 @@ ImportFollowOnMechs(wb_path)
 \item{wb_path}{The absolute file path to the workbook.}
 }
 \value{
-A data  frame with three columns Closing Out, Follow On, Notes
+A data  frame with three columns Closing Out, Follow On, Notes. 
+If this sheet is blank, returns NULL.
 }
 \description{
 Imports the follow on mechs sheet.

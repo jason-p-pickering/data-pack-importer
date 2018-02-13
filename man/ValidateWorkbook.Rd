@@ -2,17 +2,15 @@
 % Please edit documentation in R/data-pack-importer.R
 \name{ValidateWorkbook}
 \alias{ValidateWorkbook}
-\title{ValidateWorkbook(wb_path,wb_type)}
+\title{ValidateWorkbook(wb_path)}
 \usage{
 ValidateWorkbook(wb_path)
 }
 \arguments{
 \item{wb_path}{The absolute file path to the workbook.}
-
-\item{wb_type}{Should be either NORMAL or HTS}
 }
 \value{
-Returns a boolean value TRUE if the the workbook is valid, otherwise false
+Returns a boolean value TRUE if the the workbook is valid, otherwise FALSE
 }
 \description{
 Validates the layout of all relevant sheets in a data pack workbook

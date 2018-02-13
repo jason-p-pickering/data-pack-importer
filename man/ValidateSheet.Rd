@@ -2,14 +2,12 @@
 % Please edit documentation in R/data-pack-importer.R
 \name{ValidateSheet}
 \alias{ValidateSheet}
-\title{ValidateSheet(wb_path,sheet_name,wb_type)}
+\title{ValidateSheet(wb_path,schema)}
 \usage{
-ValidateSheet(wb_path, sheet_name, schema)
+ValidateSheet(wb_path, schema)
 }
 \arguments{
 \item{wb_path}{The absolute file path to the workbook.}
-
-\item{sheet_name}{The name of the specific sheet to be validated within the workbook.}
 
 \item{schema}{Specific schema for the sheet}
 }

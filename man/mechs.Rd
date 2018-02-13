@@ -4,7 +4,7 @@
 \name{mechs}
 \alias{mechs}
 \title{mechs}
-\format{An object of class \code{data.frame} with 3288 rows and 2 columns.}
+\format{An object of class \code{data.frame} with 3302 rows and 2 columns.}
 \usage{
 mechs
 }
