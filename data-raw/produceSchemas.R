@@ -13,7 +13,7 @@ ProduceSchema <-
       
       foo <-
         list(
-          sheet = "Follow on Mech List",
+          sheet_name = "Follow on Mech List",
           row = 4,
           start_col = 3,
           end_col = 5,
@@ -24,8 +24,8 @@ ProduceSchema <-
       row=6
       start_col = 2
       end_col = 232
-      sheet=sheet_name
-      foo<-list(sheet=sheet,
+      sheet_name=sheet_name
+      foo<-list(sheet_name=sheet_name,
                 row=row,
                 start_col = start_col,
                 end_col = end_col,
@@ -40,8 +40,8 @@ ProduceSchema <-
       row=6
       start_col = 3
       end_col = 6
-      sheet=sheet_name
-      foo<-list(sheet=sheet,
+      sheet_name=sheet_name
+      foo<-list(sheet_name=sheet_name,
                 row=row,
                 start_col = start_col,
                 end_col = end_col,
@@ -49,7 +49,7 @@ ProduceSchema <-
                 fields = as.list(c("psnu","psnuuid","snu_priotization_fy19","plhiv_fy19")))
     } else {  foo <-
       list(
-        sheet = sheet_name,
+        sheet_name = sheet_name,
         row = row,
         start_col = start_col,
         end_col = end_col,
@@ -102,11 +102,11 @@ processDataElements<-function() {
 
 
 
-sheet_path = "data-raw/KenyaCOP18DisaggTool_HTSv2018.01.26.xlsx"
+sheet_path = "data-raw/MalawiCOP18DisaggTool_HTSv2018.02.10.xlsx"
 mode="HTS"
 hts_schema<-produceSchemas(sheet_path,mode)
 
-sheet_path = "data-raw/KenyaCOP18DisaggToolv2018.01.26.xlsx"
+sheet_path = "data-raw/MalawiCOP18DisaggToolv2018.02.10.xlsx"
 mode="NORMAL"
 main_schema<-produceSchemas(sheet_path,mode)
 
