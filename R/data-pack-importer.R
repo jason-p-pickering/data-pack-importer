@@ -1,19 +1,32 @@
 #' @export
-#' @title ValidateSheet(wb_path,schema)
+#' @title ValidateSheet(schemas,sheet_name)
 #'
 #' @description Validates the layout of a single sheet based on its schema definition.
-#' @param wb_path The absolute file path to the workbook.
-#' @param schema Specific schema for the sheet 
+#' @param schemas Schemas of this workbook.
+#' @param sheet_name Name of the sheet to be validated. 
 #' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
 #'
-ValidateSheet <- function(wb_path,schema) {
-
+ValidateSheet <- function(schemas,sheet_name) {
+  schema<-rlist::list.find(schemas$schema,sheet_name==sheet_name)[[1]]
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(schema$row, schema$end_col))
   all( names(
     readxl::read_excel(wb_path, sheet = schema$sheet_name, range = cell_range)
   ) == unlist(schema$fields,use.names = FALSE))
   
+}
+
+#' @export
+#' @title ValidateSheets(schemas,sheets)
+#'
+#' @description Validates all of the sheets
+#' @param schemas Schemas for this workbook
+#' @param sheets Names of sheets
+#' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
+#'
+ValidateSheets<-function(schemas,sheets) {
+  
+  vapply(sheets,function(x) { ValidateSheet(schemas = schemas,sheet_name = x) }, FUN.VALUE=logical(1) ) 
 }
 
 #' @export
@@ -63,28 +76,18 @@ ValidateWorkbook <- function(wb_path) {
   wb_info = GetWorkbookInfo(wb_path)
   if (wb_info$wb_type == "HTS") { schemas <- datapackimporter::hts_schema }
   if (wb_info$wb_type == "NORMAL") { schemas <-datapackimporter::main_schema }
-  all_tables <- readxl::excel_sheets(path = wb_path)
+  all_sheets <- readxl::excel_sheets(path = wb_path)
   expected <- unlist(sapply(schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
-  all_there <- expected %in% all_tables
+  all_there <- expected %in% all_sheets
   #Validate against expected tables
   if ( !all(all_there) ) {
     warning(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
   }
-  tables<-all_tables[all_tables %in% expected]
-  result <-
-    data.frame(sheet_name = tables,
-               valid = FALSE,
-               stringsAsFactors = FALSE)
-  for (i in 1:nrow(result)) {
-    sheet_name<-as.character(result$sheet_name[i])
-    schema<-rlist::list.find(schemas$schema,sheet_name==sheet_name)[[1]]
-    result$valid[i] <-
-      ValidateSheet(wb_path,schema)
-  }
-  
-  if (any(!(result$valid))) {
+  sheets<-all_tables[all_sheets %in% expected]
+  validation_results<-ValidateSheets(schemas,sheets)
+  if (any(!(validation_results))) {
     invalid_sheets <-
-      paste(result$sheet_name[!result$valid], sep = "", collapse = ",")
+      paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
     msg <- paste0("The following sheets were invalid:", invalid_sheets)
     warning(msg)
     return(FALSE)
