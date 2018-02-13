@@ -38,3 +38,11 @@
 #' @return Returns a two column data frame with codes and combis
 #'
 "des"
+
+
+#' @export
+#' @title COPdataElements
+#'
+#' @description Object used for further processing and matching of data pack codes
+#' @return Returns an object with the following columns
+"COPdataElements"
