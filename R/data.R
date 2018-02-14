@@ -41,8 +41,8 @@
 
 
 #' @export
-#' @title COPdataElements
+#' @title COP18deMapT
 #'
 #' @description Object used for further processing and matching of data pack codes
 #' @return Returns an object with the following columns
-"COPdataElements"
+"COP18deMapT"

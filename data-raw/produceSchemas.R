@@ -155,10 +155,12 @@ GenerateCOPDataElements <- function() {
 
 
 ##Procedural logic to generate the actual schemas
+##HTS Template
 sheet_path = "data-raw/MalawiCOP18DisaggTool_HTSv2018.02.10.xlsx"
 mode="HTS"
 hts_schema<-produceSchemas(sheet_path,mode)
 
+##Normal template
 sheet_path = "data-raw/MalawiCOP18DisaggToolv2018.02.10.xlsx"
 mode="NORMAL"
 main_schema<-produceSchemas(sheet_path,mode)
@@ -166,12 +168,16 @@ main_schema<-produceSchemas(sheet_path,mode)
 schemas<-list(hts=hts_schema,normal=main_schema)
 names(schemas)<-c("hts","normal")
 
+#List of mechanisms
 mechs<-processMechs()
+#List of data elements
 des<-processDataElements()
+#IMPATT option set
 impatt<-fromJSON("data-raw/impatt_option_set.json")
 
 loadSecrets("/home/jason/.secrets/datim.json")
-COPdataElements<-GenerateCOPDataElements()
+source("data-raw/transform_code_lists.R")
+COP18deMapT<-generateCodeListT()
 
-
-devtools::use_data(hts_schema,main_schema,mechs,des,impatt,COPdataElements, internal = TRUE,overwrite = TRUE)
+#Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
+devtools::use_data(hts_schema,main_schema,mechs,des,impatt,COP18deMapT, internal = TRUE,overwrite = TRUE)
