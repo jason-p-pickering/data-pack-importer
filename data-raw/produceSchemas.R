@@ -1,6 +1,8 @@
 library(readxl)
 library(rlist)
 require(jsonlite)
+require(datimvalidation)
+
 
 ProduceSchema <-
   function(row = 6,
@@ -88,7 +90,7 @@ produceSchemas <- function(sheet_path,mode) {
 
 processMechs<-function() {
   
-  url<-"https://www.datim.org/api/sqlViews/fgUtV6e9YIX/data.csv"
+  url<-paste0(getOption("baseurl"),"api/sqlViews/fgUtV6e9YIX/data.csv")
   d<-read.csv(url,stringsAsFactors = FALSE)
   return(d[,c("code","uid")])
 }
@@ -101,11 +103,13 @@ processDataElements<-function() {
   }
 
 
-
+##Procedural logic to generate the actual schemas
+##HTS Template
 sheet_path = "data-raw/MalawiCOP18DisaggTool_HTSv2018.02.10.xlsx"
 mode="HTS"
 hts_schema<-produceSchemas(sheet_path,mode)
 
+##Normal template
 sheet_path = "data-raw/MalawiCOP18DisaggToolv2018.02.10.xlsx"
 mode="NORMAL"
 main_schema<-produceSchemas(sheet_path,mode)
@@ -113,9 +117,16 @@ main_schema<-produceSchemas(sheet_path,mode)
 schemas<-list(hts=hts_schema,normal=main_schema)
 names(schemas)<-c("hts","normal")
 
+#List of mechanisms
 mechs<-processMechs()
+#List of data elements
 des<-processDataElements()
-
+#IMPATT option set
 impatt<-fromJSON("data-raw/impatt_option_set.json")
 
-devtools::use_data(hts_schema,main_schema,mechs,des,impatt,internal = TRUE,overwrite = TRUE)
+loadSecrets("/home/jason/.secrets/datim.json")
+source("data-raw/transform_code_lists.R")
+COP18deMapT<-generateCodeListT()
+
+#Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
+devtools::use_data(hts_schema,main_schema,mechs,des,impatt,COP18deMapT, internal = TRUE,overwrite = TRUE)
