@@ -39,10 +39,10 @@ GEND_GBV|N|||||||||50+|15+||Female||Physical and/or Emotional Violence|FALSE,gen
 GEND_GBV|N|||||||||50+|15+||Female||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_o50_f_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,50+,15+,,Female,,Sexual Violence (Post-Rape Care),FALSE
 GEND_GBV|N|||||||||50+|15+||Male||Physical and/or Emotional Violence|FALSE,gend_gbv_o50_m_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,50+,15+,,Male,,Physical and/or Emotional Violence,FALSE
 GEND_GBV|N|||||||||50+|15+||Male||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_o50_m_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,50+,15+,,Male,,Sexual Violence (Post-Rape Care),FALSE
-GEND_GBV|N|||||||||Unknown Age|Unknown Age||Female||Physical and/or Emotional Violence|FALSE,,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Physical and/or Emotional Violence,FALSE
-GEND_GBV|N|||||||||Unknown Age|Unknown Age||Female||Sexual Violence (Post-Rape Care)|FALSE,,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Sexual Violence (Post-Rape Care),FALSE
-GEND_GBV|N|||||||||Unknown Age|Unknown Age||Male||Physical and/or Emotional Violence|FALSE,,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Physical and/or Emotional Violence,FALSE
-GEND_GBV|N|||||||||Unknown Age|Unknown Age||Male||Sexual Violence (Post-Rape Care)|FALSE,,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||Unknown Age|Unknown Age||Female||Physical and/or Emotional Violence|FALSE,,,,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||Unknown Age|Unknown Age||Female||Sexual Violence (Post-Rape Care)|FALSE,,,,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||Unknown Age|Unknown Age||Male||Physical and/or Emotional Violence|FALSE,,,,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||Unknown Age|Unknown Age||Male||Sexual Violence (Post-Rape Care)|FALSE,,,,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Sexual Violence (Post-Rape Care),FALSE
 HTS_SELF|N||||||||||||||Directly-Assisted|FALSE,hts_self_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,,,,,,Directly-Assisted,FALSE
 HTS_SELF|N||||||||||||||Unassisted - Other|FALSE,hts_self_unasst_oth,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,,,,,,Unassisted - Other,FALSE
 HTS_SELF|N||||||||||||||Unassisted - Self|FALSE,hts_self_unasst_self,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,,,,,,Unassisted - Self,FALSE
@@ -80,10 +80,10 @@ HTS_SELF|N|||||||||50+|15+||Female||Directly-Assisted|FALSE,hts_self_o50_f_direc
 HTS_SELF|N|||||||||50+|15+||Female||Unassisted|FALSE,hts_self_o50_f_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,50+,15+,,Female,,Unassisted,FALSE
 HTS_SELF|N|||||||||50+|15+||Male||Directly-Assisted|FALSE,hts_self_o50_m_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,50+,15+,,Male,,Directly-Assisted,FALSE
 HTS_SELF|N|||||||||50+|15+||Male||Unassisted|FALSE,hts_self_o50_m_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,50+,15+,,Male,,Unassisted,FALSE
-HTS_SELF|N|||||||||Unknown Age|Unknown Age||Female||Directly-Assisted|FALSE,,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Directly-Assisted,FALSE
-HTS_SELF|N|||||||||Unknown Age|Unknown Age||Female||Unassisted|FALSE,,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Unassisted,FALSE
-HTS_SELF|N|||||||||Unknown Age|Unknown Age||Male||Directly-Assisted|FALSE,,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Directly-Assisted,FALSE
-HTS_SELF|N|||||||||Unknown Age|Unknown Age||Male||Unassisted|FALSE,,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Unassisted,FALSE
+HTS_SELF|N|||||||||Unknown Age|Unknown Age||Female||Directly-Assisted|FALSE,,,,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||Unknown Age|Unknown Age||Female||Unassisted|FALSE,,,,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Unassisted,FALSE
+HTS_SELF|N|||||||||Unknown Age|Unknown Age||Male||Directly-Assisted|FALSE,,,,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||Unknown Age|Unknown Age||Male||Unassisted|FALSE,,,,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Unassisted,FALSE
 HTS_SELF|N||FSW||||||||||Female||Directly-Assisted|FALSE,hts_self_fsw_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,FSW,,,,,,,,,,Female,,Directly-Assisted,FALSE
 HTS_SELF|N||FSW||||||||||Female||Unassisted|FALSE,hts_self_fsw_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,FSW,,,,,,,,,,Female,,Unassisted,FALSE
 HTS_SELF|N||MSM||||||||||Male||Directly-Assisted|FALSE,hts_self_msm_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,MSM,,,,,,,,,,Male,,Directly-Assisted,FALSE
