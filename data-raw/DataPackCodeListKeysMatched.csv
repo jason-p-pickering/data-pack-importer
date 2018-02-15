@@ -682,7 +682,7 @@ PMTCT_STAT|D|||||||Pregnant||30-34|15+||Female|||FALSE,pmtct_stat_D_3034_f,Disag
 PMTCT_STAT|D|||||||Pregnant||35-39|15+||Female|||FALSE,pmtct_stat_D_3539_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,35-39,15+,,Female,,,FALSE
 PMTCT_STAT|D|||||||Pregnant||40-49|15+||Female|||FALSE,pmtct_stat_D_4049_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,40-49,15+,,Female,,,FALSE
 PMTCT_STAT|D|||||||Pregnant||50+|15+||Female|||FALSE,pmtct_stat_D_o50_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,50+,15+,,Female,,,FALSE
-PMTCT_STAT|D|||||||Pregnant||Unknown Age|Unknown Age||Female|||FALSE,,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,Unknown Age,Unknown Age,,Female,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||Unknown Age|Unknown Age||Female|||FALSE,,,,PMTCT_STAT,D,,,,,,,Pregnant,,Unknown Age,Unknown Age,,Female,,,FALSE
 PMTCT_STAT|N|||||||Pregnant||<10|<15||Female|||FALSE,pmtct_stat_u10_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,<10,<15,,Female,,,FALSE
 PMTCT_STAT|N|||||||Pregnant|||||Female|||FALSE,D_pmtct_stat_fy19,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,,,,Female,,,FALSE
 PMTCT_STAT|N|||||||Pregnant||10-14|<15||Female|||FALSE,pmtct_stat_1014_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,10-14,<15,,Female,,,FALSE
@@ -693,7 +693,7 @@ PMTCT_STAT|N|||||||Pregnant||30-34|15+||Female|||FALSE,pmtct_stat_3034_f,DisaggT
 PMTCT_STAT|N|||||||Pregnant||35-39|15+||Female|||FALSE,pmtct_stat_3539_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,35-39,15+,,Female,,,FALSE
 PMTCT_STAT|N|||||||Pregnant||40-49|15+||Female|||FALSE,pmtct_stat_4049_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,40-49,15+,,Female,,,FALSE
 PMTCT_STAT|N|||||||Pregnant||50+|15+||Female|||FALSE,pmtct_stat_o50_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,50+,15+,,Female,,,FALSE
-PMTCT_STAT|N|||||||Pregnant||Unknown Age|Unknown Age||Female|||FALSE,,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,Unknown Age,Unknown Age,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||Unknown Age|Unknown Age||Female|||FALSE,,,,PMTCT_STAT,N,,,,,,,Pregnant,,Unknown Age,Unknown Age,,Female,,,FALSE
 PMTCT_STAT|N|||Known||||Pregnant||<10|<15||Female|Positive||FALSE,pmtct_stat_u10_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,<10,<15,,Female,Positive,,FALSE
 PMTCT_STAT|N|||Known||||Pregnant||10-14|<15||Female|Positive||FALSE,pmtct_stat_1014_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,10-14,<15,,Female,Positive,,FALSE
 PMTCT_STAT|N|||Known||||Pregnant||15-19|15+||Female|Positive||FALSE,pmtct_stat_1519_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,15-19,15+,,Female,Positive,,FALSE
@@ -703,7 +703,7 @@ PMTCT_STAT|N|||Known||||Pregnant||30-34|15+||Female|Positive||FALSE,pmtct_stat_3
 PMTCT_STAT|N|||Known||||Pregnant||35-39|15+||Female|Positive||FALSE,pmtct_stat_3539_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,35-39,15+,,Female,Positive,,FALSE
 PMTCT_STAT|N|||Known||||Pregnant||40-49|15+||Female|Positive||FALSE,pmtct_stat_4049_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,40-49,15+,,Female,Positive,,FALSE
 PMTCT_STAT|N|||Known||||Pregnant||50+|15+||Female|Positive||FALSE,pmtct_stat_o50_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,50+,15+,,Female,Positive,,FALSE
-PMTCT_STAT|N|||Known||||Pregnant||Unknown Age|Unknown Age||Female|Positive||FALSE,,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,PMTCT_STAT,N,,,Known,,,,Pregnant,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
 PMTCT_STAT|N|||New||||Pregnant||<10|<15||Female|Negative||FALSE,pmtct_stat_u10_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,<10,<15,,Female,Negative,,FALSE
 PMTCT_STAT|N|||New||||Pregnant||<10|<15||Female|Positive||FALSE,pmtct_stat_u10_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,<10,<15,,Female,Positive,,FALSE
 PMTCT_STAT|N|||New||||Pregnant||10-14|<15||Female|Negative||FALSE,pmtct_stat_1014_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,10-14,<15,,Female,Negative,,FALSE
@@ -722,8 +722,8 @@ PMTCT_STAT|N|||New||||Pregnant||40-49|15+||Female|Negative||FALSE,pmtct_stat_404
 PMTCT_STAT|N|||New||||Pregnant||40-49|15+||Female|Positive||FALSE,pmtct_stat_4049_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,40-49,15+,,Female,Positive,,FALSE
 PMTCT_STAT|N|||New||||Pregnant||50+|15+||Female|Negative||FALSE,pmtct_stat_o50_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,50+,15+,,Female,Negative,,FALSE
 PMTCT_STAT|N|||New||||Pregnant||50+|15+||Female|Positive||FALSE,pmtct_stat_o50_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,50+,15+,,Female,Positive,,FALSE
-PMTCT_STAT|N|||New||||Pregnant||Unknown Age|Unknown Age||Female|Negative||FALSE,,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
-PMTCT_STAT|N|||New||||Pregnant||Unknown Age|Unknown Age||Female|Positive||FALSE,,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,PMTCT_STAT,N,,,New,,,,Pregnant,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,PMTCT_STAT,N,,,New,,,,Pregnant,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
 PP_PREV|N|||||||||||||||FALSE,D_pp_prev_fy19,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,,,,,,,FALSE
 PP_PREV|N|||||||||10-14|<15||Female|||FALSE,pp_prev_1014_f,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,10-14,<15,,Female,,,FALSE
 PP_PREV|N|||||||||10-14|<15||Male|||FALSE,pp_prev_1014_m,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,10-14,<15,,Male,,,FALSE
