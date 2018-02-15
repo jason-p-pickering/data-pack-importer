@@ -128,5 +128,20 @@ loadSecrets("/home/jason/.secrets/datim.json")
 source("data-raw/transform_code_lists.R")
 rCOP18deMap<-generateCOP18deMap()
 
+
+clusters <- function() {
+  df<- read.csv("data-raw/COP18Clusters.csv",stringsAsFactors=F,header=T) %>%
+    mutate(operatingUnitUID=case_when(operatingunit=="Botswana"~"l1KFEXKI4Dg"
+                                      ,operatingunit=="Cameroon"~"bQQJe0cC1eD"
+                                      ,operatingunit=="Haiti"~"JTypsdEUNPw"
+                                      ,operatingunit=="Mozambique"~"h11OyvlPxpJ"
+                                      ,operatingunit=="Namibia"~"FFVkaV9Zk1S"
+                                      ,TRUE~""))
+  return(df)
+}
+
+clusters<-clusters()
+
+
 #Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
-devtools::use_data(hts_schema,main_schema,mechs,des,impatt,rCOP18deMap, internal = TRUE,overwrite = TRUE)
+devtools::use_data(hts_schema,main_schema,mechs,des,impatt,rCOP18deMap,clusters, internal = TRUE,overwrite = TRUE)

@@ -41,8 +41,15 @@
 
 
 #' @export
-#' @title COP18deMapT
+#' @title rCOP18deMap
 #'
 #' @description Object used for further processing and matching of data pack codes
 #' @return Returns an object with the following columns
-"COP18deMapT"
+"rCOP18deMap"
+
+#' @export
+#' @title clusters
+#'
+#' @description Object used dealing with distribution of values from clusters to PSNUs
+#' @return Returns an object with the following columns
+"clusters"
