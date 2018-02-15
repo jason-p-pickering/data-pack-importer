@@ -126,7 +126,7 @@ impatt<-fromJSON("data-raw/impatt_option_set.json")
 
 loadSecrets("/home/jason/.secrets/datim.json")
 source("data-raw/transform_code_lists.R")
-COP18deMapT<-generateCodeListT()
+rCOP18deMap<-generateCOP18deMap()
 
 #Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
-devtools::use_data(hts_schema,main_schema,mechs,des,impatt,COP18deMapT, internal = TRUE,overwrite = TRUE)
+devtools::use_data(hts_schema,main_schema,mechs,des,impatt,rCOP18deMap, internal = TRUE,overwrite = TRUE)
