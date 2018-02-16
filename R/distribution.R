@@ -1,20 +1,3 @@
-#' @export
-#' @title clusters()
-#'
-#' @description Prepares map of approved Clusters with relationships to PSNUs
-#' @return Returns a dataframe mapping Cluster uid to PSNU uid
-#'
-clusters <- function() {
-    df<- read.csv("https://raw.githubusercontent.com/jason-p-pickering/data-pack-importer/master/data-raw/COP18Clusters.csv",stringsAsFactors=F,header=T) %>%
-            mutate(operatingUnitUID=case_when(operatingunit=="Botswana"~"l1KFEXKI4Dg"
-                                              ,operatingunit=="Cameroon"~"bQQJe0cC1eD"
-                                              ,operatingunit=="Haiti"~"JTypsdEUNPw"
-                                              ,operatingunit=="Mozambique"~"h11OyvlPxpJ"
-                                              ,operatingunit=="Namibia"~"FFVkaV9Zk1S"
-                                              ,TRUE~""))
-    return(df)
-}
-
 
 #' @export
 #' @title distrSource()
@@ -26,9 +9,8 @@ clusters <- function() {
 #'
 distrSource <- function(df,FY=NULL) {
     
-    clusterMap<-clusters()
-    
-    rCOP18deMap<-rCOP18deMap
+    clusterMap<-datapackimporter::clusters
+    rCOP18deMap<-datapackimporter::rCOP18deMap
     
     ds <- df %>%
         #Filter to specified Fiscal Year
@@ -68,7 +50,7 @@ distrSource <- function(df,FY=NULL) {
 
 siteDistribution<-function(df) {
     
-    clusterMap=clusters()
+    clusterMap<-datapackimporter::clusters
     
     siteDistr <- df %>%
         #Remove all dedupe data
@@ -100,7 +82,7 @@ siteDistribution<-function(df) {
 #'
 clusterDistribution <- function(df) {
     
-    clusterMap<-clusters()
+    clusterMap<-datapackimporter::clusters
     
     clusterDistr <- df %>%
         #Sum up to PSNU level
@@ -138,7 +120,7 @@ distributeCluster <- function(df,dm) {
     if(dm==2018) Pcts<-readRDS(paste0(sourceFolder,"distrClusterFY18.rda"))
     if(dm==0000) Pcts<-readRDS(paste0(sourceFolder,"distrClusterFY18.rda"))
     
-    clusterMap<-clusters()
+    clusterMap<-datapackimporter::clusters
     
     #Prepare Cluster Averages
     clusterAvgs <- clusterMap %>%
