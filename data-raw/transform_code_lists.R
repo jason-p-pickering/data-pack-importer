@@ -1,179 +1,169 @@
+#' @export
+#' @importFrom(magrittr,"%>%")
+#' @title getCOPDataElements()
+#'
+#' @description Extracts DATIM dataElement/categoryOptionCombo code list for specified dataset & time period.
+#' @param ds DATIM Dataset UID.
+#' @param pd Code indicating which time period for which to query code list.
+#' @param lvl Organization unit level related to code list in question (P=PSNU, C=Community, F=Facility)
+#' @return Returns a dataframe ready for use in preparing source files.
+#'
+
 getCOPDataElements <- function(ds,pd,lvl) {
-  de <- read.csv(url(paste0(getOption("baseurl"),"api/sqlViews/DotdxKrNZxG/data.csv?var=dataSets:",ds)),stringsAsFactors=FALSE,header=TRUE)
-  de$period <- pd
-  de$level <- lvl
-  de$pdLvl <- paste("pd",de$period,de$level,sep="_",collapse=NULL)
-  de$indicator <- str_trim(str_extract(str_replace_all(de$dataelement,"(?<=IMPATT)\\.","_"),"^\\w+\\s"))
-  return(de)
+    de <- read.csv(url(paste0(getOption("baseurl"),"api/sqlViews/DotdxKrNZxG/data.csv?var=dataSets:",ds)),stringsAsFactors=FALSE,header=TRUE) %>%
+        dplyr::mutate(period = pd) %>%
+        dplyr::mutate(level = lvl) %>%
+        dplyr::mutate(pdLvl = paste("pd",period,level,sep="_",collapse=NULL)) %>%
+        dplyr::mutate(indicator = stringr::str_trim(stringr::str_extract(stringr::str_replace_all(dataelement,"(?<=IMPATT)\\.","_"),"^\\w+\\s")))
+    return(de)
 }
 
+
+
+
+#' @export
+#' @importFrom(magrittr,"%>%")
+#' @title transformDEs()
+#'
+#' @description Deconstructs and maps dataElements and categoryOptionCombos over time.
+#' @param de Data Frame containing DATIM code list in standard structure
+#' @return Returns a dataframe ready for use in preparing source files.
+#'
+
 transformDEs <- function(de){
-  #Prepare cross-period codes for each MER indicator
-  de$COPdeName = str_replace_all(str_replace_all(de$dataelement,"(\\) TARGET)|( v\\d)|\\:(.)*| T_PSNU|\\)|,|\\(","")," |/","_")
-  de$COPcocName = as.character(de$categoryoptioncombo)
-  de$COPuid = paste(de$dataelementuid,de$categoryoptioncombouid,sep=".",collapse=NULL)
-  #Break out dataElementName for helpful referencing
-  #de$indicator <- str_trim(str_extract(str_replace_all(de$dataelement,"IMPATT\\.",""),"^\\w+\\s"))
-  de$numeratorDenom = ""
-  de$numeratorDenom = ifelse(str_detect(de$code,"_[ND]_"),
-                             str_replace_all(str_extract(de$code,"_[ND]_"),"_",""),
-                             de$numeratorDenom)
-  de$supportType = ""
-  de$supportType = ifelse(str_detect(de$dataelement,"(DSD|TA)(?=\\W)"),
-                          str_replace_all(str_extract(de$dataelement,"(DSD|TA)(?=\\W)"),"_",""),
-                          de$supportType)
-  de$Modality=""
-  de$KeyPop=""
-  de$KnownNewStatus=""
-  de$NewExistingART=""
-  de$Indication=""
-  de$TBStatus=""
-  de$pregBF=""
-  de$VMMCTechnique=""
-  de$Age=""
-  de$AggregatedAge=""
-  de$AggregatedAgeFlag=""
-  de$Sex=""
-  de$HIVStatus=""
-  de$otherDisagg=""
-  de$IMPATT=""
-  #Break out categoryOptionCombo for helpful referencing
-  ##Modality
-  de$Modality=ifelse(str_detect(de$COPdeName,"HTS_TST(.)+(Emergency_Ward_|HomeMod_|Index_|IndexMod_|Inpat_|Malnutrition_|MobileMod_|OtherMod_|OtherPITC_|Pediatric_|PMTCT_ANC_|STI_Clinic_|TBClinic_|VCT_|VCTMod_|VMMC_)")
-                     ,str_extract(de$dataelement,"Emergency Ward|HomeMod|IndexMod|Index|Inpat|Malnutrition|MobileMod|OtherMod|OtherPITC|Pediatric|PMTCT ANC|STI Clinic|TBClinic|VCTMod|VCT|VMMC")
-                     ,de$Modality)
-  ##Age
-  de$Age=ifelse(str_detect(de$COPdeName,"Age")
-                ,str_trim(str_extract(de$COPcocName,"(?<!D)(<|<=)?( )?\\d{1,2}( months)?(( )?-( )?\\d{1,2}( months| years)?|\\+)?|Unknown Age"))
-                ,de$Age)
-  de$Age=ifelse(str_detect(de$dataelement,"HTS_TST(.)+(Malnutrition|Pediatric)")
-                ,"<5"
-                ,de$Age)
-  ##AggregatedAge
-  word=c("< 2 months","<= 2 months","2 - 12 months","<1","<5","1-9","2 months - 9 years","<10","10-14","<15","15-17","15-19","18-24","20-24","25-29","15-29","30-34","35-39","40-49","30-49","25-49","15\\+","25\\+","30\\+","50\\+","Unknown Age")
-  tran=c(rep("<15",10),rep("15+",15),"Unknown Age")
-  dict=data.frame(word,tran,stringsAsFactors = FALSE)
-  de$AggregatedAge=de$Age
-  for (k in 1:length(dict$word)){de$AggregatedAge<-str_replace_all(de$AggregatedAge,paste0("^",dict$word[k],"$"),dict$tran[k])}
-  ##Aggregated Age Flag (to distinguish otherwise identical indicators)
-  de$AggregatedAgeFlag=ifelse(str_detect(de$dataelement,"Age Aggregated|(PLHIV|HIV_PREV)(.)+Age")
-                              ,"AgeAggregated"
-                              ,de$AggregatedAgeFlag)
-  ##Sex
-  de$Sex=ifelse(str_detect(de$COPdeName,"Sex|HTS_TST(.)+VCT_Age_Result")
-                |str_detect(de$COPcocName,"Female PWID|Male PWID|MSM|FSW")
-                ,str_extract(de$COPcocName,"Male|Female|Unknown Sex|MSM|FSW")
-                ,de$Sex)
-  dict=data.frame(word=c("MSM","FSW"),tran=c("Male","Female"),stringsAsFactors = FALSE)
-  for (k in 1:length(dict$word)){de$Sex<-str_replace_all(de$Sex,dict$word[k],dict$tran[k])}
-  rm(dict)
-  de$Sex=ifelse(str_detect(de$dataelement,"HTS_TST|OVC_SERV|PMTCT_EID|TB_ART|TX_(CURR|NEW|PVLS|RET)") & str_detect(de$Age,"(<1|1-9|<5)$")
-                ,"Unknown Sex"
-                ,de$Sex)
-  de$Sex=ifelse(str_detect(de$dataelement,"HTS_TST(.)+VMMC|VMMC_CIRC")
-                ,"Male"
-                ,de$Sex)
-  de$Sex=ifelse(str_detect(de$dataelement,"HTS_TST(.)+PMTCT|PMTCT_ART|PMTCT_STAT")
-                ,"Female"
-                ,de$Sex)
-  
-  ##HIVStatus
-  #            Convert to "HIV Positive", "HIV Negative", "HIV Unknown"
-  de$HIVStatus=ifelse(str_detect(de$COPdeName,"_Result|_HIVStatus|_KnownNewResult|_KnownNewPosNeg|OVC_HIVSTAT_(.)+_ReportedStatus")
-                      | (str_detect(de$COPdeName,"KP_PREV_(N|D)_(DSD|TA)_KeyPop_Status|PP_PREV_(N|D)_(DSD|TA)_Status")
-                         & str_detect(de$COPcocName,"Positive|Negative"))
-                      ,str_extract(de$COPcocName,"Positive|Negative|Unknown(?=($|,))|Undisclosed")
-                      ,de$HIVStatus)
-  de$HIVStatus=str_replace(de$HIVStatus,"Undisclosed","Unknown")
-  de$HIVStatus=ifelse(str_detect(de$COPdeName,"^(IMPATT.PLHIV|PMTCT_ART|TB_ART|TB_PREV|TX_CURR|TX_NEW|TX_PVLS|TX_RET|TX_TB)|OVC_HIVSTAT_(.)+_StatusPosART")
-                      & !(de$HIVStatus %in% ("Positive"))
-                      ,"Positive"
-                      ,de$HIVStatus)
-  de$HIVStatus=ifelse(str_detect(de$COPdeName,"OVC_HIVSTAT(.)+StatusNotRep") & !(de$HIVStatus %in% ("Unknown"))
-                      ,"Unknown"
-                      ,de$HIVStatus)
-  de$HIVStatus=ifelse(str_detect(de$COPdeName,"HTS_TST(.)+Positive"),"Positive",de$HIVStatus)
-  ##KeyPop
-  de$KeyPop=ifelse(str_detect(de$COPdeName,"_KeyPop")
-                   ,str_extract(de$COPcocName,"FSW|MSM(( not)? SW)?|TG(( not)? SW)?|PWID|People in prisons and other enclosed settings|Other Key Populations")
-                   ,de$KeyPop)
-  ##KnownNewStatus
-  de$KnownNewStatus=ifelse(str_detect(de$COPcocName,"Known at Entry|Newly Tested or Testing Referred|Newly Identified|Declined Testing Or Testing Referral")
-                           ,str_extract(de$COPcocName,"Known|New|Declined")
-                           ,de$KnownNewStatus)
-  ##NewExistingART
-  de$NewExistingART=ifelse(str_detect(de$COPdeName,regex("NewExistingArt",ignore_case=T))
-                           ,str_extract(de$COPcocName,"New|Already")
-                           ,de$NewExistingART)
-  ##Indication
-  de$Indication=ifelse(str_detect(de$COPdeName,"TX_PVLS(.)+(Indication|RoutineTargeted)")
-                       ,str_extract(de$COPcocName,"Routine|Targeted|Undocumented Test Indication")
-                       ,de$Indication)
-  ##TBStatus
-  de$TBStatus=ifelse(str_detect(de$COPdeName,"TX_NEW(.)+TB_Diagnosis|TB_STAT|TB_ART|TX_TB_(N|D(.)+(TBScreen|PositiveScreen))")
-                     ,ifelse(str_detect(de$COPdeName,"TX_TB_D")
-                             ,paste0("TB ",str_extract(de$COPcocName,"(?<=(TB Screen - |^))(Posi|Nega)tive"))
-                             ,"TB Positive")
-                     ,de$TBStatus)
-  ##pregBF
-  de$pregBF=ifelse(str_detect(de$dataelement,"PMTCT_(ART|STAT)|TX_(NEW|RET|PVLS)(.)+PregnantOrBreastfeeding")
-                   ,ifelse(str_detect(de$dataelement,"PMTCT_(ART|STAT)")
-                           ,"Pregnant"
-                           ,str_extract(de$COPcocName,"Pregnant|Breastfeeding"))
-                   ,de$pregBF)
-  ##VMMCTechnique
-  de$VMMCTechnique=ifelse(str_detect(de$dataelement,"VMMC_CIRC(.)+Tech")
-                          ,str_extract(de$COPcocName,"Device based|Surgical Technique")
-                          ,de$VMMCTechnique)
-  ##otherDisagg
-  pattern=paste(ifelse(de$KeyPop=="","0000",de$KeyPop)
-                ,ifelse(de$Sex=="","0000",de$Sex)
-                ,ifelse(de$Age=="","0000",paste0("\\Q",de$Age,"\\E"))
-                ,"TB Screen - (Posi|Nega)tive"
-                ,ifelse(de$HIVStatus=="","0000",de$HIVStatus)
-                ,"Declined Testing Or Testing Referral","Newly Tested or Testing Referred","Newly Identified","Known at Entry","Life-long ART"
-                ,ifelse(de$KnownNewStatus=="","0000",de$KnownNewStatus)
-                ,ifelse(de$NewExistingART=="","0000",de$NewExistingART)
-                ,ifelse(de$Indication=="","0000",de$Indication)
-                ,ifelse(de$pregBF=="","0000",de$pregBF)
-                ,ifelse(de$VMMCTechnique=="","0000",de$VMMCTechnique)
-                ,"default"
-                ,sep="|")
-  de$otherDisagg=str_replace_all(de$COPcocName,pattern,"")
-  de$otherDisagg=ifelse(str_detect(de$COPdeName,"TX_TB(.)+Specimen_Sent"),"Specimen Sent",de$otherDisagg)
-  de$otherDisagg=str_trim(str_replace_all(de$otherDisagg,"^,( ,)?|(,( )?)+$|,( ,)+|\\(((,)?( )?)\\)",""))
-  de$otherDisagg=ifelse(str_detect(de$dataelement, "TX_TB(.)+PositiveScreen")
-                        ,str_replace(de$otherDisagg,"Negative","")
-                        ,de$otherDisagg)
-  
-  ###Fix otherDisaggs where necessary
-  ####TB_PREV(.)*TherapyType
-  # word<-c('6-12 Month IPT','Alternative Regimen','Continuous IPT')
-  # tran<-c('IPT','Alternative TPT Regimen','IPT')
-  # for (k in 1:length(word)){de$otherDisagg=str_replace_all(de$otherDisagg,word[k],tran[k])}
-  # rm(word,tran)
-  de$otherDisagg=ifelse(str_detect(de$COPdeName,"TB_PREV"),
-                        str_replace(de$otherDisagg,"Alternative Regimen","Alternative TPT Regimen"),
-                        de$otherDisagg)
-  ####GEND_GBV(.)*PEP
-  de$otherDisagg=ifelse(str_detect(de$COPdeName,"GEND_GBV(.)+PEP"),"PEP",de$otherDisagg)
-  ####HTS_TST
-  ####TX_RET
-  de$otherDisagg=ifelse(str_detect(de$COPdeName,"TX_RET(.)+")
-                        ,ifelse(str_detect(de$COPdeName,"24mo|36mo"),str_extract(de$dataelement,"24mo|36mo"),"12mo")
-                        ,de$otherDisagg)
-  ####VMMC_CIRC
-  de$otherDisagg=ifelse(str_detect(de$COPdeName,"VMMC_CIRC(.)+TechFollowUp")
-                        ,"Followed up within 14 days"
-                        ,de$otherDisagg)
-  
-  ##IMPATT
-  de$IMPATT=de$pdLvl=="pd_IMPT_P"
-  
-  de$COPidName=paste(de$indicator,de$numeratorDenom,de$supportType,de$Modality,de$KeyPop,de$KnownNewStatus,de$NewExistingART,de$Indication,de$TBStatus,de$pregBF,de$VMMCTechnique,de$Age,de$AggregatedAge,de$AggregatedAgeFlag,de$Sex,de$HIVStatus,de$otherDisagg,sep="|")
-  
-  return(de)
+    ds <- de %>%
+        #Prepare cross-period codes for each MER indicator
+        dplyr::mutate(COPdeName = stringr::str_replace_all(stringr::str_replace_all(dataelement,"(\\) TARGET)|( v\\d)|\\:(.)*| T_PSNU|\\)|,|\\(","")," |/","_")) %>%
+        dplyr::mutate(COPcocName = as.character(categoryoptioncombo)) %>%
+        dplyr::mutate(COPuid = paste(dataelementuid,categoryoptioncombouid,sep=".",collapse=NULL)) %>%
+        #Break out dataElementName for helpful referencing
+        dplyr::mutate(indicator = stringr::str_trim(stringr::str_extract(stringr::str_replace_all(dataelement,"IMPATT\\.",""),"^\\w+\\s"))) %>%
+        dplyr::mutate(numeratorDenom = ifelse(stringr::str_detect(code,"_[ND]_"),
+                                              stringr::str_replace_all(stringr::str_extract(code,"_[ND]_"),"_",""),
+                                              "")) %>%
+        dplyr::mutate(supportType = ifelse(stringr::str_detect(dataelement,"(DSD|TA)(?=\\W)"),
+                                           stringr::str_replace_all(stringr::str_extract(dataelement,"(DSD|TA)(?=\\W)"),"_",""),
+                                           "")) %>%
+        
+        #Break out categoryOptionCombo for helpful referencing
+        ##Modality
+        dplyr::mutate(Modality=ifelse(stringr::str_detect(COPdeName,"HTS_TST(.)+(Emergency_Ward_|HomeMod_|Index_|IndexMod_|Inpat_|Malnutrition_|MobileMod_|OtherMod_|OtherPITC_|Pediatric_|PMTCT_ANC_|STI_Clinic_|TBClinic_|VCT_|VCTMod_|VMMC_)")
+                                      ,stringr::str_extract(dataelement,"Emergency Ward|HomeMod|IndexMod|Index|Inpat|Malnutrition|MobileMod|OtherMod|OtherPITC|Pediatric|PMTCT ANC|STI Clinic|TBClinic|VCTMod|VCT|VMMC")
+                                      ,"")) %>%
+        ##Age
+        dplyr::mutate(Age=dplyr::case_when(stringr::str_detect(COPdeName,"Age") ~ stringr::str_trim(stringr::str_extract(COPcocName,"(?<!D)(<|<=)?( )?\\d{1,2}( months)?(( )?-( )?\\d{1,2}( months| years)?|\\+)?|Unknown Age"))
+                                           ,stringr::str_detect(dataelement,"HTS_TST(.)+(Malnutrition|Pediatric)") ~ "<5"
+                                           ,TRUE~"")) %>%
+        ##AggregatedAge
+        dplyr::mutate(AggregatedAge=Age)
+    word=c("< 2 months","<= 2 months","2 - 12 months","<1","<5","1-9","2 months - 9 years","<10","10-14","<15","15-17","15-19","18-24","20-24","25-29","15-29","30-34","35-39","40-49","30-49","25-49","15\\+","25\\+","30\\+","50\\+","Unknown Age")
+    tran=c(rep("<15",10),rep("15+",15),"Unknown Age")
+    dict=data.frame(word,tran,stringsAsFactors = FALSE)
+    for (k in 1:length(dict$word)){ds$AggregatedAge=stringr::str_replace_all(ds$AggregatedAge,paste0("^",dict$word[k],"$"),dict$tran[k])}
+    
+    ##Aggregated Age Flag (to distinguish otherwise identical indicators)
+    ds <- ds %>% dplyr::mutate(AggregatedAgeFlag=ifelse(stringr::str_detect(dataelement,"Age Aggregated|(PLHIV|HIV_PREV)(.)+Age")
+                                                        ,"AgeAggregated"
+                                                        ,"")) %>%
+        ##Sex
+        dplyr::mutate(Sex=ifelse(stringr::str_detect(COPdeName,"Sex|HTS_TST(.)+VCT_Age_Result")
+                                 |stringr::str_detect(COPcocName,"Female PWID|Male PWID|MSM|FSW")
+                                 ,stringr::str_extract(COPcocName,"Male|Female|Unknown Sex|MSM|FSW")
+                                 ,""))
+    dict=data.frame(word=c("MSM","FSW"),tran=c("Male","Female"),stringsAsFactors = FALSE)
+    for (k in 1:length(dict$word)){ds$Sex<-stringr::str_replace_all(ds$Sex,dict$word[k],dict$tran[k])}
+    rm(dict)
+    ds <- ds %>%
+        dplyr::mutate(Sex=dplyr::case_when(stringr::str_detect(dataelement,"HTS_TST|OVC_SERV|PMTCT_EID|TB_ART|TX_(CURR|NEW|PVLS|RET)") & stringr::str_detect(Age,"(<1|1-9|<5)$") ~ "Unknown Sex",TRUE~Sex)) %>%
+        dplyr::mutate(Sex=dplyr::case_when(stringr::str_detect(dataelement,"HTS_TST(.)+VMMC|VMMC_CIRC") ~ "Male"
+                                           ,stringr::str_detect(dataelement,"HTS_TST(.)+PMTCT|PMTCT_ART|PMTCT_STAT") ~ "Female"
+                                           ,TRUE ~ Sex)) %>%
+        
+        ##HIVStatus
+        #            Convert to "HIV Positive", "HIV Negative", "HIV Unknown"
+        dplyr::mutate(HIVStatus=ifelse(stringr::str_detect(COPdeName,"_Result|_HIVStatus|_KnownNewResult|_KnownNewPosNeg|OVC_HIVSTAT_(.)+_ReportedStatus")
+                                       | (stringr::str_detect(COPdeName,"KP_PREV_(N|D)_(DSD|TA)_KeyPop_Status|PP_PREV_(N|D)_(DSD|TA)_Status") & stringr::str_detect(COPcocName,"Positive|Negative"))
+                                       ,stringr::str_extract(COPcocName,"Positive|Negative|Unknown(?=($|,))|Undisclosed")
+                                       ,"")) %>%
+        dplyr::mutate(HIVStatus=stringr::str_replace(HIVStatus,"Undisclosed","Unknown")) %>%
+        dplyr::mutate(HIVStatus=dplyr::case_when(stringr::str_detect(COPdeName,"^(IMPATT.PLHIV|PMTCT_ART|TB_ART|TB_PREV|TX_CURR|TX_NEW|TX_PVLS|TX_RET|TX_TB)|OVC_HIVSTAT_(.)+_StatusPosART") & !(HIVStatus %in% ("Positive")) ~ "Positive"
+                                                 ,stringr::str_detect(COPdeName,"OVC_HIVSTAT(.)+StatusNotRep") & !(HIVStatus %in% ("Unknown")) ~ "Unknown"
+                                                 ,stringr::str_detect(COPdeName,"HTS_TST(.)+Positive") ~ "Positive"
+                                                 ,TRUE ~ HIVStatus)) %>%
+        ##KeyPop
+        dplyr::mutate(KeyPop=ifelse(stringr::str_detect(COPdeName,"_KeyPop")
+                                    ,stringr::str_extract(COPcocName,"FSW|MSM(( not)? SW)?|TG(( not)? SW)?|PWID|People in prisons and other enclosed settings|Other Key Populations")
+                                    ,"")) %>%
+        ##KnownNewStatus
+        dplyr::mutate(KnownNewStatus=ifelse(stringr::str_detect(COPcocName,"Known at Entry|Newly Tested or Testing Referred|Newly Identified|Declined Testing Or Testing Referral")
+                                            ,stringr::str_extract(COPcocName,"Known|New|Declined")
+                                            ,"")) %>%
+        ##NewExistingART
+        dplyr::mutate(NewExistingART=ifelse(stringr::str_detect(COPdeName,stringr::regex("NewExistingArt",ignore_case=T))
+                                            ,stringr::str_extract(COPcocName,"New|Already")
+                                            ,"")) %>%
+        ##Indication
+        dplyr::mutate(Indication=ifelse(stringr::str_detect(COPdeName,"TX_PVLS(.)+(Indication|RoutineTargeted)")
+                                        ,stringr::str_extract(COPcocName,"Routine|Targeted|Undocumented Test Indication")
+                                        ,"")) %>%
+        ##TBStatus
+        dplyr::mutate(TBStatus=ifelse(stringr::str_detect(COPdeName,"TX_NEW(.)+TB_Diagnosis|TB_STAT|TB_ART|TX_TB_(N|D(.)+(TBScreen|PositiveScreen))")
+                                      ,ifelse(stringr::str_detect(COPdeName,"TX_TB_D")
+                                              ,paste0("TB ",stringr::str_extract(COPcocName,"(?<=(TB Screen - |^))(Posi|Nega)tive"))
+                                              ,"TB Positive")
+                                      ,"")) %>%
+        ##pregBF
+        dplyr::mutate(pregBF=ifelse(stringr::str_detect(dataelement,"PMTCT_(ART|STAT)|TX_(NEW|RET|PVLS)(.)+PregnantOrBreastfeeding")
+                                    ,ifelse(stringr::str_detect(dataelement,"PMTCT_(ART|STAT)")
+                                            ,"Pregnant"
+                                            ,stringr::str_extract(COPcocName,"Pregnant|Breastfeeding"))
+                                    ,"")) %>%
+        ##VMMCTechnique
+        dplyr::mutate(VMMCTechnique=ifelse(stringr::str_detect(dataelement,"VMMC_CIRC(.)+Tech")
+                                           ,stringr::str_extract(COPcocName,"Device based|Surgical Technique")
+                                           ,""))
+    ##otherDisagg
+    pattern=paste(ifelse(ds$KeyPop=="","0000",ds$KeyPop)
+                  ,ifelse(ds$Sex=="","0000",ds$Sex)
+                  ,ifelse(ds$Age=="","0000",paste0("\\Q",ds$Age,"\\E"))
+                  ,"TB Screen - (Posi|Nega)tive"
+                  ,ifelse(ds$HIVStatus=="","0000",ds$HIVStatus)
+                  ,"Declined Testing Or Testing Referral","Newly Tested or Testing Referred","Newly Identified","Known at Entry","Life-long ART"
+                  ,ifelse(ds$KnownNewStatus=="","0000",ds$KnownNewStatus)
+                  ,ifelse(ds$NewExistingART=="","0000",ds$NewExistingART)
+                  ,ifelse(ds$Indication=="","0000",ds$Indication)
+                  ,ifelse(ds$pregBF=="","0000",ds$pregBF)
+                  ,ifelse(ds$VMMCTechnique=="","0000",ds$VMMCTechnique)
+                  ,"default"
+                  ,sep="|")
+    ds <- ds %>%    
+        dplyr::mutate(otherDisagg=stringr::str_replace_all(COPcocName,pattern,"")) %>%
+        dplyr::mutate(otherDisagg=ifelse(stringr::str_detect(COPdeName,"TX_TB(.)+Specimen_Sent"),"Specimen Sent",otherDisagg)) %>%
+        dplyr::mutate(otherDisagg=stringr::str_trim(stringr::str_replace_all(otherDisagg,"^,( ,)?|(,( )?)+$|,( ,)+|\\(((,)?( )?)\\)",""))) %>%
+        dplyr::mutate(otherDisagg=ifelse(stringr::str_detect(dataelement, "TX_TB(.)+PositiveScreen")
+                                         ,stringr::str_replace(otherDisagg,"Negative","")
+                                         ,otherDisagg)) %>%
+        
+        ###Fix otherDisaggs where necessary
+        dplyr::mutate(otherDisagg=dplyr::case_when(stringr::str_detect(COPdeName,"TB_PREV") ~ stringr::str_replace(otherDisagg,"Alternative Regimen","Alternative TPT Regimen")
+                                                   ####GEND_GBV(.)*PEP
+                                                   ,stringr::str_detect(COPdeName,"GEND_GBV(.)+PEP") ~ "PEP"
+                                                   ####TX_RET
+                                                   ,stringr::str_detect(COPdeName,"TX_RET(.)+") ~ ifelse(stringr::str_detect(COPdeName,"24mo|36mo"),stringr::str_extract(dataelement,"24mo|36mo"),"12mo")
+                                                   ####VMMC_CIRC
+                                                   ,stringr::str_detect(COPdeName,"VMMC_CIRC(.)+TechFollowUp") ~ "Followed up within 14 days"
+                                                   ,TRUE ~ otherDisagg)) %>%
+        
+        ##IMPATT
+        dplyr::mutate(IMPATT = pdLvl=="pd_IMPT_P") %>%
+        
+        dplyr::mutate(COPidName=paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|"))
+    
+    return(ds)
 }
+
+
+
 
 generateCodeListT <- function() {
   
@@ -229,13 +219,8 @@ generateCodeListT <- function() {
     COPdataElements=bind_rows(COPdataElements,getCOPDataElements(dataset[i],period[i],level[i]))
   }
   
-  #TEMPORARY: Code List Fix --> add four lines for PMTCT_ART in PSNU code list which are currently not appearing in sqlView.
+  
   COP18deMapT <- COPdataElements %>%
-    rbind(c("MER Target Setting: PSNU (Facility and Community Combined)","PMTCT_ART (N, DSD, NewExistingArt/Sex/HIVStatus) T_PSNU: ART","PMTCT_ART (N, DSD, NewExistingArt/Sex/HIV) T_PSNU","PMTCT_ART_N_DSD_NewExistingArt_Sex_HIV_T_PSNU","DFdm1fjKS5u","Number of HIV-positive pregnant women who received ART to reduce risk of mother-to-child-transmission during pregnancy.","Life-long ART, New, Female, Positive","Q2EBeMBa8Ga","Q2EBeMBa8Ga","19_T","P","pd_19_T_P","PMTCT_ART")
-          ,c("MER Target Setting: PSNU (Facility and Community Combined)","PMTCT_ART (N, DSD, NewExistingArt/Sex/HIVStatus) T_PSNU: ART","PMTCT_ART (N, DSD, NewExistingArt/Sex/HIV) T_PSNU","PMTCT_ART_N_DSD_NewExistingArt_Sex_HIV_T_PSNU","DFdm1fjKS5u","Number of HIV-positive pregnant women who received ART to reduce risk of mother-to-child-transmission during pregnancy.","Life-long ART, Already, Female, Positive","RTYO8ycjbCt","RTYO8ycjbCt","19_T","P","pd_19_T_P","PMTCT_ART")
-          ,c("MER Target Setting: PSNU (Facility and Community Combined)","PMTCT_ART (N, TA, NewExistingArt/Sex/HIVStatus) T_PSNU: ART", "PMTCT_ART (N, TA, NewExistingArt/Sex/HIV) T_PSNU", "PMTCT_ART_N_TA_NewExistingArt_Sex_HIV_T_PSNU", "w4pjh8fNZx8","Number of HIV-positive pregnant women who received ART to reduce risk of mother-to-child-transmission during pregnancy.","Life-long ART, New, Female, Positive","Q2EBeMBa8Ga","Q2EBeMBa8Ga","19_T","P","pd_19_T_P","PMTCT_ART")
-          ,c("MER Target Setting: PSNU (Facility and Community Combined)","PMTCT_ART (N, TA, NewExistingArt/Sex/HIVStatus) T_PSNU: ART", "PMTCT_ART (N, TA, NewExistingArt/Sex/HIV) T_PSNU", "PMTCT_ART_N_TA_NewExistingArt_Sex_HIV_T_PSNU", "w4pjh8fNZx8","Number of HIV-positive pregnant women who received ART to reduce risk of mother-to-child-transmission during pregnancy.","Life-long ART, Already, Female, Positive","RTYO8ycjbCt","RTYO8ycjbCt","19_T","P","pd_19_T_P","PMTCT_ART")
-    ) %>%
     unique %>% filter( indicator %in% tech_areas) %>% 
     transformDEs %>% 
     select(
@@ -304,7 +289,7 @@ generateCodeListT <- function() {
 }
 
 
-generateDataPackCodes <- function(dp_codes_file, COP18deMapT) {
+mapDataPackCodes <- function(dp_codes_file,COP18deMapT) {
   
   blankToNA<-function (x) {ifelse(x=="",NA,x)}
   
@@ -348,38 +333,17 @@ generateDataPackCodes <- function(dp_codes_file, COP18deMapT) {
         sep = "|"
       )
     ) %>%
-    #Pull in FY2019 PSNU level dataElement and categoryOptionCombo codes
-    merge(unique(COP18deMapT[!is.na(COP18deMapT$pd_2019_P), c("pd_2019_P", "COPidName")]),
-          by = c("COPidName"),
-          all = TRUE) %>%
-    #Re-order columns
-    select(
-      COPidName,
-      pd_2019_P,
-      DataPackCode,
-      DataPackFilename,
-      DataPackTabName,
-      indicator,
-      numeratorDenom,
-      Modality,
-      KeyPop,
-      KnownNewStatus,
-      NewExistingART,
-      Indication,
-      TBStatus,
-      pregBF,
-      VMMCTechnique,
-      Age,
-      AggregatedAge,
-      AggregatedAgeFlag,
-      Sex,
-      HIVStatus,
-      otherDisagg,
-      IMPATT
-    )
+    #Select only necessary columns
+      select(DataPackCode,DataPackFilename,DataPackTabName,COPidName)
+
+    
   
-  return(DataPackCodes)
-  }
+  #Pull in Data Pack Codes
+    COP18deMapT <- COP18deMapT %>%
+        dplyr::left_join(DataPackCodes,by=c("COPidName"),all=TRUE)
+  
+    return(COP18deMapT)
+}
 
 
 
