@@ -2,14 +2,13 @@
 #I. Set up distribution source files####
 #////////////////////////////////////////////////////
 #Paste file path to site-level export here:
-    siteExportPath=paste0(GoogleDrive,"/Facility Distribution Script/Distribution Source Files/COP18DistributionSource_20180214_2.csv")
+    siteExportPath="/Users/scott/Google Drive/PEPFAR/COP Targets/Development/Facility Distribution Script/Distribution Source Files/COP18DistributionSource_20180214_2.csv"
 #Where to save distribution source files:
     sourceFolder="/Users/scott/Google Drive/PEPFAR/COP Targets/Development/Facility Distribution Script/Distribution Source Files/"
     
-    
-    
 #Distribution Sources
     siteExport<- read.csv(file=siteExportPath,stringsAsFactors=FALSE,header=TRUE)
+    saveRDS(siteExport,paste0(sourceFolder,"siteExport.rda"))
     
     distrSourceFY17<-distrSource(siteExport,FY=2017)
         
