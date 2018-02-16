@@ -1,5 +1,6 @@
-#' @export
-#' @importFrom(magrittr,"%>%")
+require(dplyr)
+require(stringr)
+
 #' @title getCOPDataElements()
 #'
 #' @description Extracts DATIM dataElement/categoryOptionCombo code list for specified dataset & time period.
@@ -11,10 +12,10 @@
 
 getCOPDataElements <- function(ds,pd,lvl) {
     de <- read.csv(url(paste0(getOption("baseurl"),"api/sqlViews/DotdxKrNZxG/data.csv?var=dataSets:",ds)),stringsAsFactors=FALSE,header=TRUE) %>%
-        dplyr::mutate(period = pd) %>%
-        dplyr::mutate(level = lvl) %>%
-        dplyr::mutate(pdLvl = paste("pd",period,level,sep="_",collapse=NULL)) %>%
-        dplyr::mutate(indicator = stringr::str_trim(stringr::str_extract(stringr::str_replace_all(dataelement,"(?<=IMPATT)\\.","_"),"^\\w+\\s")))
+        mutate(period = pd) %>%
+        mutate(level = lvl) %>%
+        mutate(pdLvl = paste("pd",period,level,sep="_",collapse=NULL)) %>%
+        mutate(indicator = str_trim(str_extract(str_replace_all(dataelement,"(?<=IMPATT)\\.","_"),"^\\w+\\s")))
     return(de)
 }
 
@@ -33,94 +34,94 @@ getCOPDataElements <- function(ds,pd,lvl) {
 transformDEs <- function(de){
     ds <- de %>%
         #Prepare cross-period codes for each MER indicator
-        dplyr::mutate(COPdeName = stringr::str_replace_all(stringr::str_replace_all(dataelement,"(\\) TARGET)|( v\\d)|\\:(.)*| T_PSNU|\\)|,|\\(","")," |/","_")) %>%
-        dplyr::mutate(COPcocName = as.character(categoryoptioncombo)) %>%
-        dplyr::mutate(COPuid = paste(dataelementuid,categoryoptioncombouid,sep=".",collapse=NULL)) %>%
+        mutate(COPdeName = str_replace_all(str_replace_all(dataelement,"(\\) TARGET)|( v\\d)|\\:(.)*| T_PSNU|\\)|,|\\(","")," |/","_")) %>%
+        mutate(COPcocName = as.character(categoryoptioncombo)) %>%
+        mutate(COPuid = paste(dataelementuid,categoryoptioncombouid,sep=".",collapse=NULL)) %>%
         #Break out dataElementName for helpful referencing
-        dplyr::mutate(indicator = stringr::str_trim(stringr::str_extract(stringr::str_replace_all(dataelement,"IMPATT\\.",""),"^\\w+\\s"))) %>%
-        dplyr::mutate(numeratorDenom = ifelse(stringr::str_detect(code,"_[ND]_"),
-                                              stringr::str_replace_all(stringr::str_extract(code,"_[ND]_"),"_",""),
+        mutate(indicator = str_trim(str_extract(str_replace_all(dataelement,"IMPATT\\.",""),"^\\w+\\s"))) %>%
+        mutate(numeratorDenom = ifelse(str_detect(code,"_[ND]_"),
+                                              str_replace_all(str_extract(code,"_[ND]_"),"_",""),
                                               "")) %>%
-        dplyr::mutate(supportType = ifelse(stringr::str_detect(dataelement,"(DSD|TA)(?=\\W)"),
-                                           stringr::str_replace_all(stringr::str_extract(dataelement,"(DSD|TA)(?=\\W)"),"_",""),
+        mutate(supportType = ifelse(str_detect(dataelement,"(DSD|TA)(?=\\W)"),
+                                           str_replace_all(str_extract(dataelement,"(DSD|TA)(?=\\W)"),"_",""),
                                            "")) %>%
         
         #Break out categoryOptionCombo for helpful referencing
         ##Modality
-        dplyr::mutate(Modality=ifelse(stringr::str_detect(COPdeName,"HTS_TST(.)+(Emergency_Ward_|HomeMod_|Index_|IndexMod_|Inpat_|Malnutrition_|MobileMod_|OtherMod_|OtherPITC_|Pediatric_|PMTCT_ANC_|STI_Clinic_|TBClinic_|VCT_|VCTMod_|VMMC_)")
-                                      ,stringr::str_extract(dataelement,"Emergency Ward|HomeMod|IndexMod|Index|Inpat|Malnutrition|MobileMod|OtherMod|OtherPITC|Pediatric|PMTCT ANC|STI Clinic|TBClinic|VCTMod|VCT|VMMC")
+        mutate(Modality=ifelse(str_detect(COPdeName,"HTS_TST(.)+(Emergency_Ward_|HomeMod_|Index_|IndexMod_|Inpat_|Malnutrition_|MobileMod_|OtherMod_|OtherPITC_|Pediatric_|PMTCT_ANC_|STI_Clinic_|TBClinic_|VCT_|VCTMod_|VMMC_)")
+                                      ,str_extract(dataelement,"Emergency Ward|HomeMod|IndexMod|Index|Inpat|Malnutrition|MobileMod|OtherMod|OtherPITC|Pediatric|PMTCT ANC|STI Clinic|TBClinic|VCTMod|VCT|VMMC")
                                       ,"")) %>%
         ##Age
-        dplyr::mutate(Age=dplyr::case_when(stringr::str_detect(COPdeName,"Age") ~ stringr::str_trim(stringr::str_extract(COPcocName,"(?<!D)(<|<=)?( )?\\d{1,2}( months)?(( )?-( )?\\d{1,2}( months| years)?|\\+)?|Unknown Age"))
-                                           ,stringr::str_detect(dataelement,"HTS_TST(.)+(Malnutrition|Pediatric)") ~ "<5"
+        mutate(Age=case_when(str_detect(COPdeName,"Age") ~ str_trim(str_extract(COPcocName,"(?<!D)(<|<=)?( )?\\d{1,2}( months)?(( )?-( )?\\d{1,2}( months| years)?|\\+)?|Unknown Age"))
+                                           ,str_detect(dataelement,"HTS_TST(.)+(Malnutrition|Pediatric)") ~ "<5"
                                            ,TRUE~"")) %>%
         ##AggregatedAge
-        dplyr::mutate(AggregatedAge=Age)
+        mutate(AggregatedAge=Age)
     word=c("< 2 months","<= 2 months","2 - 12 months","<1","<5","1-9","2 months - 9 years","<10","10-14","<15","15-17","15-19","18-24","20-24","25-29","15-29","30-34","35-39","40-49","30-49","25-49","15\\+","25\\+","30\\+","50\\+","Unknown Age")
     tran=c(rep("<15",10),rep("15+",15),"Unknown Age")
     dict=data.frame(word,tran,stringsAsFactors = FALSE)
-    for (k in 1:length(dict$word)){ds$AggregatedAge=stringr::str_replace_all(ds$AggregatedAge,paste0("^",dict$word[k],"$"),dict$tran[k])}
+    for (k in 1:length(dict$word)){ds$AggregatedAge=str_replace_all(ds$AggregatedAge,paste0("^",dict$word[k],"$"),dict$tran[k])}
     
     ##Aggregated Age Flag (to distinguish otherwise identical indicators)
-    ds <- ds %>% dplyr::mutate(AggregatedAgeFlag=ifelse(stringr::str_detect(dataelement,"Age Aggregated|(PLHIV|HIV_PREV)(.)+Age")
+    ds <- ds %>% mutate(AggregatedAgeFlag=ifelse(str_detect(dataelement,"Age Aggregated|(PLHIV|HIV_PREV)(.)+Age")
                                                         ,"AgeAggregated"
                                                         ,"")) %>%
         ##Sex
-        dplyr::mutate(Sex=ifelse(stringr::str_detect(COPdeName,"Sex|HTS_TST(.)+VCT_Age_Result")
-                                 |stringr::str_detect(COPcocName,"Female PWID|Male PWID|MSM|FSW")
-                                 ,stringr::str_extract(COPcocName,"Male|Female|Unknown Sex|MSM|FSW")
+        mutate(Sex=ifelse(str_detect(COPdeName,"Sex|HTS_TST(.)+VCT_Age_Result")
+                                 |str_detect(COPcocName,"Female PWID|Male PWID|MSM|FSW")
+                                 ,str_extract(COPcocName,"Male|Female|Unknown Sex|MSM|FSW")
                                  ,""))
     dict=data.frame(word=c("MSM","FSW"),tran=c("Male","Female"),stringsAsFactors = FALSE)
-    for (k in 1:length(dict$word)){ds$Sex<-stringr::str_replace_all(ds$Sex,dict$word[k],dict$tran[k])}
+    for (k in 1:length(dict$word)){ds$Sex<-str_replace_all(ds$Sex,dict$word[k],dict$tran[k])}
     rm(dict)
     ds <- ds %>%
-        dplyr::mutate(Sex=dplyr::case_when(stringr::str_detect(dataelement,"HTS_TST|OVC_SERV|PMTCT_EID|TB_ART|TX_(CURR|NEW|PVLS|RET)") & stringr::str_detect(Age,"(<1|1-9|<5)$") ~ "Unknown Sex",TRUE~Sex)) %>%
-        dplyr::mutate(Sex=dplyr::case_when(stringr::str_detect(dataelement,"HTS_TST(.)+VMMC|VMMC_CIRC") ~ "Male"
-                                           ,stringr::str_detect(dataelement,"HTS_TST(.)+PMTCT|PMTCT_ART|PMTCT_STAT") ~ "Female"
+        mutate(Sex=case_when(str_detect(dataelement,"HTS_TST|OVC_SERV|PMTCT_EID|TB_ART|TX_(CURR|NEW|PVLS|RET)") & str_detect(Age,"(<1|1-9|<5)$") ~ "Unknown Sex",TRUE~Sex)) %>%
+        mutate(Sex=case_when(str_detect(dataelement,"HTS_TST(.)+VMMC|VMMC_CIRC") ~ "Male"
+                                           ,str_detect(dataelement,"HTS_TST(.)+PMTCT|PMTCT_ART|PMTCT_STAT") ~ "Female"
                                            ,TRUE ~ Sex)) %>%
         
         ##HIVStatus
         #            Convert to "HIV Positive", "HIV Negative", "HIV Unknown"
-        dplyr::mutate(HIVStatus=ifelse(stringr::str_detect(COPdeName,"_Result|_HIVStatus|_KnownNewResult|_KnownNewPosNeg|OVC_HIVSTAT_(.)+_ReportedStatus")
-                                       | (stringr::str_detect(COPdeName,"KP_PREV_(N|D)_(DSD|TA)_KeyPop_Status|PP_PREV_(N|D)_(DSD|TA)_Status") & stringr::str_detect(COPcocName,"Positive|Negative"))
-                                       ,stringr::str_extract(COPcocName,"Positive|Negative|Unknown(?=($|,))|Undisclosed")
+        mutate(HIVStatus=ifelse(str_detect(COPdeName,"_Result|_HIVStatus|_KnownNewResult|_KnownNewPosNeg|OVC_HIVSTAT_(.)+_ReportedStatus")
+                                       | (str_detect(COPdeName,"KP_PREV_(N|D)_(DSD|TA)_KeyPop_Status|PP_PREV_(N|D)_(DSD|TA)_Status") & str_detect(COPcocName,"Positive|Negative"))
+                                       ,str_extract(COPcocName,"Positive|Negative|Unknown(?=($|,))|Undisclosed")
                                        ,"")) %>%
-        dplyr::mutate(HIVStatus=stringr::str_replace(HIVStatus,"Undisclosed","Unknown")) %>%
-        dplyr::mutate(HIVStatus=dplyr::case_when(stringr::str_detect(COPdeName,"^(IMPATT.PLHIV|PMTCT_ART|TB_ART|TB_PREV|TX_CURR|TX_NEW|TX_PVLS|TX_RET|TX_TB)|OVC_HIVSTAT_(.)+_StatusPosART") & !(HIVStatus %in% ("Positive")) ~ "Positive"
-                                                 ,stringr::str_detect(COPdeName,"OVC_HIVSTAT(.)+StatusNotRep") & !(HIVStatus %in% ("Unknown")) ~ "Unknown"
-                                                 ,stringr::str_detect(COPdeName,"HTS_TST(.)+Positive") ~ "Positive"
+        mutate(HIVStatus=str_replace(HIVStatus,"Undisclosed","Unknown")) %>%
+        mutate(HIVStatus=case_when(str_detect(COPdeName,"^(IMPATT.PLHIV|PMTCT_ART|TB_ART|TB_PREV|TX_CURR|TX_NEW|TX_PVLS|TX_RET|TX_TB)|OVC_HIVSTAT_(.)+_StatusPosART") & !(HIVStatus %in% ("Positive")) ~ "Positive"
+                                                 ,str_detect(COPdeName,"OVC_HIVSTAT(.)+StatusNotRep") & !(HIVStatus %in% ("Unknown")) ~ "Unknown"
+                                                 ,str_detect(COPdeName,"HTS_TST(.)+Positive") ~ "Positive"
                                                  ,TRUE ~ HIVStatus)) %>%
         ##KeyPop
-        dplyr::mutate(KeyPop=ifelse(stringr::str_detect(COPdeName,"_KeyPop")
-                                    ,stringr::str_extract(COPcocName,"FSW|MSM(( not)? SW)?|TG(( not)? SW)?|PWID|People in prisons and other enclosed settings|Other Key Populations")
+        mutate(KeyPop=ifelse(str_detect(COPdeName,"_KeyPop")
+                                    ,str_extract(COPcocName,"FSW|MSM(( not)? SW)?|TG(( not)? SW)?|PWID|People in prisons and other enclosed settings|Other Key Populations")
                                     ,"")) %>%
         ##KnownNewStatus
-        dplyr::mutate(KnownNewStatus=ifelse(stringr::str_detect(COPcocName,"Known at Entry|Newly Tested or Testing Referred|Newly Identified|Declined Testing Or Testing Referral")
-                                            ,stringr::str_extract(COPcocName,"Known|New|Declined")
+        mutate(KnownNewStatus=ifelse(str_detect(COPcocName,"Known at Entry|Newly Tested or Testing Referred|Newly Identified|Declined Testing Or Testing Referral")
+                                            ,str_extract(COPcocName,"Known|New|Declined")
                                             ,"")) %>%
         ##NewExistingART
-        dplyr::mutate(NewExistingART=ifelse(stringr::str_detect(COPdeName,stringr::regex("NewExistingArt",ignore_case=T))
-                                            ,stringr::str_extract(COPcocName,"New|Already")
+        mutate(NewExistingART=ifelse(str_detect(COPdeName,regex("NewExistingArt",ignore_case=T))
+                                            ,str_extract(COPcocName,"New|Already")
                                             ,"")) %>%
         ##Indication
-        dplyr::mutate(Indication=ifelse(stringr::str_detect(COPdeName,"TX_PVLS(.)+(Indication|RoutineTargeted)")
-                                        ,stringr::str_extract(COPcocName,"Routine|Targeted|Undocumented Test Indication")
+        mutate(Indication=ifelse(str_detect(COPdeName,"TX_PVLS(.)+(Indication|RoutineTargeted)")
+                                        ,str_extract(COPcocName,"Routine|Targeted|Undocumented Test Indication")
                                         ,"")) %>%
         ##TBStatus
-        dplyr::mutate(TBStatus=ifelse(stringr::str_detect(COPdeName,"TX_NEW(.)+TB_Diagnosis|TB_STAT|TB_ART|TX_TB_(N|D(.)+(TBScreen|PositiveScreen))")
-                                      ,ifelse(stringr::str_detect(COPdeName,"TX_TB_D")
-                                              ,paste0("TB ",stringr::str_extract(COPcocName,"(?<=(TB Screen - |^))(Posi|Nega)tive"))
+        mutate(TBStatus=ifelse(str_detect(COPdeName,"TX_NEW(.)+TB_Diagnosis|TB_STAT|TB_ART|TX_TB_(N|D(.)+(TBScreen|PositiveScreen))")
+                                      ,ifelse(str_detect(COPdeName,"TX_TB_D")
+                                              ,paste0("TB ",str_extract(COPcocName,"(?<=(TB Screen - |^))(Posi|Nega)tive"))
                                               ,"TB Positive")
                                       ,"")) %>%
         ##pregBF
-        dplyr::mutate(pregBF=ifelse(stringr::str_detect(dataelement,"PMTCT_(ART|STAT)|TX_(NEW|RET|PVLS)(.)+PregnantOrBreastfeeding")
-                                    ,ifelse(stringr::str_detect(dataelement,"PMTCT_(ART|STAT)")
+        mutate(pregBF=ifelse(str_detect(dataelement,"PMTCT_(ART|STAT)|TX_(NEW|RET|PVLS)(.)+PregnantOrBreastfeeding")
+                                    ,ifelse(str_detect(dataelement,"PMTCT_(ART|STAT)")
                                             ,"Pregnant"
-                                            ,stringr::str_extract(COPcocName,"Pregnant|Breastfeeding"))
+                                            ,str_extract(COPcocName,"Pregnant|Breastfeeding"))
                                     ,"")) %>%
         ##VMMCTechnique
-        dplyr::mutate(VMMCTechnique=ifelse(stringr::str_detect(dataelement,"VMMC_CIRC(.)+Tech")
-                                           ,stringr::str_extract(COPcocName,"Device based|Surgical Technique")
+        mutate(VMMCTechnique=ifelse(str_detect(dataelement,"VMMC_CIRC(.)+Tech")
+                                           ,str_extract(COPcocName,"Device based|Surgical Technique")
                                            ,""))
     ##otherDisagg
     pattern=paste(ifelse(ds$KeyPop=="","0000",ds$KeyPop)
@@ -137,27 +138,27 @@ transformDEs <- function(de){
                   ,"default"
                   ,sep="|")
     ds <- ds %>%    
-        dplyr::mutate(otherDisagg=stringr::str_replace_all(COPcocName,pattern,"")) %>%
-        dplyr::mutate(otherDisagg=ifelse(stringr::str_detect(COPdeName,"TX_TB(.)+Specimen_Sent"),"Specimen Sent",otherDisagg)) %>%
-        dplyr::mutate(otherDisagg=stringr::str_trim(stringr::str_replace_all(otherDisagg,"^,( ,)?|(,( )?)+$|,( ,)+|\\(((,)?( )?)\\)",""))) %>%
-        dplyr::mutate(otherDisagg=ifelse(stringr::str_detect(dataelement, "TX_TB(.)+PositiveScreen")
-                                         ,stringr::str_replace(otherDisagg,"Negative","")
+        mutate(otherDisagg=str_replace_all(COPcocName,pattern,"")) %>%
+        mutate(otherDisagg=ifelse(str_detect(COPdeName,"TX_TB(.)+Specimen_Sent"),"Specimen Sent",otherDisagg)) %>%
+        mutate(otherDisagg=str_trim(str_replace_all(otherDisagg,"^,( ,)?|(,( )?)+$|,( ,)+|\\(((,)?( )?)\\)",""))) %>%
+        mutate(otherDisagg=ifelse(str_detect(dataelement, "TX_TB(.)+PositiveScreen")
+                                         ,str_replace(otherDisagg,"Negative","")
                                          ,otherDisagg)) %>%
         
         ###Fix otherDisaggs where necessary
-        dplyr::mutate(otherDisagg=dplyr::case_when(stringr::str_detect(COPdeName,"TB_PREV") ~ stringr::str_replace(otherDisagg,"Alternative Regimen","Alternative TPT Regimen")
+        mutate(otherDisagg=case_when(str_detect(COPdeName,"TB_PREV") ~ str_replace(otherDisagg,"Alternative Regimen","Alternative TPT Regimen")
                                                    ####GEND_GBV(.)*PEP
-                                                   ,stringr::str_detect(COPdeName,"GEND_GBV(.)+PEP") ~ "PEP"
+                                                   ,str_detect(COPdeName,"GEND_GBV(.)+PEP") ~ "PEP"
                                                    ####TX_RET
-                                                   ,stringr::str_detect(COPdeName,"TX_RET(.)+") ~ ifelse(stringr::str_detect(COPdeName,"24mo|36mo"),stringr::str_extract(dataelement,"24mo|36mo"),"12mo")
+                                                   ,str_detect(COPdeName,"TX_RET(.)+") ~ ifelse(str_detect(COPdeName,"24mo|36mo"),str_extract(dataelement,"24mo|36mo"),"12mo")
                                                    ####VMMC_CIRC
-                                                   ,stringr::str_detect(COPdeName,"VMMC_CIRC(.)+TechFollowUp") ~ "Followed up within 14 days"
+                                                   ,str_detect(COPdeName,"VMMC_CIRC(.)+TechFollowUp") ~ "Followed up within 14 days"
                                                    ,TRUE ~ otherDisagg)) %>%
         
         ##IMPATT
-        dplyr::mutate(IMPATT = pdLvl=="pd_IMPT_P") %>%
+        mutate(IMPATT = pdLvl=="pd_IMPT_P") %>%
         
-        dplyr::mutate(COPidName=paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|"))
+        mutate(COPidName=paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|"))
     
     return(ds)
 }
@@ -305,11 +306,11 @@ mapDataPackCodes <- function(dp_codes_file,COP18deMapT) {
       DataPackTabName = blankToNA(DataPackTabName)
     ) %>%
     bind_rows(mutate(filter(., IMPATT == FALSE), supportType = TA), .) %>%
-    mutate(DataPackCode = case_when((!is.na(DataPackCode) &
-                                       DataPackCode != "plhiv_fy19") ~ paste(DataPackCode, tolower(supportType), sep =
-                                                                               "_"),
-                                    TRUE ~ DataPackCode
-    )) %>%
+    mutate(
+      DataPackCode = case_when(
+        (!is.na(DataPackCode) & DataPackCode != "plhiv_fy19") ~ paste(DataPackCode, tolower(supportType), sep = "_"),
+                               TRUE ~ DataPackCode)
+      ) %>%
     #Re-create COPidName using DSD/TA
     mutate(
       COPidName = paste(
@@ -335,13 +336,10 @@ mapDataPackCodes <- function(dp_codes_file,COP18deMapT) {
     ) %>%
     #Select only necessary columns
       select(DataPackCode,DataPackFilename,DataPackTabName,COPidName)
-
-    
-  
   #Pull in Data Pack Codes
     COP18deMapT <- COP18deMapT %>%
-        dplyr::left_join(DataPackCodes,by=c("COPidName"),all=TRUE)
-  
+        left_join(DataPackCodes, by= "COPidName")
+    
     return(COP18deMapT)
 }
 

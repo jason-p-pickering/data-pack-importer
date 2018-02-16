@@ -47,9 +47,21 @@
 #' @return Returns an object with the following columns
 "rCOP18deMap"
 
+
+
 #' @export
 #' @title clusters
 #'
 #' @description Object used dealing with distribution of values from clusters to PSNUs
 #' @return Returns an object with the following columns
 "clusters"
+
+
+
+
+#' @export
+#' @title sites_exclude
+#'
+#' @description Vector of sites to exlcude
+#' @return Returns a character vector of UIDs
+"sites_exclude"
