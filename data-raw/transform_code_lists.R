@@ -363,136 +363,129 @@ rCOP18deMap <- COP18deMapT %>%
   unique() %>%
   mutate(matchCode=COPidName) %>%
   
-  #paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|")
-  
   #1) Many to One Combinations####
-##TB_STAT (KnownNewStatus+HIVStatus+Sex+AgeAggregated -> Sex+AgeAggregated)
-mutate(matchCode=case_when(indicator=="TB_STAT" & KnownNewStatus!="" & HIVStatus!="" ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,"",NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,"",otherDisagg,sep="|"),TRUE ~ matchCode)) %>%
-  ##PMTCT_EID (Age+HIVStatus -> Age)
-  mutate(matchCode=case_when(indicator=="PMTCT_EID" & HIVStatus!="" ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,"",otherDisagg,sep="|"),TRUE ~ matchCode)) %>%
-  ##OVC_HIVSTAT (HIVStatus+otherDisagg)
-  mutate(matchCode=case_when(indicator=="OVC_HIVSTAT" & HIVStatus!="" & otherDisagg %in% c("","Undisclosed to IP") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,"","",sep="|"),TRUE ~ matchCode))
-##GEND_GBV (ViolenceServiceType/Age/Sex -> ViolenceServiceType)
-rCOP18deMap <- rCOP18deMap %>%
-  filter(indicator=="GEND_GBV" & FiscalYear==2017 & Age!="" & Sex!="" & otherDisagg %in% c('Physical and/or Emotional Violence','Sexual Violence (Post-Rape Care)')) %>%
-  mutate(matchCode=paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,"","",AggregatedAgeFlag,"",HIVStatus,otherDisagg,sep="|")) %>%
-  rbind(rCOP18deMap,.) %>%
-  
-  
+        ##TB_STAT (KnownNewStatus+HIVStatus+Sex+AgeAggregated -> Sex+AgeAggregated)
+            mutate(matchCode=case_when(indicator=="TB_STAT" & KnownNewStatus!="" & HIVStatus!="" ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,"",NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,"",otherDisagg,sep="|"),TRUE ~ matchCode)) %>%
+        ##PMTCT_EID (Age+HIVStatus -> Age)
+            mutate(matchCode=case_when(indicator=="PMTCT_EID" & HIVStatus!="" ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,"",otherDisagg,sep="|"),TRUE ~ matchCode)) %>%
+        ##OVC_HIVSTAT (HIVStatus+otherDisagg)
+            mutate(matchCode=case_when(indicator=="OVC_HIVSTAT" & HIVStatus!="" & otherDisagg %in% c("","Undisclosed to IP") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,"","",sep="|"),TRUE ~ matchCode))
+        ##GEND_GBV (ViolenceServiceType/Age/Sex -> ViolenceServiceType)
+            rCOP18deMap <- rCOP18deMap %>%
+              filter(indicator=="GEND_GBV" & FiscalYear==2017 & Age!="" & Sex!="" & otherDisagg %in% c('Physical and/or Emotional Violence','Sexual Violence (Post-Rape Care)')) %>%
+              mutate(matchCode=paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,"","",AggregatedAgeFlag,"",HIVStatus,otherDisagg,sep="|")) %>%
+              bind_rows(rCOP18deMap,.) %>%
   
   #2) More Complicated
-  ##TB_PREV
-  ###(6-12 Month IPT|Continuous IPT --> IPT) & (NewExistingART="" --> NewExistingART="New")
-  mutate(matchCode=case_when(indicator=="TB_PREV" & otherDisagg %in% c("6-12 Month IPT","Continuous IPT") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,"New",Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,"IPT",sep="|")
-                             ,indicator=="TB_PREV" & otherDisagg %in% c("Alternative TPT Regimen") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,"New",Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|")
-                             ,TRUE ~ matchCode))
-###(ADD ROWS for splitting out NewExistingART to include "Already")
-rCOP18deMap <- rCOP18deMap %>%
-  filter(indicator=="TB_PREV" & otherDisagg !="") %>%
-  mutate(matchCode=str_replace(matchCode,"\\|New\\|","\\|Already\\|")) %>%
-  rbind(rCOP18deMap,.)
+        ##TB_PREV
+            ###(6-12 Month IPT|Continuous IPT --> IPT) & (NewExistingART="" --> NewExistingART="New")
+                mutate(matchCode=case_when(indicator=="TB_PREV" & otherDisagg %in% c("6-12 Month IPT","Continuous IPT") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,"New",Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,"IPT",sep="|")
+                                         ,indicator=="TB_PREV" & otherDisagg %in% c("Alternative TPT Regimen") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,"New",Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|")
+                                         ,TRUE ~ matchCode))
+            ###(ADD ROWS for splitting out NewExistingART to include "Already")
+                rCOP18deMap <- rCOP18deMap %>%
+                  filter(indicator=="TB_PREV" & otherDisagg !="") %>%
+                  mutate(matchCode=str_replace(matchCode,"\\|New\\|","\\|Already\\|")) %>%
+                  bind_rows(rCOP18deMap,.)
 
-##New Age Bands
-ageBands<-data.frame(Age=c(rep("25-49",4),rep("30-49",3))
-                     ,finererAge=c("25-29","30-34","35-39","40-49","30-34","35-39","40-49"))
+        ##New Age Bands
+            ageBands<-data.frame(Age=c(rep("25-49",4),rep("30-49",3))
+                                 ,finererAge=c("25-29","30-34","35-39","40-49","30-34","35-39","40-49"))
 
-rCOP18deMap <- rCOP18deMap %>%
-  filter(Age %in% c("30-49","25-49") & !indicator %in% c("TX_PVLS","TX_RET","TB_ART")) %>%
-  merge(ageBands,by=c("Age")) %>%
-  mutate(matchCode=paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,finererAge,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|")) %>%
-  select(names(rCOP18deMap)) %>%
-  rbind(rCOP18deMap,.) %>%
-  filter(!(str_detect(matchCode,"25-49|30-49") & !str_detect(matchCode,"TX_PVLS|TX_RET|TB_ART")))
-rm(ageBands)
+            rCOP18deMap <- rCOP18deMap %>%
+              filter(Age %in% c("30-49","25-49") & !indicator %in% c("TX_PVLS","TX_RET","TB_ART")) %>%
+              left_join(ageBands,by=c("Age")) %>%
+              mutate(matchCode=paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,finererAge,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|")) %>%
+              select(names(rCOP18deMap)) %>%
+                bind_rows(rCOP18deMap,.) %>%
+              filter(!(str_detect(matchCode,"25-49|30-49") & !str_detect(matchCode,"TX_PVLS|TX_RET|TB_ART")))
+            rm(ageBands)
 
-##TX_PVLS|TX_RET|TB_ART
-###(ADD ROWS to split <1 & 1-9 Unknown to Male/Female)
-rCOP18deMap <- rCOP18deMap %>%
-  mutate(matchCode=case_when(indicator %in% c("TX_PVLS","TX_RET","TB_ART") & Age %in% c("<1","1-9") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,AggregatedAge,AggregatedAge,"AgeAggregated","Male",HIVStatus,otherDisagg,sep="|")
-                             ,TRUE ~ matchCode))
-rCOP18deMap <- rCOP18deMap %>%
-  filter(indicator %in% c("TX_PVLS","TX_RET","TB_ART") & Age %in% c("<1","1-9")) %>%
-  mutate(matchCode=str_replace(matchCode,"\\|Male\\|","\\|Female\\|")) %>%
-  rbind(rCOP18deMap,.) %>%
-  ###(Convert Age bands from fine to coarse)
-  mutate(matchCode=case_when(indicator %in% c("TX_PVLS","TX_RET","TB_ART") & Age %in% c("10-14","15-19","20-24","25-49","50+") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,AggregatedAge,AggregatedAge,"AgeAggregated",Sex,HIVStatus,otherDisagg,sep="|")
-                             ,TRUE~matchCode))
+        ##TX_PVLS|TX_RET|TB_ART
+            ###(ADD ROWS to split <1 & 1-9 Unknown to Male/Female)
+                rCOP18deMap <- rCOP18deMap %>%
+                  mutate(matchCode=case_when(indicator %in% c("TX_PVLS","TX_RET","TB_ART") & Age %in% c("<1","1-9") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,AggregatedAge,AggregatedAge,"AgeAggregated","Male",HIVStatus,otherDisagg,sep="|")
+                                             ,TRUE ~ matchCode))
+                rCOP18deMap <- rCOP18deMap %>%
+                  filter(indicator %in% c("TX_PVLS","TX_RET","TB_ART") & Age %in% c("<1","1-9")) %>%
+                  mutate(matchCode=str_replace(matchCode,"\\|Male\\|","\\|Female\\|")) %>%
+                    bind_rows(rCOP18deMap,.) %>%
+                  ###(Convert Age bands from fine to coarse)
+                  mutate(matchCode=case_when(indicator %in% c("TX_PVLS","TX_RET","TB_ART") & Age %in% c("10-14","15-19","20-24","25-49","50+") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,AggregatedAge,AggregatedAge,"AgeAggregated",Sex,HIVStatus,otherDisagg,sep="|")
+                                             ,TRUE~matchCode))
 
-
-#3) One to Many combinations
-
-##B) New indicators
-###HTS_TST Emergency Ward <- HTS_TST PITC
-rCOP18deMap<-rCOP18deMap %>%
-  filter(indicator=="HTS_TST" & Modality=="OtherPITC") %>%
-  mutate(matchCode=str_replace(matchCode,"\\|OtherPITC\\|","\\|Emergency Ward\\|")) %>%
-  rbind(rCOP18deMap,.)
-
-###HTS_TST STI Clinic <- HTS_TST PITC
-rCOP18deMap<-rCOP18deMap %>%
-  filter(indicator=="HTS_TST" & str_detect(matchCode,"\\|Emergency Ward\\|")) %>%
-  mutate(matchCode=str_replace(matchCode,"\\|Emergency Ward\\|","\\|STI Clinic\\|")) %>%
-  rbind(rCOP18deMap,.)
-
-##C) New Disaggs
-###TX_TB (Positive,Negative ->Positive-New,Positive-Already,Negative-New,Negative-Already)
-rCOP18deMap<-rCOP18deMap %>%
-  mutate(matchCode=case_when(indicator=="TX_TB" & numeratorDenom=="D" & TBStatus!="" ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,"Already",Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|"),TRUE~matchCode))
-rCOP18deMap<-rCOP18deMap %>%
-  filter(indicator=="TX_TB" & numeratorDenom=="D" & TBStatus!="") %>%
-  mutate(matchCode=str_replace(matchCode,"\\|Already\\|","\\|New\\|")) %>%
-  rbind(rCOP18deMap,.)
-
-##D) OVC_SERV (10-14 Male,Female -> <1 Unknown, 1-9 Unknown)
-rCOP18deMap <- rCOP18deMap %>%
-  filter(indicator=="OVC_SERV" & Age=="10-14" & otherDisagg!="") %>%
-  mutate(matchCode=paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,"1-9",AggregatedAge,AggregatedAgeFlag,"Unknown Sex",HIVStatus,otherDisagg,sep="|")) %>%
-  rbind(rCOP18deMap,.)
-
-rCOP18deMap <- rCOP18deMap %>%
-  filter(indicator=="OVC_SERV" & otherDisagg!="" & str_detect(matchCode,"\\|1-9\\|")) %>%
-  mutate(matchCode=str_replace(matchCode,"\\|1-9\\|","\\|<1\\|")) %>%
-  rbind(rCOP18deMap,.)
-
-
-#4) DO NOT DISTRIBUTE TO SITE (Below for moving to PSNU only. Need to re-adjust to not persist to Site to force manual redistribution)
-##PrEP_NEW (Other Key Populations - not distributed to Site, but moved to PSNU level by following PrEP_NEW N)
-rCOP18deMap <- rCOP18deMap %>%
-  filter(indicator=="PrEP_NEW" & Sex=="" & Age=="" & KeyPop=="") %>%
-  mutate(matchCode=paste(indicator,numeratorDenom,supportType,Modality,"Other Key Populations",KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|")) %>%
-  rbind(rCOP18deMap,.)
-
-##HTS_SELF (New indicator with no reliable model)
-#KeyPops (Follow HTS_TST KeyPops to get to PSNU)
-rCOP18deMap <- rCOP18deMap %>%
-  filter(indicator=="HTS_TST" & KeyPop!="" & HIVStatus!="" & Modality=="" & Age=="") %>%
-  mutate(matchCode=paste("HTS_SELF",numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,"","Directly-Assisted",sep="|")) %>%
-  rbind(rCOP18deMap,.)
-rCOP18deMap<- rCOP18deMap %>%
-  filter(str_detect(matchCode,"HTS_SELF(.)+Directly-Assisted")) %>%
-  mutate(matchCode=str_replace(matchCode,"Directly-Assisted","Unassisted")) %>%
-  rbind(rCOP18deMap,.)
-
-#Disaggs: Testing Type, Age/Sex, Unassisted by use
-HTS_SELF.Disaggs<-COP18deMapT %>%
-  filter(indicator=="HTS_SELF" & KeyPop=="") %>%
-  select(COPidName,supportType) %>%
-  unique() %>%
-  mutate(matchCode=paste0("HTS_TST|N|",supportType,"||||||||||||||")) %>%
-  select(-supportType)
-rCOP18deMap <- rCOP18deMap %>%
-  filter(matchCode %in% c("HTS_TST|N|DSD||||||||||||||","HTS_TST|N|TA||||||||||||||")) %>%
-  merge(HTS_SELF.Disaggs,by=c("matchCode")) %>%
-  select(-matchCode) %>%
-  mutate(matchCode=COPidName.y,
-         COPidName=COPidName.x) %>%
-  select(-COPidName.y,-COPidName.x) %>%
-  select(names(rCOP18deMap)) %>%
-  rbind(rCOP18deMap,.)
+    #3) One to Many combinations
+        ##A) New indicators
+            ###HTS_TST Emergency Ward <- HTS_TST PITC
+                rCOP18deMap<-rCOP18deMap %>%
+                  filter(indicator=="HTS_TST" & Modality=="OtherPITC") %>%
+                  mutate(matchCode=str_replace(matchCode,"\\|OtherPITC\\|","\\|Emergency Ward\\|")) %>%
+                    bind_rows(rCOP18deMap,.)
+    
+            ###HTS_TST STI Clinic <- HTS_TST PITC
+                rCOP18deMap<-rCOP18deMap %>%
+                  filter(indicator=="HTS_TST" & str_detect(matchCode,"\\|Emergency Ward\\|")) %>%
+                  mutate(matchCode=str_replace(matchCode,"\\|Emergency Ward\\|","\\|STI Clinic\\|")) %>%
+                    bind_rows(rCOP18deMap,.)
+    
+        ##B) New Disaggs
+            ###TX_TB (Positive,Negative ->Positive-New,Positive-Already,Negative-New,Negative-Already)
+                rCOP18deMap<-rCOP18deMap %>%
+                  mutate(matchCode=case_when(indicator=="TX_TB" & numeratorDenom=="D" & TBStatus!="" ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,"Already",Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|"),TRUE~matchCode))
+                rCOP18deMap<-rCOP18deMap %>%
+                  filter(indicator=="TX_TB" & numeratorDenom=="D" & TBStatus!="") %>%
+                  mutate(matchCode=str_replace(matchCode,"\\|Already\\|","\\|New\\|")) %>%
+                    bind_rows(rCOP18deMap,.)
+    
+        ##C) OVC_SERV (10-14 Male,Female -> <1 Unknown, 1-9 Unknown)
+                rCOP18deMap <- rCOP18deMap %>%
+                  filter(indicator=="OVC_SERV" & Age=="10-14" & otherDisagg!="") %>%
+                  mutate(matchCode=paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,"1-9",AggregatedAge,AggregatedAgeFlag,"Unknown Sex",HIVStatus,otherDisagg,sep="|")) %>%
+                    bind_rows(rCOP18deMap,.)
+                
+                rCOP18deMap <- rCOP18deMap %>%
+                  filter(indicator=="OVC_SERV" & otherDisagg!="" & str_detect(matchCode,"\\|1-9\\|")) %>%
+                  mutate(matchCode=str_replace(matchCode,"\\|1-9\\|","\\|<1\\|")) %>%
+                    bind_rows(rCOP18deMap,.)
+    
+    
+    #4) DO NOT DISTRIBUTE TO SITE (Below for moving to PSNU only. Need to re-adjust to not persist to Site to force manual redistribution)
+        ##PrEP_NEW (Other Key Populations - not distributed to Site, but moved to PSNU level by following PrEP_NEW N)
+            rCOP18deMap <- rCOP18deMap %>%
+              filter(indicator=="PrEP_NEW" & Sex=="" & Age=="" & KeyPop=="") %>%
+              mutate(matchCode=paste(indicator,numeratorDenom,supportType,Modality,"Other Key Populations",KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|")) %>%
+                bind_rows(rCOP18deMap,.)
+        
+        ##HTS_SELF (New indicator with no reliable model)
+            ###KeyPops (Follow HTS_TST KeyPops to get to PSNU)
+                rCOP18deMap <- rCOP18deMap %>%
+                  filter(indicator=="HTS_TST" & KeyPop!="" & HIVStatus!="" & Modality=="" & Age=="") %>%
+                  mutate(matchCode=paste("HTS_SELF",numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,"","Directly-Assisted",sep="|")) %>%
+                    bind_rows(rCOP18deMap,.)
+                rCOP18deMap<- rCOP18deMap %>%
+                  filter(str_detect(matchCode,"HTS_SELF(.)+Directly-Assisted")) %>%
+                  mutate(matchCode=str_replace(matchCode,"Directly-Assisted","Unassisted")) %>%
+                    bind_rows(rCOP18deMap,.)
+    
+            ###Disaggs: Testing Type, Age/Sex, Unassisted by use
+                HTS_SELF.Disaggs<-COP18deMapT %>%
+                  filter(indicator=="HTS_SELF" & KeyPop=="") %>%
+                  select(COPidName,supportType) %>%
+                  unique() %>%
+                  mutate(matchCode=paste0("HTS_TST|N|",supportType,"||||||||||||||")) %>%
+                  select(-supportType)
+                rCOP18deMap <- rCOP18deMap %>%
+                  filter(matchCode %in% c("HTS_TST|N|DSD||||||||||||||","HTS_TST|N|TA||||||||||||||")) %>%
+                  left_join(HTS_SELF.Disaggs,by=c("matchCode")) %>%
+                  select(-matchCode) %>%
+                  mutate(matchCode=COPidName.y,
+                         COPidName=COPidName.x) %>%
+                  select(-COPidName.y,-COPidName.x) %>%
+                  select(names(rCOP18deMap)) %>%
+                    bind_rows(rCOP18deMap,.)
 
 rCOP18deMap <- rCOP18deMap %>%
-  merge(FY19deMap,by=c("matchCode"),all=TRUE) 
+  left_join(FY19deMap,by=c("matchCode"),all=TRUE) 
 
 return(rCOP18deMap)
 }
-
