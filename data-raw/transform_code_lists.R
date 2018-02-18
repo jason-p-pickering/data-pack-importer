@@ -305,7 +305,7 @@ mapDataPackCodes <- function(COP18deMapT) {
       DataPackFilename = blankToNA(DataPackFilename),
       DataPackTabName = blankToNA(DataPackTabName)
     ) %>%
-    bind_rows(mutate(filter(., IMPATT == FALSE), supportType == "TA"), .) %>%
+    bind_rows(mutate(filter(., IMPATT == FALSE), supportType = "TA"), .) %>%
     mutate(DataPackCode = case_when((!is.na(DataPackCode) &
                                        DataPackCode != "plhiv_fy19") ~ paste(DataPackCode, tolower(supportType), sep =
                                                                                "_"),
