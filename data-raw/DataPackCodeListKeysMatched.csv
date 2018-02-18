@@ -593,7 +593,7 @@ HTS_TST|N|VMMC||||||||50+|15+||Male|Negative||FALSE,hts_tst_vmmc_o50_m_neg,HTS_D
 HTS_TST|N|VMMC||||||||50+|15+||Male|Positive||FALSE,hts_tst_vmmc_o50_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,50+,15+,,Male,Positive,,FALSE
 HTS_TST|N|VMMC||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,VMMC,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
 HTS_TST|N|VMMC||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,VMMC,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
-PLHIV||||||||||||||Positive||TRUE,plhiv_fy19,DisaggTool,IMPATT Table,IMPATT_PLHIV,,,,,,,,,,,,,,Positive,,TRUE
+PLHIV||||||||||||||Positive||TRUE,plhiv_fy19,DisaggTool,IMPATT Table,PLHIV,,,,,,,,,,,,,,Positive,,TRUE
 KP_MAT|N||||||||||||Female|||FALSE,kp_mat_f,DisaggTool,Already Alloc Targets,KP_MAT,N,,,,,,,,,,,,Female,,,FALSE
 KP_MAT|N||||||||||||Male|||FALSE,kp_mat_m,DisaggTool,Already Alloc Targets,KP_MAT,N,,,,,,,,,,,,Male,,,FALSE
 KP_PREV|N||FSW||||||||||Female|||FALSE,kp_prev_fsw,DisaggTool,Already Alloc Targets,KP_PREV,N,,FSW,,,,,,,,,,Female,,,FALSE
