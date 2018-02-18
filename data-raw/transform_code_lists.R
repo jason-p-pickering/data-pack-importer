@@ -165,7 +165,7 @@ transformDEs <- function(de){
 
 
 
-generateCodeListT <- function() {
+generateCodeListT <- function(){
   
   ##Define Datasets, Periods, and Levels for which to pull dataElement Code Lists
   dataset = c(
@@ -218,7 +218,6 @@ generateCodeListT <- function() {
   for (i in 1:length(dataset)) {
     COPdataElements=bind_rows(COPdataElements,getCOPDataElements(dataset[i],period[i],level[i]))
   }
-  
   
   COP18deMapT <- COPdataElements %>%
     unique %>% filter( indicator %in% tech_areas) %>% 
@@ -289,7 +288,9 @@ generateCodeListT <- function() {
 }
 
 
-mapDataPackCodes <- function(dp_codes_file,COP18deMapT) {
+mapDataPackCodes <- function(COP18deMapT) {
+    
+    dp_codes_file<-"data-raw/DataPackCodeListKeysMatched.csv"
   
   blankToNA<-function (x) {ifelse(x=="",NA,x)}
   
@@ -304,7 +305,7 @@ mapDataPackCodes <- function(dp_codes_file,COP18deMapT) {
       DataPackFilename = blankToNA(DataPackFilename),
       DataPackTabName = blankToNA(DataPackTabName)
     ) %>%
-    bind_rows(mutate(filter(., IMPATT == FALSE), supportType = TA), .) %>%
+    bind_rows(mutate(filter(., IMPATT == FALSE), supportType == "TA"), .) %>%
     mutate(DataPackCode = case_when((!is.na(DataPackCode) &
                                        DataPackCode != "plhiv_fy19") ~ paste(DataPackCode, tolower(supportType), sep =
                                                                                "_"),
@@ -340,19 +341,18 @@ mapDataPackCodes <- function(dp_codes_file,COP18deMapT) {
   
   #Pull in Data Pack Codes
     COP18deMapT <- COP18deMapT %>%
-        dplyr::left_join(DataPackCodes,by=c("COPidName"),all=TRUE)
+        dplyr::full_join(DataPackCodes,by=c("COPidName"))
   
     return(COP18deMapT)
 }
 
-
-
 generateCOP18deMap<-function() {
-  COP18deMapT<-generateCodeListT()
+  COP18deMapT<-generateCodeListT() %>%
+      mapDataPackCodes()
   
 FY19deMap <- COP18deMapT %>%
   mutate(matchCode = COPidName) %>%
-  select(matchCode,pd_2019_P) %>%
+  select(matchCode,pd_2019_P,pd_2019_S) %>%
   filter(!is.na(pd_2019_P)) %>%
   unique()
 
@@ -363,7 +363,7 @@ rCOP18deMap <- COP18deMapT %>%
   unique() %>%
   mutate(matchCode=COPidName) %>%
   
-  #1) Many to One Combinations####
+  #1) Many to One Combinations#
         ##TB_STAT (KnownNewStatus+HIVStatus+Sex+AgeAggregated -> Sex+AgeAggregated)
             mutate(matchCode=case_when(indicator=="TB_STAT" & KnownNewStatus!="" & HIVStatus!="" ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,"",NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,"",otherDisagg,sep="|"),TRUE ~ matchCode)) %>%
         ##PMTCT_EID (Age+HIVStatus -> Age)
@@ -390,7 +390,7 @@ rCOP18deMap <- COP18deMapT %>%
 
         ##New Age Bands
             ageBands<-data.frame(Age=c(rep("25-49",4),rep("30-49",3))
-                                 ,finererAge=c("25-29","30-34","35-39","40-49","30-34","35-39","40-49"))
+                                 ,finererAge=c("25-29","30-34","35-39","40-49","30-34","35-39","40-49"),stringsAsFactors = FALSE)
 
             rCOP18deMap <- rCOP18deMap %>%
               filter(Age %in% c("30-49","25-49") & !indicator %in% c("TX_PVLS","TX_RET","TB_ART")) %>%
@@ -485,7 +485,9 @@ rCOP18deMap <- COP18deMapT %>%
                     bind_rows(rCOP18deMap,.)
 
 rCOP18deMap <- rCOP18deMap %>%
-  left_join(FY19deMap,by=c("matchCode"),all=TRUE) 
+  full_join(FY19deMap,by=c("matchCode")) %>%
+    select(COPidName,indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,IMPATT,DataPackCode,DataPackFilename,DataPackTabName,FiscalYear,pd_2017_2018_S,pd_2019_S,pd_2019_P) %>%
+    arrange(COPidName)
 
 return(rCOP18deMap)
 }

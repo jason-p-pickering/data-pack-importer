@@ -124,7 +124,10 @@ des<-processDataElements()
 #IMPATT option set
 impatt<-fromJSON("data-raw/impatt_option_set.json")
 
+# library(pacman)
+# pacman::p_load("datimvalidation","tidyr","stringr")
 loadSecrets("/home/jason/.secrets/datim.json")
+#loadSecrets("/Users/scott/.secrets/datim.json")
 source("data-raw/transform_code_lists.R")
 rCOP18deMap<-generateCOP18deMap()
 
