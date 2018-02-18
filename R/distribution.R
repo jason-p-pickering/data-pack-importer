@@ -114,13 +114,14 @@ clusterDistribution <- function(df) {
 #' @return Returns a dataframe structured for DATIM import.
 #'
 
-distributeCluster <- function(df,dm) {
+distributeCluster <- function(DataPack,dm) {
     
     if(dm==2017) Pcts<-readRDS(paste0(sourceFolder,"distrClusterFY17.rda"))
     if(dm==2018) Pcts<-readRDS(paste0(sourceFolder,"distrClusterFY18.rda"))
     if(dm==0000) Pcts<-readRDS(paste0(sourceFolder,"distrClusterFY18.rda"))
     
     clusterMap<-datapackimporter::clusters
+    militaryUnits<-datapackimporter::militaryUnits
     
     #Prepare Cluster Averages
     clusterAvgs <- clusterMap %>%
@@ -131,8 +132,9 @@ distributeCluster <- function(df,dm) {
         mutate(avg=num/den) %>%
         select(-num,-den)
     
-    ds <- df %>%
-        filter(orgunit %in% unique(clusterMap$cluster_psnuuid)) %>%
+    ds <- DataPack %>%
+        filter(orgunit %in% unique(clusterMap$cluster_psnuuid)
+               & !orgunit %in% militaryUnits$orgUnit) %>%
         mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
         left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
         #Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
@@ -141,7 +143,8 @@ distributeCluster <- function(df,dm) {
                                   ,TRUE~Value*psnuPct)) %>%
         mutate(orgunit=PSNUuid) %>%
         select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,Value) %>%
-        rbind(df[!df$orgunit %in% unique(clusterMap$cluster_psnuuid),])
+        rbind(DataPack[!DataPack$orgunit %in% unique(clusterMap$cluster_psnuuid),],DataPack[orgunit %in% militaryUnits$orgUnit,])
+        
     
     return(ds)
 }
@@ -158,21 +161,25 @@ distributeCluster <- function(df,dm) {
 #' @return Returns a dataframe structured for DATIM import.
 #'
 
-distributeSite <- function(df,dm) {
+distributeSite <- function(DataPack,dm) {
     
     if(dm==2017) Pcts<-distrSiteFY17
     if(dm==2018) Pcts<-distrSiteFY18
     if(dm==0000) stop("User selected not to distribute to site!")
     
-    ds <- df %>%
+    militaryUnits<-datapackimporter::militaryUnits
+    
+    ds <- DataPack %>%
         #Create id to link to percent distributions
             mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
         #Pull in distribution percentages
             left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
             mutate(Value=Value*sitePct) %>%
+            #rbind(DataPack[orgunit %in% militaryUnits$orgUnit,]) %>%
             mutate(PSNUuid=orgunit
                    ,orgunit=orgUnit) %>%
         select(dataelement,period,PSNUuid,orgunit,categoryoptioncombo,attributeoptioncombo,Value)
+        
     
     return(ds)
 }

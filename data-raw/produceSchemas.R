@@ -146,5 +146,30 @@ clusters <- function() {
 clusters<-clusters()
 
 
+
+
+getOrganisationUnitGroups <- function() {
+    pacman::p_load("jsonlite","datimvalidation","httr")
+    url<-paste0(getOption("baseurl"),"api/organisationUnitGroups?format=json&paging=false")
+    organisationUnitGroups<-fromJSON(content(GET(url),"text"), flatten=TRUE)
+    organisationUnitGroups<-as.data.frame(organisationUnitGroups)
+    names(organisationUnitGroups) <- c("siteTypeUID","siteType")
+    return(organisationUnitGroups)
+}
+
+
+getSiteList <- function(siteType) {
+        organisationUnitGroups <- getOrganisationUnitGroups()
+        stUID<-organisationUnitGroups[organisationUnitGroups$siteType==siteType,][1]
+        url<-paste0(getOption("baseurl"),"api/organisationUnitGroups/",stUID,"?fields=organisationUnits[id],id,name&format=json")
+        resp<-fromJSON(content(GET(url),"text"), flatten=TRUE)
+        resp<-as.data.frame(resp)
+        names(resp)<-c("siteType","siteTypeUID","orgUnit")
+        return(resp)
+}
+
+militaryUnits<-getSiteList("Military")
+
+
 #Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
-devtools::use_data(hts_schema,main_schema,mechs,des,impatt,rCOP18deMap,clusters, internal = TRUE,overwrite = TRUE)
+devtools::use_data(hts_schema,main_schema,mechs,des,impatt,rCOP18deMap,clusters,militaryUnits, internal = TRUE,overwrite = TRUE)
