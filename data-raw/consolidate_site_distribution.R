@@ -1,7 +1,9 @@
 library(feather)
 library(dplyr)
 
-s_17<-readRDS(file="/home/jason/consultancy/datim/datapack/distrSiteFY17.rda")%>%
+source_dir<-"/home/jason/consultancy/datim/datapack/"
+setwd(source_dir)
+s_17<-readRDS(file="distrSiteFY17.rda")%>%
   mutate(year = 2017,
          mode = "s")
 
@@ -18,4 +20,4 @@ c_18<-readRDS(file="/home/jason/consultancy/datim/datapack/distrClusterFY18.rda"
   mutate(year = 2017,
          mode = "c") %>% `names<-`(.,col_names)
 
-write_feather(bind_rows(s_17,s_18,c_18,c_17),"/home/jason/consultancy/datim/datapack/pct_distr.feather")
+write_feather(pct_distr1,"/home/jason/consultancy/datim/datapack/pct_distr.feather")

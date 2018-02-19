@@ -44,6 +44,7 @@ ValidateSheets<-function(schemas,sheets) {
 #' 
 #'
 GetWorkbookInfo<-function(wb_path) {
+  if (!file.exists(wb_path)) {stop("Workbook could not be read!")}
   wb_type<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O3"))
   if ( wb_type == "normal") {
     wb_type = "NORMAL"
@@ -60,7 +61,8 @@ GetWorkbookInfo<-function(wb_path) {
     timestamp = Sys.time(),
     wb_type=wb_type,
     ou_name=ou_name,
-    ou_uid=ou_uid))
+    ou_uid=ou_uid,
+    is_clustered=ou_name %in% datapackimporter::clusters$operatingunit))
   }
 
 #' @export
@@ -83,7 +85,7 @@ ValidateWorkbook <- function(wb_path) {
   if ( !all(all_there) ) {
     warning(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
   }
-  sheets<-all_tables[all_sheets %in% expected]
+  sheets<-all_sheets[all_sheets %in% expected]
   validation_results<-ValidateSheets(schemas,sheets)
   if (any(!(validation_results))) {
     invalid_sheets <-
@@ -249,8 +251,7 @@ ImportSheets <- function(wb_path) {
   } else {
     follow_on_mechs<-NULL
   }
-   
-    
+  
   return ( list(wb_info = wb_info,
     follow_on_mechs=follow_on_mechs,
               data = df) )

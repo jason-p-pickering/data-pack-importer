@@ -71,37 +71,6 @@ siteDistribution<-function(df) {
     
 }
 
-#' @export
-#' @title clusterDistribution()
-#'
-#' @description Creates PSNU-level percentages against which Data Pack values can be multiplied for distribution purposes
-#' @param df Name of distribution source file.
-#' @return Returns a dataframe ready for use in distributing site level targets.
-#'
-clusterDistribution <- function(df) {
-    
-    clusterMap<-datapackimporter::clusters
-    
-    clusterDistr <- df %>%
-        #Sum up to PSNU level
-            select(-orgUnit) %>%
-            group_by(PSNUuid,attributeOptionCombo,dataElement,categoryOptionCombo) %>%
-            summarise(psnuValue=sum(Value)) %>%
-        #Merge in Cluster groupings
-            ungroup() %>%
-            left_join(clusterMap[,c("psnuuid","cluster_psnuuid")], by=c("PSNUuid"="psnuuid")) %>%
-        #Filter to include only Clustered locations
-            filter(!is.na(cluster_psnuuid)) %>%
-        #Summarize by Cluster
-            group_by(cluster_psnuuid,attributeOptionCombo,dataElement,categoryOptionCombo) %>%
-            mutate(psnuPct = psnuValue/sum(psnuValue)) %>%
-            ungroup() %>%
-        #Create id to join with Data Pack dataset
-            mutate(whereWhoWhatHuh=paste(cluster_psnuuid,attributeOptionCombo,dataElement,categoryOptionCombo,sep=".")) %>%
-            select(whereWhoWhatHuh,PSNUuid,psnuPct)
-    return(clusterDistr)
-}
-
 
 #' @export
 #' @title distributeCluster()
@@ -113,7 +82,8 @@ clusterDistribution <- function(df) {
 #'
 
 distributeCluster <- function(df,distribution_year) {
-    distros_path=getOption("datapack_distros")
+    
+  distros_path=getOption("datapack_distros")
     if (is.null(distros_path) |
         is.na(distros_path) |
         !file.exists(distros_path)) {
@@ -158,8 +128,6 @@ distributeCluster <- function(df,distribution_year) {
     
     return(ds)
 }
-
-
 
 
 #' @export
