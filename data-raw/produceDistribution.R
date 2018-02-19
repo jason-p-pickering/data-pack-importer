@@ -9,24 +9,10 @@
 #Distribution Sources
     siteExport<- read.csv(file=siteExportPath,stringsAsFactors=FALSE,header=TRUE)
     saveRDS(siteExport,paste0(sourceFolder,"siteExport.rda"))
-    
-    distrSourceFY17<-distrSource(siteExport,FY=2017)
-        
-    distrSourceFY18<-distrSource(siteExport,FY=2018)
-    
-    rm(siteExport)
 
-
+#@sjackson: Document this function.  
     
-    #' @export
-    #' @title distrSource()
-    #'
-    #' @description Converts FY17/18 dataElements to FY19 PSNU level elements within DATIM extract
-    #' @param df Name of dataframe storing DATIM extract.
-    #' @param FY FiscalYear for which source distribution should be pulled.
-    #' @return Returns a dataframe ready for use in preparing source files.
-    #'
-    distrSource <- function(df,FY=NULL) {
+distrSource <- function(df,FY=NULL) {
       
       clusterMap<-datapackimporter::clusters
       rCOP18deMap<-datapackimporter::rCOP18deMap
@@ -55,8 +41,31 @@
       return(ds)
     }
     
-    
-    
+#Create cluster level distribution from site level file. 
+clusterDistribution <- function(df) {	
+    	
+    clusterMap<-datapackimporter::clusters	
+    	
+    clusterDistr <- df %>%	
+                      #Sum up to PSNU level	
+                          select(-orgUnit) %>%	
+                          group_by(PSNUuid,attributeOptionCombo,dataElement,categoryOptionCombo) %>%	
+                          summarise(psnuValue=sum(Value)) %>%	
+                      #Merge in Cluster groupings	
+                          ungroup() %>%	
+                          left_join(clusterMap[,c("psnuuid","cluster_psnuuid")], by=c("PSNUuid"="psnuuid")) %>%	
+                      #Filter to include only Clustered locations	
+                          filter(!is.na(cluster_psnuuid)) %>%	
+                      #Summarize by Cluster	
+                          group_by(cluster_psnuuid,attributeOptionCombo,dataElement,categoryOptionCombo) %>%	
+                          mutate(psnuPct = psnuValue/sum(psnuValue)) %>%	
+                          ungroup() %>%	
+                      #Create id to join with Data Pack dataset	
+                          mutate(whereWhoWhatHuh=paste(cluster_psnuuid,attributeOptionCombo,dataElement,categoryOptionCombo,sep=".")) %>%	
+                          select(whereWhoWhatHuh,PSNUuid,psnuPct)	
+                return(clusterDistr)	
+}
+
     #' @export
     #' @title siteDistribution()
     #'
