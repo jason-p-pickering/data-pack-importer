@@ -112,12 +112,27 @@ clusterDistribution <- function(df) {
 #' @return Returns a dataframe structured for DATIM import.
 #'
 
-distributeCluster <- function(df,dm) {
+distributeCluster <- function(df,distribution_year) {
+    distros_path=getOption("datapack_distros")
+    if (is.null(distros_path) |
+        is.na(distros_path) |
+        !file.exists(distros_path)) {
+      stop("Could not access path to the distributions.")
+    }
+    #Default distribution is 2018 if not otherwise specified
+    if (distribution_year == 2017) {
+      file_name = "distrClusterFY17.rda"
+    } else {
+      file_name = "distrClusterFY18.rda"
+    }
     
-    if(dm==2017) Pcts<-readRDS(paste0(sourceFolder,"distrClusterFY17.rda"))
-    if(dm==2018) Pcts<-readRDS(paste0(sourceFolder,"distrClusterFY18.rda"))
-    if(dm==0000) Pcts<-readRDS(paste0(sourceFolder,"distrClusterFY18.rda"))
+    file_path = paste0(getOption("datapack_distros"), file_name)
     
+    if (!file.exists(file_path)) {
+      stop(paste("Distribution file could not be found. Please check it exists at",file_path))
+    }
+    
+    Pcts<-readRDS(file = file_path )
     clusterMap<-datapackimporter::clusters
     
     #Prepare Cluster Averages
@@ -156,22 +171,24 @@ distributeCluster <- function(df,dm) {
 #' @return Returns a dataframe structured for DATIM import.
 #'
 
-distributeSite <- function(df,dm) {
+distributeSite <- function(d,distributionMethod) {
     
-    if(dm==2017) Pcts<-distrSiteFY17
-    if(dm==2018) Pcts<-distrSiteFY18
-    if(dm==0000) stop("User selected not to distribute to site!")
+    if(distributionMethod)==2017)  { Pcts<-distrSiteFY17 }
+    if(distributionMethod)==2018) Pcts<-distrSiteFY18
+    if(distributionMethod)==0000) stop("User selected not to distribute to site!")
     
     ds <- df %>%
         #Create id to link to percent distributions
             mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
         #Pull in distribution percentages
-            left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
-            mutate(Value=Value*sitePct) %>%
-            mutate(PSNUuid=orgunit
-                   ,orgunit=orgUnit) %>%
-        select(dataelement,period,PSNUuid,orgunit,categoryoptioncombo,attributeoptioncombo,Value)
-    
+        #@Sjackson: What is the point of a left join here? Anything which is NA will have to be dropped
+        #And cannot be imported. 
+            inner_join(Pcts,by=c("whereWhoWhatHuh")) %>%
+       #Do we need to round or what here?
+            mutate(value=as.character(floor(as.numeric(value)*sitePct))) %>%
+            filter(value != "0") %>% 
+      #Don't we have to remap back to the Site level data elements from the PSNU data elements?
+        select(dataelement,period,orgunit=orgUnit,categoryoptioncombo,attributeoptioncombo,value)
     return(ds)
 }
 
