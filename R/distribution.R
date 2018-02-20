@@ -46,10 +46,10 @@ distributeCluster <- function(df,distribution_year) {
         dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
         #Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
         dplyr::left_join(clusterAvgs,by=c("orgunit"="cluster_psnuuid")) %>%
-        dplyr::mutate(Value=case_when(is.na(psnuPct)~Value*avg
-                                  ,TRUE~Value*psnuPct)) %>%
+        dplyr::mutate(Value=case_when(is.na(psnuPct)~Value*avg ,TRUE~Value*psnuPct)) %>%
+        dplyr::mutate(Value = round(Value)) %>%
         dplyr::mutate(orgunit=PSNUuid) %>%
-        dplyr::select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,Value) %>%
+        dplyr::select(dataelement,period,PSNUuid,orgunit,categoryoptioncombo,attributeoptioncombo,Value) %>%
         rbind(df[!df$orgunit %in% unique(clusterMap$cluster_psnuuid),])
     
     return(ds)
@@ -92,7 +92,7 @@ distributeSite <- function(df,distribution_year) {
         #Pull in distribution percentages, keeping all data
         dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
        #Do we need to round or what here?
-        dplyr::mutate(value=as.character(floor(as.numeric(value)*sitePct))) %>%
+        dplyr::mutate(value=as.character(round(as.numeric(value)*sitePct))) %>%
         dplyr::filter(value != "0") %>% 
       #Don't we have to remap back to the Site level data elements from the PSNU data elements?
         dplyr::select(dataelement,period,orgunit=orgUnit,categoryoptioncombo,attributeoptioncombo,value)
