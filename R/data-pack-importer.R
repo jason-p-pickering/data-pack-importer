@@ -97,7 +97,7 @@ ValidateWorkbook <- function(wb_path) {
     invalid_sheets <-
       paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
     msg <- paste0("The following sheets were invalid:", invalid_sheets)
-    warning(msg)
+    stop(msg)
     return(FALSE)
   } else {
     return(TRUE)
