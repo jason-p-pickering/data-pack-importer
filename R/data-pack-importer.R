@@ -45,6 +45,11 @@ ValidateSheets<-function(schemas,sheets) {
 #'
 GetWorkbookInfo<-function(wb_path) {
   if (!file.exists(wb_path)) {stop("Workbook could not be read!")}
+  #Distribution method
+  promptText<-paste0("Please enter the distribution method (2017 or 2018):")
+  distribution_methods<-c(2017,2018)
+  print(promptText)
+  distribution_method<-utils::select.list(distribution_methods,multiple=FALSE)
   wb_type<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O3"))
   if ( wb_type == "normal") {
     wb_type = "NORMAL"
@@ -62,7 +67,8 @@ GetWorkbookInfo<-function(wb_path) {
     wb_type=wb_type,
     ou_name=ou_name,
     ou_uid=ou_uid,
-    is_clustered=ou_name %in% datapackimporter::clusters$operatingunit))
+    is_clustered=ou_name %in% datapackimporter::clusters$operatingunit,
+    distribution_method = distribution_method))
   }
 
 #' @export
