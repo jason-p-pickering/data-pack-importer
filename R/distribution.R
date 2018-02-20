@@ -33,23 +33,23 @@ distributeCluster <- function(df,distribution_year) {
     
     #Prepare Cluster Averages
     clusterAvgs <- clusterMap %>%
-        select(cluster_psnuuid,psnuuid) %>%
-        group_by(cluster_psnuuid) %>%
-        mutate(num=1,
+        dplyr::select(cluster_psnuuid,psnuuid) %>%
+        dplyr::group_by(cluster_psnuuid) %>%
+        dplyr::mutate(num=1,
                den=n()) %>%
-        mutate(avg=num/den) %>%
-        select(-num,-den)
+        dplyr::mutate(avg=num/den) %>%
+        dplyr::select(-num,-den)
     
     ds <- df %>%
-        filter(orgunit %in% unique(clusterMap$cluster_psnuuid)) %>%
-        mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
-        left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
+        dplyr::filter(orgunit %in% unique(clusterMap$cluster_psnuuid)) %>%
+        dplyr::mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
+        dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
         #Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
-            left_join(clusterAvgs,by=c("orgunit"="cluster_psnuuid")) %>%
-            mutate(Value=case_when(is.na(psnuPct)~Value*avg
+        dplyr::left_join(clusterAvgs,by=c("orgunit"="cluster_psnuuid")) %>%
+        dplyr::mutate(Value=case_when(is.na(psnuPct)~Value*avg
                                   ,TRUE~Value*psnuPct)) %>%
-        mutate(orgunit=PSNUuid) %>%
-        select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,Value) %>%
+        dplyr::mutate(orgunit=PSNUuid) %>%
+        dplyr::select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,Value) %>%
         rbind(df[!df$orgunit %in% unique(clusterMap$cluster_psnuuid),])
     
     return(ds)
@@ -88,17 +88,13 @@ distributeSite <- function(df,distribution_year) {
 
     ds <- df %>%
         #Create id to link to percent distributions
-            mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
-        #Pull in distribution percentages
-        #@Sjackson: What is the point of a left join here? Anything which is NA will have to be dropped
-        #And cannot be imported. 
-            left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
+        dplyr::mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
+        #Pull in distribution percentages, keeping all data
+        dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
        #Do we need to round or what here?
-            mutate(value=as.character(floor(as.numeric(value)*sitePct))) %>%
-            filter(value != "0") %>% 
+        dplyr::mutate(value=as.character(floor(as.numeric(value)*sitePct))) %>%
+        dplyr::filter(value != "0") %>% 
       #Don't we have to remap back to the Site level data elements from the PSNU data elements?
-        select(dataelement,period,orgunit=orgUnit,categoryoptioncombo,attributeoptioncombo,value)
+        dplyr::select(dataelement,period,orgunit=orgUnit,categoryoptioncombo,attributeoptioncombo,value)
     return(ds)
 }
-
-
