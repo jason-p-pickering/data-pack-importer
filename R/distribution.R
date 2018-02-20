@@ -46,12 +46,12 @@ distributeCluster <- function(df,distribution_year) {
         dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
         #Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
         dplyr::left_join(clusterAvgs,by=c("orgunit"="cluster_psnuuid")) %>%
-        dplyr::mutate(Value=case_when(is.na(psnuPct)~Value*avg ,TRUE~Value*psnuPct)) %>%
-        dplyr::mutate(Value = round(Value)) %>%
+        dplyr::mutate(value=case_when(is.na(psnuPct)~value*avg ,TRUE~value*psnuPct)) %>%
+        dplyr::mutate(value = round(value)) %>%
+        dplyr::filter(value != "0") 
         dplyr::mutate(orgunit=PSNUuid) %>%
-        dplyr::select(dataelement,period,PSNUuid,orgunit,categoryoptioncombo,attributeoptioncombo,Value) %>%
+        dplyr::select(dataelement,period,PSNUuid,orgunit,categoryoptioncombo,attributeoptioncombo,value) %>%
         rbind(df[!df$orgunit %in% unique(clusterMap$cluster_psnuuid),])
-    
     return(ds)
 }
 
