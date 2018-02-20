@@ -4,12 +4,12 @@
 \alias{distributeCluster}
 \title{distributeCluster()}
 \usage{
-distributeCluster(df, dm)
+distributeCluster(df, distribution_year)
 }
 \arguments{
 \item{df}{Name of dataframe storing Data Pack data.}
 
-\item{dm}{Distribution Method selection, whether based on FY17, FY18, or not distributed}
+\item{distribution_year}{Distribution Method selection, whether based on FY17. Otherwise, FY18.}
 }
 \value{
 Returns a dataframe structured for DATIM import.
