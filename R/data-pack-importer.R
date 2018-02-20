@@ -89,7 +89,7 @@ ValidateWorkbook <- function(wb_path) {
   all_there <- expected %in% all_sheets
   #Validate against expected tables
   if ( !all(all_there) ) {
-    warning(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
+    stop(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
   }
   sheets<-all_sheets[all_sheets %in% expected]
   validation_results<-ValidateSheets(schemas,sheets)
@@ -215,6 +215,7 @@ ImportFollowOnMechs<-function(wb_path) {
 }
 
 
+
 #' @export
 #' @title ImportSheets(wb_path)
 #'
@@ -250,6 +251,7 @@ ImportSheets <- function(wb_path) {
     d <- ImportSheet(wb_path, schema)
     df <- dplyr::bind_rows(df, d)
   }
+  
   
   #Import the follow on mechs
   if (wb_info$wb_type == "NORMAL") {
