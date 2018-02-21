@@ -4,7 +4,7 @@
 \name{clusters}
 \alias{clusters}
 \title{clusters}
-\format{An object of class \code{data.frame} with 51 rows and 12 columns.}
+\format{An object of class \code{data.frame} with 52 rows and 12 columns.}
 \usage{
 clusters
 }

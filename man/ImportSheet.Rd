@@ -13,9 +13,9 @@ ImportSheet(wb_path, schema)
 }
 \value{
 Returns a data frame with the following columns. 
-Will return an empty data frame if the sheet cannot be processed.
+Will return an empty data frame if the the sheet is blank.
 
-#' \itemize{
+ \itemize{
   \item datalement: UID of the data elememnt
   \item period: ISO string of the period
   \item orgunit: UID of the organisation unit
