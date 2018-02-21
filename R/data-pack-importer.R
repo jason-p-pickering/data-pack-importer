@@ -29,6 +29,28 @@ ValidateSheets<-function(schemas,sheets) {
   vapply(sheets,function(x) { ValidateSheet(schemas = schemas,sheet_name = x) }, FUN.VALUE=logical(1) ) 
 }
 
+
+#' @export
+#' @title ValidateImpattSheet(d,wb_info)
+#' @description Validates the impatt sheet for completeness.
+#' @param d A parsed data frame with IMPATT data
+#' 
+ValidateImpattSheet <- function(d, wb_info) {
+  psnus <- datapackimporter::psnus[[wb_info$ou_uid]]
+  psnus_missing <- !(psnus$id %in% d$psnuuid)
+  if (any(psnus_missing)) {
+    msg <-
+      paste(
+        "The following PNSUs were missing from the IMPATT table:",
+        paste(psnus$name[psnus_missing], sep = "", collapse = ",")
+      )
+    return(msg)
+  } else
+  {
+    return(NULL)
+  }
+}
+
 #' @export
 #' @title GetWorkbookInfo(wb_path)
 #'
@@ -80,6 +102,7 @@ GetWorkbookInfo<-function(wb_path) {
 #'
 #'
 #'
+#'
 ValidateWorkbook <- function(wb_path) {
   wb_info = GetWorkbookInfo(wb_path)
   if (wb_info$wb_type == "HTS") { schemas <- datapackimporter::hts_schema }
@@ -98,11 +121,13 @@ ValidateWorkbook <- function(wb_path) {
       paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
     msg <- paste0("The following sheets were invalid:", invalid_sheets)
     stop(msg)
-    return(FALSE)
   } else {
     return(TRUE)
   }
 }
+
+
+
 
 #' @export
 #' @importFrom stats complete.cases
@@ -112,9 +137,9 @@ ValidateWorkbook <- function(wb_path) {
 #' @param wb_path  The absolute file path to the workbook.
 #' @param schema Schema of the sheet
 #' @return Returns a data frame with the following columns. 
-#' Will return an empty data frame if the sheet cannot be processed.
+#' Will return an empty data frame if the the sheet is blank.
 #' 
-#' #' \itemize{
+#'  \itemize{
 #'   \item datalement: UID of the data elememnt
 #'   \item period: ISO string of the period
 #'   \item orgunit: UID of the organisation unit
@@ -156,8 +181,12 @@ ImportSheet <- function(wb_path, schema) {
     #IMPATT.PRIORITY_SNU (SUBNAT), IMPATT.PLHIV (SUBNAT, Age/Sex)
     to<-c("r4zbW3owX9n","Rom79qVjNVb")
     #https://www.datim.org/api/optionSets/mvbwbgbJgXr.json?fields=options[code,name]
-    d <-
-      readxl::read_excel(wb_path, sheet = schema$sheet_name, range = cell_range) %>%
+    d<-readxl::read_excel(wb_path, sheet = schema$sheet_name, range = cell_range)
+    msg<-ValidateImpattSheet(d,wb_info)
+    if ( !is.null(msg) ) {
+      warning(msg)
+    }
+    d <- d %>%
       mutate_all(as.character) %>%
       dplyr::mutate(.,
                     snu_priotization_fy19 =  plyr::mapvalues(snu_priotization_fy19,
@@ -166,7 +195,7 @@ ImportSheet <- function(wb_path, schema) {
                                               warn_missing = FALSE)) %>% 
       tidyr::gather(variable, value, -c(1:2)) %>%
       dplyr::filter(complete.cases(.)) %>% 
-      dplyr::mutate(., dataelement = plyr::mapvalues(variable,from,to),
+      dplyr::mutate(., dataelement = plyr::mapvalues(variable,from,to,warn_missing = FALSE),
                     orgunit = psnuuid,
                     period = "2018Oct",
                     attributeoptioncombo = "HllvX50cXC0",
