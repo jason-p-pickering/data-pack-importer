@@ -191,6 +191,7 @@ getOrgunitsAtLevel <- function(parent_id,level) {
 
 psnus<-mapply(getOrgunitsAtLevel,ou_prioritization_levels$id,ou_prioritization_levels$prioritization)
 
+militaryUnits<-getSiteList("Military")
 
 #Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
 devtools::use_data(hts_schema,main_schema,mechs,des,impatt,rCOP18deMap,clusters, sites_exclude,psnus,militaryUnits,internal = TRUE,overwrite = TRUE)

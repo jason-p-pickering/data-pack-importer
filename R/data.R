@@ -57,11 +57,23 @@
 "clusters"
 
 
-
-
 #' @export
 #' @title sites_exclude
 #'
 #' @description Vector of sites to exlcude
 #' @return Returns a character vector of UIDs
 "sites_exclude"
+
+#' @export
+#' @title psnus
+#'
+#' @description PSNU UIDs and names 
+#' @return Returns a list of data frames
+"psnus"
+
+#' @export
+#' @title militaryUnits
+#'
+#' @description PSNU UIDs and names 
+#' @return Returns a data frame of military units which shold be exlcuded
+"militaryUnits"

@@ -283,7 +283,7 @@ generateCodeListT <- function(){
 
 mapDataPackCodes <- function(COP18deMapT) {
     
-    dp_codes_file<-"data-raw/DataPackCodeListKeysMatched.csv"
+  dp_codes_file<-"data-raw/DataPackCodeListKeysMatched.csv"
   
   blankToNA<-function (x) {ifelse(x=="",NA,x)}
   
@@ -298,7 +298,7 @@ mapDataPackCodes <- function(COP18deMapT) {
       DataPackFilename = blankToNA(DataPackFilename),
       DataPackTabName = blankToNA(DataPackTabName)
     ) %>%
-    bind_rows(mutate(filter(., IMPATT == FALSE), supportType = TA), .) %>%
+    bind_rows(mutate(filter(., IMPATT == FALSE), supportType = "TA"), .) %>%
     mutate(
       DataPackCode = case_when(
         (!is.na(DataPackCode) & DataPackCode != "plhiv_fy19") ~ paste(DataPackCode, tolower(supportType), sep = "_"),
