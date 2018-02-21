@@ -98,6 +98,30 @@ processDataElements<-function() {
     dplyr::filter(.,complete.cases(.))
   }
 
+getOrganisationUnitGroups <- function() {
+  url <-
+    paste0(getOption("baseurl"),
+           "api/organisationUnitGroups?format=json&paging=false")
+  organisationUnitGroups <-
+    fromJSON(content(GET(url), "text"), flatten = TRUE)
+  organisationUnitGroups <- as.data.frame(organisationUnitGroups)
+  names(organisationUnitGroups) <- c("siteTypeUID", "siteType")
+  return(organisationUnitGroups)
+}
+
+  
+  getSiteList <- function(siteType) {
+            organisationUnitGroups <- getOrganisationUnitGroups()
+            stUID<-organisationUnitGroups[organisationUnitGroups$siteType==siteType,][1]
+            url<-paste0(getOption("baseurl"),"api/organisationUnitGroups/",stUID,"?fields=organisationUnits[id],id,name&format=json")
+            resp<-fromJSON(content(GET(url),"text"), flatten=TRUE)
+            resp<-as.data.frame(resp)
+            names(resp)<-c("siteType","siteTypeUID","orgUnit")
+            return(resp)
+}
+
+  
+
 
 ##Procedural logic to generate the actual schemas
 ##HTS Template
@@ -124,6 +148,8 @@ datimvalidation::loadSecrets("/home/jason/.secrets/datim.json")
 source("data-raw/transform_code_lists.R")
 rCOP18deMap<-generateCOP18deMap()
 
+#MilitaryUnits
+militaryUnits<-getSiteList("Military")
 
 clusters <- function() {
   df<- read.csv("data-raw/COP18Clusters.csv",stringsAsFactors=F,header=T) %>%
@@ -167,4 +193,4 @@ psnus<-mapply(getOrgunitsAtLevel,ou_prioritization_levels$id,ou_prioritization_l
 
 
 #Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
-devtools::use_data(hts_schema,main_schema,mechs,des,impatt,rCOP18deMap,clusters, sites_exclude,psnus,internal = TRUE,overwrite = TRUE)
+devtools::use_data(hts_schema,main_schema,mechs,des,impatt,rCOP18deMap,clusters, sites_exclude,psnus,militaryUnits,internal = TRUE,overwrite = TRUE)
