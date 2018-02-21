@@ -4,7 +4,7 @@
 \alias{ValidateSheets}
 \title{ValidateSheets(schemas,sheets)}
 \usage{
-ValidateSheets(schemas, sheets)
+ValidateSheets(schemas, sheets, wb_info)
 }
 \arguments{
 \item{schemas}{Schemas for this workbook}

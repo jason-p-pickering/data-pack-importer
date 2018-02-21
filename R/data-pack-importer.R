@@ -3,15 +3,16 @@
 #'
 #' @description Validates the layout of a single sheet based on its schema definition.
 #' @param schemas Schemas of this workbook.
-#' @param sheet_name Name of the sheet to be validated. 
+#' @param sheet_name Name of the sheet to be validated.
+#' @param wb_info Info about the workbook.  
 #' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
 #'
-ValidateSheet <- function(schemas,sheet_name) {
+ValidateSheet <- function(schemas,sheet_name,wb_info) {
   schema<-rlist::list.find(schemas$schema,sheet_name==sheet_name)[[1]]
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(schema$row, schema$end_col))
   all( names(
-    readxl::read_excel(wb_path, sheet = schema$sheet_name, range = cell_range)
+    readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range)
   ) == unlist(schema$fields,use.names = FALSE))
   
 }
@@ -24,9 +25,9 @@ ValidateSheet <- function(schemas,sheet_name) {
 #' @param sheets Names of sheets
 #' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
 #'
-ValidateSheets<-function(schemas,sheets) {
+ValidateSheets<-function(schemas,sheets,wb_info) {
   
-  vapply(sheets,function(x) { ValidateSheet(schemas = schemas,sheet_name = x) }, FUN.VALUE=logical(1) ) 
+  vapply(sheets,function(x) { ValidateSheet(schemas = schemas,sheet_name = x,wb_info=wb_info) }, FUN.VALUE=logical(1) ) 
 }
 
 
@@ -104,10 +105,10 @@ GetWorkbookInfo<-function(wb_path) {
 #'
 #'
 ValidateWorkbook <- function(wb_path) {
-  wb_info = GetWorkbookInfo(wb_path)
+  wb_info<-GetWorkbookInfo(wb_path)
   if (wb_info$wb_type == "HTS") { schemas <- datapackimporter::hts_schema }
   if (wb_info$wb_type == "NORMAL") { schemas <-datapackimporter::main_schema }
-  all_sheets <- readxl::excel_sheets(path = wb_path)
+  all_sheets <- readxl::excel_sheets(path = wb_info$wb_path)
   expected <- unlist(sapply(schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
   all_there <- expected %in% all_sheets
   #Validate against expected tables
@@ -115,7 +116,7 @@ ValidateWorkbook <- function(wb_path) {
     stop(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
   }
   sheets<-all_sheets[all_sheets %in% expected]
-  validation_results<-ValidateSheets(schemas,sheets)
+  validation_results<-ValidateSheets(schemas,sheets,wb_info)
   if (any(!(validation_results))) {
     invalid_sheets <-
       paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
@@ -134,7 +135,7 @@ ValidateWorkbook <- function(wb_path) {
 #' @title ImportSheet(wb_path,schema)
 #'
 #' @description Imports a single sheet from a workbook.
-#' @param wb_path  The absolute file path to the workbook.
+#' @param wb_info  Workbook info object.
 #' @param schema Schema of the sheet
 #' @return Returns a data frame with the following columns. 
 #' Will return an empty data frame if the the sheet is blank.
@@ -150,7 +151,7 @@ ValidateWorkbook <- function(wb_path) {
 #'
 
 
-ImportSheet <- function(wb_path, schema) {
+ImportSheet <- function(wb_info, schema) {
 
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(NA, schema$end_col))
@@ -158,7 +159,7 @@ ImportSheet <- function(wb_path, schema) {
   des<-datapackimporter::des
   if ( schema$method == "standard") {
   d <-
-    readxl::read_excel(wb_path, sheet = schema$sheet_name, range = cell_range) %>%
+    readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
     mutate_all(as.character) %>%
     tidyr::gather(variable, value, -c(1:7),convert =FALSE) %>% 
     dplyr::filter(.,  value != "0" ) %>% 
@@ -181,7 +182,7 @@ ImportSheet <- function(wb_path, schema) {
     #IMPATT.PRIORITY_SNU (SUBNAT), IMPATT.PLHIV (SUBNAT, Age/Sex)
     to<-c("r4zbW3owX9n","Rom79qVjNVb")
     #https://www.datim.org/api/optionSets/mvbwbgbJgXr.json?fields=options[code,name]
-    d<-readxl::read_excel(wb_path, sheet = schema$sheet_name, range = cell_range)
+    d<-readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range)
     msg<-ValidateImpattSheet(d,wb_info)
     if ( !is.null(msg) ) {
       warning(msg)
@@ -222,12 +223,11 @@ ImportSheet <- function(wb_path, schema) {
 #' @title ImportFollowOnMechs(wb_path)
 #'
 #' @description Imports the follow on mechs sheet.
-#' @param wb_path  The absolute file path to the workbook.
+#' @param wb_info  Workbook info object.
 #' @return A data  frame with three columns Closing Out, Follow On, Notes. 
 #' If this sheet is blank, returns NULL.
 
-ImportFollowOnMechs<-function(wb_path) {
-  wb_info = GetWorkbookInfo(wb_path)
+ImportFollowOnMechs<-function(wb_info) {
   if (wb_info$wb_type == "NORMAL") { schemas <-datapackimporter::main_schema } else {
     stop("Only Normal Disagg tools with follow on mechs are supported!")
   }
@@ -271,13 +271,13 @@ ImportSheets <- function(wb_path) {
     "attributeoptioncombo" = character(),
     "value" = character()
   )
-  actual_sheets<-readxl::excel_sheets(wb_path)
+  actual_sheets<-readxl::excel_sheets(wb_info$wb_path)
   sheets_to_import<-actual_sheets[actual_sheets %in% sheets]
   
   for (i in 1:length(sheets_to_import)) {
     
     schema<-rlist::list.find(schemas$schema,sheet_name==sheets_to_import[i])[[1]]
-    d <- ImportSheet(wb_path, schema)
+    d <- ImportSheet(wb_info, schema)
     df <- dplyr::bind_rows(df, d)
   }
   
