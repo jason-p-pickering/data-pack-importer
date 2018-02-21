@@ -44,6 +44,12 @@ ValidateSheets<-function(schemas,sheets) {
 #' 
 #'
 GetWorkbookInfo<-function(wb_path) {
+  if (!file.exists(wb_path)) {stop("Workbook could not be read!")}
+  #Distribution method
+  promptText<-paste0("Please enter the distribution method (2017 or 2018):")
+  distribution_methods<-c(2017,2018)
+  print(promptText)
+  distribution_method<-utils::select.list(distribution_methods,multiple=FALSE)
   wb_type<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O3"))
   if ( wb_type == "normal") {
     wb_type = "NORMAL"
@@ -60,7 +66,9 @@ GetWorkbookInfo<-function(wb_path) {
     timestamp = Sys.time(),
     wb_type=wb_type,
     ou_name=ou_name,
-    ou_uid=ou_uid))
+    ou_uid=ou_uid,
+    is_clustered=ou_name %in% datapackimporter::clusters$operatingunit,
+    distribution_method = distribution_method))
   }
 
 #' @export
@@ -81,15 +89,15 @@ ValidateWorkbook <- function(wb_path) {
   all_there <- expected %in% all_sheets
   #Validate against expected tables
   if ( !all(all_there) ) {
-    warning(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
+    stop(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
   }
-  sheets<-all_tables[all_sheets %in% expected]
+  sheets<-all_sheets[all_sheets %in% expected]
   validation_results<-ValidateSheets(schemas,sheets)
   if (any(!(validation_results))) {
     invalid_sheets <-
       paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
     msg <- paste0("The following sheets were invalid:", invalid_sheets)
-    warning(msg)
+    stop(msg)
     return(FALSE)
   } else {
     return(TRUE)
@@ -207,6 +215,7 @@ ImportFollowOnMechs<-function(wb_path) {
 }
 
 
+
 #' @export
 #' @title ImportSheets(wb_path)
 #'
@@ -243,14 +252,14 @@ ImportSheets <- function(wb_path) {
     df <- dplyr::bind_rows(df, d)
   }
   
+  
   #Import the follow on mechs
   if (wb_info$wb_type == "NORMAL") {
   follow_on_mechs<-ImportFollowOnMechs(wb_path)
   } else {
     follow_on_mechs<-NULL
   }
-   
-    
+  
   return ( list(wb_info = wb_info,
     follow_on_mechs=follow_on_mechs,
               data = df) )
