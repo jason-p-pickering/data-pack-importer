@@ -97,7 +97,7 @@ processMechs<-function() {
 
 
 processDataElements<-function() {
-  read.csv("data-raw/DataPackCodeListKeysMatched.csv",stringsAsFactors = FALSE,na="") %>%
+  read.csv("data-raw/DataPackCodes.csv",stringsAsFactors = FALSE,na="") %>%
   dplyr::select(.,code=DataPackCode,combi=pd_2019_P) %>% 
     dplyr::filter(.,complete.cases(.))
   }
@@ -142,6 +142,31 @@ clusters <- function() {
 
 clusters<-clusters()
 sites_exclude<-c('fNH1Ny5vXI5', 'Tiqj6KDtx3p', 'BspXUn4c2i0', 'wnFyQ8gWVuP', 'b0WbjlNgwpg', 'Smw76afBRxh', 'TyDdI16aem2', 'u6UHEEYSsrY', 'ZHAEPwL6s87', 'oitze45vmuG', 'imQAg2FmqIi', 'JWb1FJrb6u0', 'oU9JrXHFBwo', 'ZvjmhaNkDJP', 'ph5hfp4TDYa', 'NDGAjm5He3s', 'S0wsB3mH7As', 'WKQumwV8vzz', 'aIl7B0aJZE7', 'EwvYCRwMaj2', 'Zj3QFD5LCN0', 'DWqxLhccQpN', 'FMA01mDjzg9', 'Wt4Ap0dVT0K', 'kTDYtuRlsRJ', 'B2aBYUFKEtP', 'eBMjxJa6Hyo', 'Jn8Dy8Kt8r6', 'BP8kSSf9mVh', 'uM7bKbyQMUb', 'xRNWRGhiL2x', 'CLsTOua0sYz', 'foN7Fc7qqd5', 'Pn5Egy0nEvw', 'ZU5YFwWSAM7', 'ahCpXE5nYKO', 'WQUnNhUravY', 'lSrgJWMVhKP', 'SWMW9b7WMMG', 'LdH3sTixu4G', 'PUWNeEDqKjG', 'kQLMdNG7tOr', 'qjxX1U1zOV9', 'un7KU5UBkTp', 'nMYhhbh463E', 'cugQdSJzIzf', 'Vgz3Af04heg', 'VXhW2lbMHeT', 'o1OrLbuDePL', 'gdWruPti7dW', 'kpLxWaoSWp5', 'GGNlHihWQLS', 'c78scqZGQPc', 'WXCDaZ8ldbb', 'DmpYVwgbt0k', 'kbLOPXlsHH4', 'KabE1XwF8CH', 'sk68oHctZOt', 'boqES0AhYHD', 'ecpaElyx1MZ', 'TDk0oLAqK6H', 'p3n96zLyWoP', 'hF8sLm9vE1U', 't5GdyeN9riy', 'Fu0wZlUnntH', 'TixiR1SsebU', 'u86Kfypb8DG', 'JJJOwYzvDZo', 'Dgi2sUBjGzO', 'e9eJh4Dn286', 'dV6akh4l1Ej', 'I93yMz1rjkQ', 'TVrtknExg0t', 'FL40UCPHJke', 'WxIBVamFcg0', 'BpLP6v9NeWX', 'D7uuBfToHfb', 'ItoS9FGQg24', 'M8Yb2Y9rgNe', 'tBcAME3DNk1', 'jBOH9BBbqEW', 'J9Nmumn9DRc', 'sEJ8peJ3Jz6', 'g0HJxd9XWMy', 'tLcy3vpV6LF', 'QITi8Rd6xV5', 'zrHn3k5oIAT', 'szenMEdV4sF', 'EzzYi29hyNF', 'RJWMt1CU1HW', 'JSmcOMrC6zZ', 'RQykElqy1HR', 'Ae8uPosEFeF', 'NEk0GiXI2SW', 'HSoAojlwB7Q', 'hRq9qYMyBE7', 'Rq9EVeiR0PU', 'OyDnBG2RCgS', 'q3WGbWcjdWf', 'aGQbouk9S3E', 'GMHwNlqPAzS', 'm6eYOfLPzmF', 'lAhBMeGXsvQ', 'zZXWPXydW2S', 'VGVbROfDHWh', 'bMtviLCfDub', 'ZCbh020F2TA', 'cVnfnV5N1w5', 'L6HMMjCf2em', 'U9YejzJibuv', 'ASSntKFP1Ns')
+
+
+
+getOrganisationUnitGroups <- function() {
+    pacman::p_load("jsonlite","datimvalidation","httr")
+    url<-paste0(getOption("baseurl"),"api/organisationUnitGroups?format=json&paging=false")
+    organisationUnitGroups<-fromJSON(content(GET(url),"text"), flatten=TRUE)
+    organisationUnitGroups<-as.data.frame(organisationUnitGroups)
+    names(organisationUnitGroups) <- c("siteTypeUID","siteType")
+    return(organisationUnitGroups)
+}
+
+
+getSiteList <- function(siteType) {
+        organisationUnitGroups <- getOrganisationUnitGroups()
+        stUID<-organisationUnitGroups[organisationUnitGroups$siteType==siteType,][1]
+        url<-paste0(getOption("baseurl"),"api/organisationUnitGroups/",stUID,"?fields=organisationUnits[id],id,name&format=json")
+        resp<-fromJSON(content(GET(url),"text"), flatten=TRUE)
+        resp<-as.data.frame(resp)
+        names(resp)<-c("siteType","siteTypeUID","orgUnit")
+        return(resp)
+}
+
+militaryUnits<-getSiteList("Military")
+
 
 #Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
 devtools::use_data(hts_schema,main_schema,mechs,des,impatt,rCOP18deMap,clusters, sites_exclude,internal = TRUE,overwrite = TRUE)
