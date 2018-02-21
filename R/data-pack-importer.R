@@ -98,7 +98,6 @@ ValidateWorkbook <- function(wb_path) {
       paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
     msg <- paste0("The following sheets were invalid:", invalid_sheets)
     stop(msg)
-    return(FALSE)
   } else {
     return(TRUE)
   }
@@ -114,7 +113,7 @@ ValidateWorkbook <- function(wb_path) {
 #' @return Returns a data frame with the following columns. 
 #' Will return an empty data frame if the sheet cannot be processed.
 #' 
-#' #' \itemize{
+#'  \itemize{
 #'   \item datalement: UID of the data elememnt
 #'   \item period: ISO string of the period
 #'   \item orgunit: UID of the organisation unit
