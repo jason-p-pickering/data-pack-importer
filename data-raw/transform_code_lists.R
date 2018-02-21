@@ -22,15 +22,6 @@ getCOPDataElements <- function(ds,pd,lvl) {
 
 
 
-#' @export
-#' @importFrom(magrittr,"%>%")
-#' @title transformDEs()
-#'
-#' @description Deconstructs and maps dataElements and categoryOptionCombos over time.
-#' @param de Data Frame containing DATIM code list in standard structure
-#' @return Returns a dataframe ready for use in preparing source files.
-#'
-
 transformDEs <- function(de){
     ds <- de %>%
         #Prepare cross-period codes for each MER indicator
