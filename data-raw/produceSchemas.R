@@ -79,11 +79,7 @@ produceSchemas <- function(sheet_path,mode) {
   #Exclude these two , as they are custom
   custom_sheets<-c("Home")
   sheets <-sheets[!(sheets %in% custom_sheets)]
-  foo <- list()
-  for (i in 1:length(sheets)) {
-    bar <- ProduceSchema(sheet_path = sheet_path, sheet_name = sheets[i])
-    foo <- list.append(foo, bar)
-  }
+  foo<-lapply(sheets,function(x) {ProduceSchema(sheet_name=x,sheet_path = sheet_path)})
   return(list(mode=mode,schema=foo))
 }
 
