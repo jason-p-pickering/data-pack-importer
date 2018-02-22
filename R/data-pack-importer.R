@@ -160,7 +160,7 @@ ImportSheet <- function(wb_info, schema) {
   if ( schema$method == "standard") {
   d <-
     readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
-    mutate_all(as.character) %>%
+    dplyr::mutate_all(as.character) %>%
     tidyr::gather(variable, value, -c(1:7),convert =FALSE) %>% 
     dplyr::filter(.,  value != "0" ) %>% 
     dplyr::filter(!is.na(value)) %>%
@@ -188,7 +188,7 @@ ImportSheet <- function(wb_info, schema) {
       warning(msg)
     }
     d <- d %>%
-      mutate_all(as.character) %>%
+      dplyr::mutate_all(as.character) %>%
       dplyr::mutate(.,
                     snu_priotization_fy19 =  plyr::mapvalues(snu_priotization_fy19,
                                               datapackimporter::impatt$options$dp_code,
