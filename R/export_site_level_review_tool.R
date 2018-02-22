@@ -1,7 +1,3 @@
-##################################
-#Export to Site Level Review Tool#
-##################################
-pacman::p_load(stringr,tidyr,dplyr)
 
 # source("data-raw/transform_code_lists.R")
 # COP18deMapT<-generateCodeListT() %>%
@@ -19,9 +15,7 @@ pacman::p_load(stringr,tidyr,dplyr)
         topFolder="/Users/scott/Google Drive/PEPFAR/COP Targets/Development/Facility Distribution Script/Site Review Export/Site Level Review Tool/"
 
 
-#Load Mech and Site IDs in SLRT format####
-    LoadDependencies()
-    LoadConfig(config_path)
+
     mechs<-GetMechsForOU(ou_uid) %>% unique %>% arrange(mechanism)
     siteIDs<-GetPSNUsiteMap(ou_uid) %>% unique %>% arrange(DataPackSiteID)
     
