@@ -83,6 +83,16 @@ produceSchemas <- function(sheet_path,mode) {
   return(list(mode=mode,schema=foo))
 }
 
+produceSiteToolSchemas <- function(sheet_path,mode) {
+  
+  sheets <- excel_sheets(sheet_path)
+  #Exclude these two , as they are custom
+  custom_sheets<-c("SiteList","Mechs")
+  sheets <-sheets[!(sheets %in% custom_sheets)]
+  foo<-lapply(sheets,function(x) {ProduceSchema(sheet_name=x,sheet_path = sheet_path,start_col = 1)})
+  return(list(mode=mode,schema=foo))
+}
+
 
 processMechs<-function() {
   
@@ -109,6 +119,11 @@ getOrganisationUnitGroups <- function() {
   return(organisationUnitGroups)
 }
 
+
+siteToolSchema<-function(wb_path) {
+  sheets <- excel_sheets(wb_path)
+}
+
   
   getSiteList <- function(siteType) {
             organisationUnitGroups <- getOrganisationUnitGroups()
@@ -124,15 +139,27 @@ getOrganisationUnitGroups <- function() {
 
 
 ##Procedural logic to generate the actual schemas
-##HTS Template
+##PSNU HTS Template
 sheet_path = "data-raw/MalawiCOP18DisaggTool_HTSv2018.02.10.xlsx"
 mode="HTS"
 hts_schema<-produceSchemas(sheet_path,mode)
 
-##Normal template
+##Normal PSNU template
 sheet_path = "data-raw/MalawiCOP18DisaggToolv2018.02.10.xlsx"
 mode="NORMAL"
 main_schema<-produceSchemas(sheet_path,mode)
+
+#Normal Site level  tools
+sheet_path="data-raw/SiteLevelReview_TEMPLATE.xlsx"
+mode="NORMAL_SITE"
+main_site_schema<-produceSiteToolSchemas(sheet_path,mode)
+
+#Normal HTS Site level  tool
+sheet_path="data-raw/SiteLevelReview_HTS_TEMPLATE.xlsx"
+mode="HTS_SITE"
+hts_site_schema<-produceSiteToolSchemas(sheet_path,mode)
+
+
 
 schemas<-list(hts=hts_schema,normal=main_schema)
 names(schemas)<-c("hts","normal")

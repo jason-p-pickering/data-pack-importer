@@ -284,7 +284,7 @@ ImportSheets <- function(wb_path) {
   
   #Import the follow on mechs
   if (wb_info$wb_type == "NORMAL") {
-  follow_on_mechs<-ImportFollowOnMechs(wb_path)
+  follow_on_mechs<-ImportFollowOnMechs(wb_info)
   } else {
     follow_on_mechs<-NULL
   }
