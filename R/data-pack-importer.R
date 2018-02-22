@@ -160,7 +160,7 @@ ImportSheet <- function(wb_info, schema) {
   if ( schema$method == "standard") {
   d <-
     readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
-    dplyr::mutate_all(as.character) %>%
+    mutate_all(as.character) %>%
     tidyr::gather(variable, value, -c(1:7),convert =FALSE) %>% 
     dplyr::filter(.,  value != "0" ) %>% 
     dplyr::filter(!is.na(value)) %>%
@@ -188,7 +188,7 @@ ImportSheet <- function(wb_info, schema) {
       warning(msg)
     }
     d <- d %>%
-      dplyr::mutate_all(as.character) %>%
+      mutate_all(as.character) %>%
       dplyr::mutate(.,
                     snu_priotization_fy19 =  plyr::mapvalues(snu_priotization_fy19,
                                               datapackimporter::impatt$options$dp_code,
@@ -220,7 +220,7 @@ ImportSheet <- function(wb_info, schema) {
 }
 
 #' @export
-#' @title ImportFollowOnMechs(wb_info)
+#' @title ImportFollowOnMechs(wb_path)
 #'
 #' @description Imports the follow on mechs sheet.
 #' @param wb_info  Workbook info object.
@@ -256,7 +256,6 @@ ImportFollowOnMechs<-function(wb_info) {
 #'            \item data: Standard d2importer data frame
 #'            \item follow_on_mechs: Data frame of follow on mechs.
 #'            }
-
 #'
 ImportSheets <- function(wb_path) {
   wb_info = GetWorkbookInfo(wb_path)
