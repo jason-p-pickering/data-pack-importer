@@ -220,7 +220,7 @@ ImportSheet <- function(wb_info, schema) {
 }
 
 #' @export
-#' @title ImportFollowOnMechs(wb_path)
+#' @title ImportFollowOnMechs(wb_info)
 #'
 #' @description Imports the follow on mechs sheet.
 #' @param wb_info  Workbook info object.
