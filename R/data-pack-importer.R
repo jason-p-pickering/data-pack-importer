@@ -256,7 +256,6 @@ ImportFollowOnMechs<-function(wb_info) {
 #'            \item data: Standard d2importer data frame
 #'            \item follow_on_mechs: Data frame of follow on mechs.
 #'            }
-
 #'
 ImportSheets <- function(wb_path) {
   wb_info = GetWorkbookInfo(wb_path)
@@ -281,6 +280,15 @@ ImportSheets <- function(wb_path) {
     df <- dplyr::bind_rows(df, d)
   }
   
+  has_negative_numbers<-as.numeric(df$value) < 0
+  if( any(has_negative_numbers) ) {
+    
+    foo<-df[has_negative_numbers,]
+    print("Negative values were found in the data!")
+    print(foo)
+    stop()
+    
+    }
   
   #Import the follow on mechs
   if (wb_info$wb_type == "NORMAL") {
