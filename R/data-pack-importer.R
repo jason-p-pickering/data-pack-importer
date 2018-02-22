@@ -280,6 +280,15 @@ ImportSheets <- function(wb_path) {
     df <- dplyr::bind_rows(df, d)
   }
   
+  has_negative_numbers<-as.numeric(df$value) < 0
+  if( any(has_negative_numbers) ) {
+    
+    foo<-df[has_negative_numbers,]
+    print("Negative values were found in the data!")
+    print(foo)
+    stop()
+    
+    }
   
   #Import the follow on mechs
   if (wb_info$wb_type == "NORMAL") {
