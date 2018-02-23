@@ -97,7 +97,6 @@ distributeSite <- function(d) {
   pd_2019_S<-NULL
   pd_2019_P<-NULL
   DataPackCode<-NULL
-  attributeoptioncombo<-NULL
   dataelement<-NULL
   categoryoptioncombo<-NULL
   orgunit<-NULL
@@ -105,9 +104,6 @@ distributeSite <- function(d) {
   period<-NULL
   sitePct<-NULL
   orgUnit<-NULL
-  mechanism<-NULL
-  uid<-NULL
-  ou<-NULL
   wb_info<-NULL
   ou_name<-NULL
   psnu_name<-NULL
@@ -135,8 +131,8 @@ distributeSite <- function(d) {
   Pcts<-readRDS( file = file_path )
   de_map<-datapackimporter::rCOP18deMapT %>%
     dplyr::select(supportType,pd_2019_S,pd_2019_P,DataPackCode) %>%
-    na.omit %>%
-    dplyr::distinct
+    na.omit() %>%
+    dplyr::distinct()
   
     ds <- d$data %>%
         #Create id to link to percent distributions
@@ -160,7 +156,7 @@ distributeSite <- function(d) {
     
     mechanisms<-utils::read.csv(file_path,stringsAsFactors = FALSE) %>% 
       dplyr::select(mechanism,attributeoptioncombo=uid,ou) %>%
-      dplyr::filter( ou == wb_info$ou_name) %>% 
+      dplyr::filter( ou == d$wb_info$ou_name) %>% 
       dplyr::filter( attributeoptioncombo %in% unique(ds$attributeoptioncombo)) %>%
       dplyr::arrange(mechanism)
     
