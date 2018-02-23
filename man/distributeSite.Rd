@@ -2,17 +2,15 @@
 % Please edit documentation in R/distribution.R
 \name{distributeSite}
 \alias{distributeSite}
-\title{distributeSite()}
+\title{distributeSite(d)}
 \usage{
-distributeSite(df, distribution_year)
+distributeSite(d)
 }
 \arguments{
-\item{df}{Name of dataframe storing Data Pack data.}
-
-\item{distribution_year}{Distribution Method selection, whether based on FY17 or FY18.}
+\item{d}{Data object returned from ImportSheets function.}
 }
 \value{
-Returns a dataframe structured for DATIM import.
+Returns an object structured for allocation to the site level tool.
 }
 \description{
 Distributes Data Pack data (both Clustered and non-Clustered) to Site level for DATIM import

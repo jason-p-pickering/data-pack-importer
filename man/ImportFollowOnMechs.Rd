@@ -2,12 +2,12 @@
 % Please edit documentation in R/data-pack-importer.R
 \name{ImportFollowOnMechs}
 \alias{ImportFollowOnMechs}
-\title{ImportFollowOnMechs(wb_path)}
+\title{ImportFollowOnMechs(wb_info)}
 \usage{
-ImportFollowOnMechs(wb_path)
+ImportFollowOnMechs(wb_info)
 }
 \arguments{
-\item{wb_path}{The absolute file path to the workbook.}
+\item{wb_info}{Workbook info object.}
 }
 \value{
 A data  frame with three columns Closing Out, Follow On, Notes. 

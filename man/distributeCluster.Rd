@@ -2,17 +2,15 @@
 % Please edit documentation in R/distribution.R
 \name{distributeCluster}
 \alias{distributeCluster}
-\title{distributeCluster()}
+\title{distributeCluster(data)}
 \usage{
-distributeCluster(df, distribution_year)
+distributeCluster(d)
 }
 \arguments{
-\item{df}{Name of dataframe storing Data Pack data.}
-
-\item{distribution_year}{Distribution Method selection, whether based on FY17. Otherwise, FY18.}
+\item{d}{Data object returned from ImportSheets function.}
 }
 \value{
-Returns a dataframe structured for DATIM import.
+Returns an object structured for allocation to the import into the PNSU dataset.
 }
 \description{
 Distributes clustered Data Pack data to PSNU level for DATIM import

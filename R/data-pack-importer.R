@@ -53,10 +53,12 @@ ValidateImpattSheet <- function(d, wb_info) {
 }
 
 #' @export
-#' @title GetWorkbookInfo(wb_path)
+#' @title GetWorkbookInfo(wb_path,distribution_method,support_files_path)
 #'
 #' @description Provides information about the workbook
 #' @param wb_path The absolute file path to the workbook.
+#' @param distribution_method The distribution method to use.
+#' @param support_files_path Path to the support files directory.
 #' @return Returns a list consiting of :
 #'  \itemize{
 #'    \item wb_path: Full path to the disagg tool 
@@ -66,13 +68,22 @@ ValidateImpattSheet <- function(d, wb_info) {
 #'    \item ou_uid: UID of the operating unit }
 #' 
 #'
-GetWorkbookInfo<-function(wb_path) {
+GetWorkbookInfo<-function(wb_path,distribution_method=NA,support_files_path=NA) { 
   if (!file.exists(wb_path)) {stop("Workbook could not be read!")}
+  distribution_methods<-c(2017,2018)
+  if (is.na(distribution_method) | !any(distribution_method %in% distribution_methods) ) {
   #Distribution method
   promptText<-paste0("Please enter the distribution method (2017 or 2018):")
-  distribution_methods<-c(2017,2018)
   print(promptText)
-  distribution_method<-utils::select.list(distribution_methods,multiple=FALSE)
+  distribution_method<-utils::select.list(distribution_methods,multiple=FALSE) }
+  if (is.na(support_files_path)) {
+  #Supporting files directory
+  support_files_path<-readline("Please provide the path to DataPack Support Files:") }
+  
+  if (!dir.exists(support_files_path)) {
+    stop("Could not access support files directory!")
+  }
+  
   wb_type<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O3"))
   if ( wb_type == "normal") {
     wb_type = "NORMAL"
@@ -91,7 +102,8 @@ GetWorkbookInfo<-function(wb_path) {
     ou_name=ou_name,
     ou_uid=ou_uid,
     is_clustered=ou_name %in% datapackimporter::clusters$operatingunit,
-    distribution_method = distribution_method))
+    distribution_method = distribution_method,
+    support_files_path = support_files_path))
   }
 
 #' @export
@@ -99,15 +111,25 @@ GetWorkbookInfo<-function(wb_path) {
 #'
 #' @description Validates the layout of all relevant sheets in a data pack workbook
 #' @param wb_path  The absolute file path to the workbook.
-#' @return Returns a boolean value TRUE if the the workbook is valid, otherwise FALSE
+#' @param distribution_method The distribution method to use.
+#' @param support_files_path Path to the support files directory.
+#' @return Returns an object with information about the workbook, if the file is valid.
+#' Otherwise, the function will produce an error. 
 #'
 #'
 #'
 #'
-ValidateWorkbook <- function(wb_path) {
-  wb_info<-GetWorkbookInfo(wb_path)
-  if (wb_info$wb_type == "HTS") { schemas <- datapackimporter::hts_schema }
-  if (wb_info$wb_type == "NORMAL") { schemas <-datapackimporter::main_schema }
+ValidateWorkbook <- function(wb_path,distribution_method=NA,support_files_path=NA) {
+  wb_info <-
+    GetWorkbookInfo(wb_path,
+                    distribution_method = distribution_method,
+                    support_files_path = support_files_path)
+  if (wb_info$wb_type == "HTS") {
+    schemas <- datapackimporter::hts_schema
+  }
+  if (wb_info$wb_type == "NORMAL") {
+    schemas <- datapackimporter::main_schema
+  }
   all_sheets <- readxl::excel_sheets(path = wb_info$wb_path)
   expected <- unlist(sapply(schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
   all_there <- expected %in% all_sheets
@@ -123,12 +145,9 @@ ValidateWorkbook <- function(wb_path) {
     msg <- paste0("The following sheets were invalid:", invalid_sheets)
     stop(msg)
   } else {
-    return(TRUE)
+    return(wb_info)
   }
 }
-
-
-
 
 #' @export
 #' @importFrom stats complete.cases
@@ -220,7 +239,7 @@ ImportSheet <- function(wb_info, schema) {
 }
 
 #' @export
-#' @title ImportFollowOnMechs(wb_path)
+#' @title ImportFollowOnMechs(wb_info)
 #'
 #' @description Imports the follow on mechs sheet.
 #' @param wb_info  Workbook info object.
@@ -235,7 +254,7 @@ ImportFollowOnMechs<-function(wb_info) {
   schema<-rlist::list.find(schemas$schema,sheet_name==sheet_to_import)[[1]]
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(NA, schema$end_col))
-  d<-readxl::read_excel(wb_path, sheet = schema$sheet_name, range = cell_range)
+  d<-readxl::read_excel(wb_info$wb_path, sheet = sheet_to_import, range = cell_range)
   if (!is.null(d) & nrow(d) > 0) {
     return(d)
   } else {
@@ -246,10 +265,12 @@ ImportFollowOnMechs<-function(wb_info) {
 
 
 #' @export
-#' @title ImportSheets(wb_path)
+#' @title ImportSheets(wb_path,distr)
 #'
 #' @description Imports all sheets from the workbook
 #' @param wb_path  The absolute file path to the workbook.
+#' @param distribution_method The distribution method to use.
+#' @param support_files_path Path to the support files directory.
 #' @return Returns a list of data frames: 
 #' #'  \itemize{
 #'            \item wb_info: Workbook Info
@@ -257,11 +278,17 @@ ImportFollowOnMechs<-function(wb_info) {
 #'            \item follow_on_mechs: Data frame of follow on mechs.
 #'            }
 #'
-ImportSheets <- function(wb_path) {
-  wb_info = GetWorkbookInfo(wb_path)
-  if (wb_info$wb_type == "HTS") { schemas <- datapackimporter::hts_schema }
-  if (wb_info$wb_type == "NORMAL") { schemas <-datapackimporter::main_schema }
-  sheets<-unlist(sapply(schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
+ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA) {
+  wb_info <-
+    ValidateWorkbook(wb_path, distribution_method, support_files_path)
+  if (wb_info$wb_type == "HTS") {
+    schemas <- datapackimporter::hts_schema
+  }
+  if (wb_info$wb_type == "NORMAL") {
+    schemas <- datapackimporter::main_schema
+  }
+  sheets <-
+    unlist(sapply(schemas$schema, `[`, c('sheet_name')), use.names = FALSE)
   df <- tibble::tibble(
     "dataelement" = character(),
     "period" = character(),
@@ -284,7 +311,7 @@ ImportSheets <- function(wb_path) {
   if( any(has_negative_numbers) ) {
     
     foo<-df[has_negative_numbers,]
-    warn("Negative values were found in the data!")
+    warning("Negative values were found in the data!")
     print(foo)
     
     }

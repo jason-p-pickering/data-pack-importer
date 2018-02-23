@@ -4,10 +4,10 @@
 \alias{ImportSheet}
 \title{ImportSheet(wb_path,schema)}
 \usage{
-ImportSheet(wb_path, schema)
+ImportSheet(wb_info, schema)
 }
 \arguments{
-\item{wb_path}{The absolute file path to the workbook.}
+\item{wb_info}{Workbook info object.}
 
 \item{schema}{Schema of the sheet}
 }

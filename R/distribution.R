@@ -1,28 +1,22 @@
 #' @export
-#' @title distributeCluster()
+#' @title distributeCluster(data)
 #'
 #' @description Distributes clustered Data Pack data to PSNU level for DATIM import
-#' @param df Name of dataframe storing Data Pack data.
-#' @param distribution_year Distribution Method selection, whether based on FY17. Otherwise, FY18.
-#' @return Returns a dataframe structured for DATIM import.
+#' @param d Data object returned from ImportSheets function. 
+#' @return Returns an object structured for allocation to the import into the PNSU dataset.
 #'
 
-distributeCluster <- function(df,distribution_year) {
+distributeCluster <- function(d) {
     
-  distros_path=getOption("datapack_distros")
-    if (is.null(distros_path) |
-        is.na(distros_path) |
-        !file.exists(distros_path)) {
-      stop("Could not access path to the distributions.")
-    }
+  distros_path=d$wb_info$support_files_path
     #Default distribution is 2018 if not otherwise specified
-    if (distribution_year == 2017) {
+    if (d$wb_info$distribution_method == 2017) {
       file_name = "distrClusterFY17.rda"
     } else {
       file_name = "distrClusterFY18.rda"
     }
   
-    file_path = paste0(getOption("datapack_distros"), file_name)
+    file_path = paste0(distros_path, file_name)
     
     if (!file.exists(file_path)) {
       stop(paste("Distribution file could not be found. Please check it exists at",file_path))
@@ -41,7 +35,7 @@ distributeCluster <- function(df,distribution_year) {
         dplyr::mutate(avg=num/den) %>%
         dplyr::select(-num,-den)
     
-    ds <- df %>%
+    ds <- d$data %>%
         dplyr::filter(orgunit %in% unique(clusterMap$cluster_psnuuid)) %>%
         dplyr::mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
         dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
@@ -68,50 +62,79 @@ distributeCluster <- function(df,distribution_year) {
         # rbind(DataPack[!DataPack$orgunit %in% unique(clusterMap$cluster_psnuuid),],DataPack[orgunit %in% militaryUnits$orgUnit,])
         
     
-    return(ds)
+    return(list(wb_info=d$wb_info,
+                follow_on_mechs=d$follow_on_mechs,
+                data=ds))
 }
 
 
 #' @export
-#' @title distributeSite()
+#' @title distributeSite(d)
 #'
 #' @description Distributes Data Pack data (both Clustered and non-Clustered) to Site level for DATIM import
-#' @param df Name of dataframe storing Data Pack data.
-#' @param distribution_year Distribution Method selection, whether based on FY17 or FY18. 
-#' @return Returns a dataframe structured for DATIM import.
+#' @param d Data object returned from ImportSheets function. 
+#' @return Returns an object structured for allocation to the site level tool. 
 #'
 
-distributeSite <- function(df,distribution_year) {
-    
+distributeSite <- function(d) {
+  
+  #Not sure what to do with this. I think we should exlcude them. 
   militaryUnits<-datapackimporter::militaryUnits
   #Default distribution is 2018 if not otherwise specified
-  if (distribution_year == 2017) {
+  if (d$wb_info$distribution_method == 2017) {
     file_name = "distrSiteFY17.rda"
-  } else if (distribution_year ==  2018) {
+  } else if (d$wb_info$distribution_method ==  2018) {
     file_name = "distrSiteFY18.rda"
   } else
   {
     stop("Distribution year must either 2017 or 2018! ")
   }
   
-  file_path = paste0(getOption("datapack_distros"), file_name)
+  file_path = paste0(d$wb_info$support_files_path, file_name)
   
   if (!file.exists(file_path)) {
     stop(paste("Distribution file could not be found. Please check it exists at",file_path))
   }
   
-  Pcts<-readRDS(file = file_path )
-
-    ds <- df %>%
+  Pcts<-readRDS( file = file_path )
+  de_map<-rCOP18deMapT %>%
+    select(supportType,pd_2019_S,pd_2019_P,DataPackCode) %>%
+    na.omit %>%
+    distinct
+  
+    ds <- d$data %>%
         #Create id to link to percent distributions
         dplyr::mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
         #Pull in distribution percentages, keeping all data
         dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
        #Do we need to round or what here?
-        dplyr::mutate(value=as.character(round(as.numeric(value)*sitePct))) %>%
-        dplyr::filter(value != "0") %>% 
+        dplyr::mutate(value= trunc( ( as.numeric(value) * sitePct  ) + 0.5 )) %>%
       #Don't we have to remap back to the Site level data elements from the PSNU data elements?
-        dplyr::select(dataelement,period,orgunit=orgUnit,categoryoptioncombo,attributeoptioncombo,value)
-
-    return(ds)
+        dplyr::select(dataelement,period,orgunit=orgUnit,categoryoptioncombo,attributeoptioncombo,value) %>%
+        dplyr::mutate(pd_2019_P=paste0(`dataelement`,".",`categoryoptioncombo`)) %>%
+        dplyr::left_join(de_map,by=c("pd_2019_P")) %>%
+        dplyr::select(orgunit,attributeoptioncombo,supportType,DataPackCode,value) 
+        # dplyr::left_join(mechs,by=c("attributeoptioncombo")) %>%
+        # dplyr::left_join(ous_with_psnus,by=c("orgunit"="organisationunituid")) %>%
+        # dplyr::mutate(site = paste(psnu_name,">",name,"(",orgunit,")")) %>%
+        # dplyr::select(site,mechanism,type=supportType,dp_code=DataPackCode,value)
+    
+    
+    file_path = paste0(d$wb_info$support_files_path, "mechanisms_by_ou.csv")
+    
+    mechanisms<-read.csv(file_path,stringsAsFactors = FALSE) %>% 
+      dplyr::select(mechanism,attributeoptioncombo=uid,ou) %>%
+      filter( ou == wb_info$ou_name) %>% 
+      filter( attributeoptioncombo %in% unique(ds$attributeoptioncombo)) %>%
+      arrange(mechanism)
+    
+    sites<-readRDS(paste0(d$wb_info$support_files_path,"ous_with_psnus.rds")) %>%
+      filter(ou_name == wb_info$ou_name) %>%
+      filter(!(psnu_name =="" | is.na(psnu_name))) %>%
+      select(organisationunituid,name,psnu_name)
+    
+    return(list(wb_info=d$wb_info,
+                mechanisms=mechanisms,
+                sites=sites,
+                data=ds))
 }

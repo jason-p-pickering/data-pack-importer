@@ -336,9 +336,8 @@ mapDataPackCodes <- function(COP18deMapT) {
     return(COP18deMapT)
 }
 
-generateCOP18deMap<-function() {
-  COP18deMapT<-generateCodeListT() %>%
-      mapDataPackCodes()
+generateCOP18deMap<-function(COP18deMapT) {
+  COP18deMapT<-COP18deMapT %>% mapDataPackCodes()
   
 FY19deMap <- COP18deMapT %>%
   mutate(matchCode = COPidName) %>%

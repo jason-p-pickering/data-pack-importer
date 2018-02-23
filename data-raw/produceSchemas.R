@@ -124,8 +124,7 @@ siteToolSchema<-function(wb_path) {
   sheets <- excel_sheets(wb_path)
 }
 
-  
-  getSiteList <- function(siteType) {
+getSiteList <- function(siteType) {
             organisationUnitGroups <- getOrganisationUnitGroups()
             stUID<-organisationUnitGroups[organisationUnitGroups$siteType==siteType,][1]
             url<-paste0(getOption("baseurl"),"api/organisationUnitGroups/",stUID,"?fields=organisationUnits[id],id,name&format=json")
@@ -134,9 +133,6 @@ siteToolSchema<-function(wb_path) {
             names(resp)<-c("siteType","siteTypeUID","orgUnit")
             return(resp)
 }
-
-  
-
 
 ##Procedural logic to generate the actual schemas
 ##PSNU HTS Template
@@ -159,8 +155,6 @@ sheet_path="data-raw/SiteLevelReview_HTS_TEMPLATE.xlsx"
 mode="HTS_SITE"
 hts_site_schema<-produceSiteToolSchemas(sheet_path,mode)
 
-
-
 schemas<-list(hts=hts_schema,normal=main_schema)
 names(schemas)<-c("hts","normal")
 
@@ -173,7 +167,9 @@ impatt<-fromJSON("data-raw/impatt_option_set.json")
 
 datimvalidation::loadSecrets("/home/jason/.secrets/datim.json")
 source("data-raw/transform_code_lists.R")
+rCOP18deMapT<-generateCodeListT()%>% mapDataPackCodes()
 rCOP18deMap<-generateCOP18deMap()
+
 
 #MilitaryUnits
 militaryUnits<-getSiteList("Military")

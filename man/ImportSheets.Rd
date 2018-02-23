@@ -2,12 +2,17 @@
 % Please edit documentation in R/data-pack-importer.R
 \name{ImportSheets}
 \alias{ImportSheets}
-\title{ImportSheets(wb_path)}
+\title{ImportSheets(wb_path,distr)}
 \usage{
-ImportSheets(wb_path)
+ImportSheets(wb_path = NA, distribution_method = NA,
+  support_files_path = NA)
 }
 \arguments{
 \item{wb_path}{The absolute file path to the workbook.}
+
+\item{distribution_method}{The distribution method to use.}
+
+\item{support_files_path}{Path to the support files directory.}
 }
 \value{
 Returns a list of data frames: 
