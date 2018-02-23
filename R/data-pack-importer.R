@@ -174,7 +174,7 @@ ValidateWorkbook <- function(wb_path,distribution_method=NA,support_files_path=N
 
 
 ImportSheet <- function(wb_info, schema) {
-  mutate_all<-NULL
+
   variable<-NULL
   value<-NULL
   psnuuid<-NULL
@@ -196,7 +196,7 @@ ImportSheet <- function(wb_info, schema) {
   if ( schema$method == "standard") {
   d <-
     readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
-    mutate_all(as.character) %>%
+    dplyr::mutate_all(as.character) %>%
     tidyr::gather(variable, value, -c(1:7),convert =FALSE) %>% 
     dplyr::filter(.,  value != "0" ) %>% 
     dplyr::filter(!is.na(value)) %>%
