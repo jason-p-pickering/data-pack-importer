@@ -2,7 +2,7 @@
 % Please edit documentation in R/data-pack-importer.R
 \name{ValidateSheet}
 \alias{ValidateSheet}
-\title{ValidateSheet(schemas,sheet_name)}
+\title{ValidateSheet(schemas,sheet_name,wb_info)}
 \usage{
 ValidateSheet(schemas, sheet_name, wb_info)
 }

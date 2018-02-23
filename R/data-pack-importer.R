@@ -1,5 +1,5 @@
 #' @export
-#' @title ValidateSheet(schemas,sheet_name)
+#' @title ValidateSheet(schemas,sheet_name,wb_info)
 #'
 #' @description Validates the layout of a single sheet based on its schema definition.
 #' @param schemas Schemas of this workbook.
@@ -23,6 +23,7 @@ ValidateSheet <- function(schemas,sheet_name,wb_info) {
 #' @description Validates all of the sheets
 #' @param schemas Schemas for this workbook
 #' @param sheets Names of sheets
+#' @param wb_info Workbook info for the worbook.
 #' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
 #'
 ValidateSheets<-function(schemas,sheets,wb_info) {
@@ -35,8 +36,10 @@ ValidateSheets<-function(schemas,sheets,wb_info) {
 #' @title ValidateImpattSheet(d,wb_info)
 #' @description Validates the impatt sheet for completeness.
 #' @param d A parsed data frame with IMPATT data
+#' @param wb_info Worbook info for the workbook
 #' 
 ValidateImpattSheet <- function(d, wb_info) {
+  
   psnus <- datapackimporter::psnus[[wb_info$ou_uid]]
   psnus_missing <- !(psnus$id %in% d$psnuuid)
   if (any(psnus_missing)) {
@@ -171,6 +174,20 @@ ValidateWorkbook <- function(wb_path,distribution_method=NA,support_files_path=N
 
 
 ImportSheet <- function(wb_info, schema) {
+  mutate_all<-NULL
+  variable<-NULL
+  value<-NULL
+  psnuuid<-NULL
+  mechid<-NULL
+  type<-NULL
+  combi<-NULL
+  dataelement<-NULL
+  period<-NULL
+  orgunit<-NULL
+  categoryoptioncombo<-NULL
+  attributeoptioncombo<-NULL
+  snu_priotization_fy19<-NULL
+  
 
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(NA, schema$end_col))
@@ -247,10 +264,13 @@ ImportSheet <- function(wb_info, schema) {
 #' If this sheet is blank, returns NULL.
 
 ImportFollowOnMechs<-function(wb_info) {
-  if (wb_info$wb_type == "NORMAL") { schemas <-datapackimporter::main_schema } else {
+  sheet_name<-NULL
+  if (wb_info$wb_type == "NORMAL") {
+    schemas <- datapackimporter::main_schema
+  } else {
     stop("Only Normal Disagg tools with follow on mechs are supported!")
   }
-  sheet_to_import = "Follow on Mech List"
+  sheet_to_import <- "Follow on Mech List"
   schema<-rlist::list.find(schemas$schema,sheet_name==sheet_to_import)[[1]]
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(NA, schema$end_col))
@@ -279,6 +299,8 @@ ImportFollowOnMechs<-function(wb_info) {
 #'            }
 #'
 ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA) {
+
+  
   wb_info <-
     ValidateWorkbook(wb_path, distribution_method, support_files_path)
   if (wb_info$wb_type == "HTS") {
@@ -299,6 +321,8 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
   )
   actual_sheets<-readxl::excel_sheets(wb_info$wb_path)
   sheets_to_import<-actual_sheets[actual_sheets %in% sheets]
+  
+  sheet_name<-NULL
   
   for (i in 1:length(sheets_to_import)) {
     

@@ -8,6 +8,8 @@ ValidateImpattSheet(d, wb_info)
 }
 \arguments{
 \item{d}{A parsed data frame with IMPATT data}
+
+\item{wb_info}{Worbook info for the workbook}
 }
 \description{
 Validates the impatt sheet for completeness.

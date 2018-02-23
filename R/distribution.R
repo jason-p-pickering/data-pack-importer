@@ -7,7 +7,22 @@
 #'
 
 distributeCluster <- function(d) {
-    
+  
+  cluster_psnuuid<-NULL
+  psnuuid<-NULL
+  n<-NULL
+  num<-NULL
+  den<-NULL
+  orgUnit<-NULL
+  attributeoptioncombo<-NULL
+  dataelement<-NULL
+  categoryoptioncombo<-NULL
+  orgunit<-NULL
+  value<-NULL
+  PSNUuid<-NULL
+  period<-NULL
+  n<-NULL
+  
   distros_path=d$wb_info$support_files_path
     #Default distribution is 2018 if not otherwise specified
     if (d$wb_info$distribution_method == 2017) {
@@ -41,12 +56,12 @@ distributeCluster <- function(d) {
         dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
         #Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
         dplyr::left_join(clusterAvgs,by=c("orgunit"="cluster_psnuuid")) %>%
-        dplyr::mutate(value=case_when(is.na(psnuPct)~value*avg ,TRUE~value*psnuPct)) %>%
+        dplyr::mutate(value=dplyr::case_when(is.na(psnuPct)~value*avg ,TRUE~value*psnuPct)) %>%
         dplyr::mutate(value = round(value)) %>%
         dplyr::filter(value != "0") 
         dplyr::mutate(orgunit=PSNUuid) %>%
         dplyr::select(dataelement,period,PSNUuid,orgunit,categoryoptioncombo,attributeoptioncombo,value) %>%
-        rbind(df[!df$orgunit %in% unique(clusterMap$cluster_psnuuid),])
+        dplyr::bind_rows(d$data[!d$data$orgunit %in% unique(clusterMap$cluster_psnuuid),])
     
         # ds <- DataPack %>%
         # filter(orgunit %in% unique(clusterMap$cluster_psnuuid)
@@ -78,6 +93,27 @@ distributeCluster <- function(d) {
 
 distributeSite <- function(d) {
   
+  supportType<-NULL
+  pd_2019_S<-NULL
+  pd_2019_P<-NULL
+  DataPackCode<-NULL
+  attributeoptioncombo<-NULL
+  dataelement<-NULL
+  categoryoptioncombo<-NULL
+  orgunit<-NULL
+  value<-NULL
+  period<-NULL
+  sitePct<-NULL
+  orgUnit<-NULL
+  mechanism<-NULL
+  uid<-NULL
+  ou<-NULL
+  wb_info<-NULL
+  ou_name<-NULL
+  psnu_name<-NULL
+  organisationunituid<-NULL
+  name<-NULL
+  
   #Not sure what to do with this. I think we should exlcude them. 
   militaryUnits<-datapackimporter::militaryUnits
   #Default distribution is 2018 if not otherwise specified
@@ -98,9 +134,9 @@ distributeSite <- function(d) {
   
   Pcts<-readRDS( file = file_path )
   de_map<-datapackimporter::rCOP18deMapT %>%
-    select(supportType,pd_2019_S,pd_2019_P,DataPackCode) %>%
+    dplyr::select(supportType,pd_2019_S,pd_2019_P,DataPackCode) %>%
     na.omit %>%
-    distinct
+    dplyr::distinct
   
     ds <- d$data %>%
         #Create id to link to percent distributions
@@ -122,16 +158,16 @@ distributeSite <- function(d) {
     
     file_path = paste0(d$wb_info$support_files_path, "mechanisms_by_ou.csv")
     
-    mechanisms<-read.csv(file_path,stringsAsFactors = FALSE) %>% 
+    mechanisms<-utils::read.csv(file_path,stringsAsFactors = FALSE) %>% 
       dplyr::select(mechanism,attributeoptioncombo=uid,ou) %>%
-      filter( ou == wb_info$ou_name) %>% 
-      filter( attributeoptioncombo %in% unique(ds$attributeoptioncombo)) %>%
-      arrange(mechanism)
+      dplyr::filter( ou == wb_info$ou_name) %>% 
+      dplyr::filter( attributeoptioncombo %in% unique(ds$attributeoptioncombo)) %>%
+      dplyr::arrange(mechanism)
     
     sites<-readRDS(paste0(d$wb_info$support_files_path,"ous_with_psnus.rds")) %>%
-      filter(ou_name == d$wb_info$ou_name) %>%
-      filter(!(psnu_name =="" | is.na(psnu_name))) %>%
-      select(organisationunituid,name,psnu_name)
+      dplyr::filter(ou_name == d$wb_info$ou_name) %>%
+      dplyr::filter(!(psnu_name =="" | is.na(psnu_name))) %>%
+      dplyr::select(organisationunituid,name,psnu_name)
     
     return(list(wb_info=d$wb_info,
                 mechanisms=mechanisms,

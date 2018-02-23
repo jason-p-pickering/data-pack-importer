@@ -10,6 +10,8 @@ ValidateSheets(schemas, sheets, wb_info)
 \item{schemas}{Schemas for this workbook}
 
 \item{sheets}{Names of sheets}
+
+\item{wb_info}{Workbook info for the worbook.}
 }
 \value{
 Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
