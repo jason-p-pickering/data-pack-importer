@@ -284,9 +284,8 @@ ImportSheets <- function(wb_path) {
   if( any(has_negative_numbers) ) {
     
     foo<-df[has_negative_numbers,]
-    print("Negative values were found in the data!")
+    warn("Negative values were found in the data!")
     print(foo)
-    stop()
     
     }
   
