@@ -224,7 +224,7 @@ ImportSheet <- function(wb_info, schema) {
       warning(msg)
     }
     d <- d %>%
-      mutate_all(as.character) %>%
+      dplyr::mutate_all(as.character) %>%
       dplyr::mutate(.,
                     snu_priotization_fy19 =  plyr::mapvalues(snu_priotization_fy19,
                                               datapackimporter::impatt$options$dp_code,
