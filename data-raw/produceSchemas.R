@@ -168,7 +168,7 @@ impatt<-fromJSON("data-raw/impatt_option_set.json")
 datimvalidation::loadSecrets("/home/jason/.secrets/datim.json")
 source("data-raw/transform_code_lists.R")
 rCOP18deMapT<-generateCodeListT()%>% mapDataPackCodes()
-rCOP18deMap<-generateCOP18deMap()
+rCOP18deMap<-generateCOP18deMap(rCOP18deMapT)
 
 
 #MilitaryUnits
@@ -217,4 +217,4 @@ psnus<-mapply(getOrgunitsAtLevel,ou_prioritization_levels$id,ou_prioritization_l
 militaryUnits<-getSiteList("Military")
 
 #Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
-devtools::use_data(hts_schema,main_schema,mechs,des,impatt,rCOP18deMap,clusters, sites_exclude,psnus,militaryUnits,internal = TRUE,overwrite = TRUE)
+devtools::use_data(hts_schema,main_schema,main_site_schema,hts_site_schema,mechs,des,impatt,rCOP18deMap,rCOP18deMapT,clusters, sites_exclude,psnus,militaryUnits,internal = TRUE,overwrite = TRUE)

@@ -97,7 +97,7 @@ distributeSite <- function(d) {
   }
   
   Pcts<-readRDS( file = file_path )
-  de_map<-rCOP18deMapT %>%
+  de_map<-datapackimporter::rCOP18deMapT %>%
     select(supportType,pd_2019_S,pd_2019_P,DataPackCode) %>%
     na.omit %>%
     distinct
@@ -129,7 +129,7 @@ distributeSite <- function(d) {
       arrange(mechanism)
     
     sites<-readRDS(paste0(d$wb_info$support_files_path,"ous_with_psnus.rds")) %>%
-      filter(ou_name == wb_info$ou_name) %>%
+      filter(ou_name == d$wb_info$ou_name) %>%
       filter(!(psnu_name =="" | is.na(psnu_name))) %>%
       select(organisationunituid,name,psnu_name)
     

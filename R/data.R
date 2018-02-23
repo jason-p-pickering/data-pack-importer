@@ -47,7 +47,12 @@
 #' @return Returns an object with the following columns
 "rCOP18deMap"
 
-
+#' @export
+#' @title rCOP18deMapT
+#'
+#' @description Object used for further processing and matching of data pack codes
+#' @return Returns an object with the following columns
+"rCOP18deMapT"
 
 #' @export
 #' @title clusters
@@ -77,3 +82,4 @@
 #' @description PSNU UIDs and names 
 #' @return Returns a data frame of military units which shold be exlcuded
 "militaryUnits"
+
