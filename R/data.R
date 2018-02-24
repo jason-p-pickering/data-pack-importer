@@ -83,3 +83,17 @@
 #' @return Returns a data frame of military units which shold be exlcuded
 "militaryUnits"
 
+#' @export
+#' @title hts_site_schema
+#'
+#' @description Schema of the HTS site level tool
+#' @return A list of column and row positions
+"hts_site_schema"
+
+#' @export
+#' @title main_site_schema
+#'
+#' @description Schema of the Normal site level tool
+#' @return  A list of column and row positions
+"main_site_schema"
+
