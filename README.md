@@ -29,18 +29,16 @@ todo
 
 
 ```R
-library(devtools)
-library(datapackimporter)
-library(jsonlite)
-install_github("jason-p-pickering/data-pack-importer")
-install_github("tkunstek/openxlsx")
-
 # ADJUST PATHS
 support_files="/path/to/support_files/"
-disagg_tool="/path/to/disaggTool/ZambiaCOP18DisaggTool_HTSv2018.02.11.xlsx"
+disagg_tool="/path/to/disagg_tool/ZambiaCOP18DisaggTool_HTSv2018.02.11.xlsx"
 distribution_year=2017
 
 # DO NOT CHANGE
+library(devtools)
+library(datapackimporter)
+install_github("jason-p-pickering/data-pack-importer")
+install_github("tkunstek/openxlsx")
 wb<-disagg_tool
 psnu_data<-ImportSheets(wb,
                distribution_method = distribution_year,
@@ -52,13 +50,6 @@ psnu_data<-ImportSheets(wb,
 This is not ready yet.
 
 ```R
-```R
-library(devtools)
-library(datapackimporter)
-library(jsonlite)
-install_github("jason-p-pickering/data-pack-importer")
-install_github("tkunstek/openxlsx")
-
 # ADJUST PATHS
 support_files="~/Github/datapack/"
 psnu_json_file=paste0(folder, "zambia_psnu_data.json")
@@ -67,6 +58,12 @@ site_json_file="/home/david/Github/datapack-import-converter/data/zambia_site_da
 distribution_year=2017
 
 # DO NOT CHANGE
+library(devtools)
+library(datapackimporter)
+library(jsonlite)
+install_github("jason-p-pickering/data-pack-importer")
+install_github("tkunstek/openxlsx")
+
 wb<-disagg_tool
 psnu_data<-ImportSheets(wb,
                distribution_method = distribution_year,
