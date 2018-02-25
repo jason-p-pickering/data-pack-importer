@@ -20,14 +20,41 @@ write_site_level_sheet <- function(wb,schema,df) {
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
       tidyr::spread(match_code,value,drop=FALSE)
     
-    openxlsx::writeData(wb,sheet=schema$sheet_name,sums,xy=c(5,4),colNames=F,keepNA=F)
+    openxlsx::writeData(
+      wb,
+      sheet = schema$sheet_name,
+      sums,
+      xy = c(5, 4),
+      colNames = F,
+      keepNA = F
+    )
     
     df_indicator<-df_indicator %>% 
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
       tidyr::spread(match_code,value,drop=FALSE)
-    openxlsx::writeData(wb,sheet=schema$sheet_name,df_indicator,xy=c(2,7),colNames=F,keepNA=F)
-    
-    inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
+    #Does this error of the table is not present in the template?
+    openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)
+    openxlsx::writeDataTable(
+      wb,
+      sheet = schema$sheet_name,
+      df_indicator,
+      xy = c(2, 6),
+      colNames = TRUE,
+      keepNA = FALSE,
+      tableName = schema$sheet_name
+    )
+    formula_cell_numbers<- ( 1:NROW(df_indicator) ) + 6
+    inactiveFormula <-
+      paste0(
+        'IF(AND(',
+        schema$sheet_name,
+        '!$B',formula_cell_numbers,
+        '<>"",INDEX(sitelist[Inactive],MATCH(',
+        schema$sheet_name,
+        '!$B',formula_cell_numbers,
+        ',sitelist[siteID],0)+1)=1),"!!","")')
+        
+   # inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
     openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
     openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:1048576,"list",value="SiteList")
     openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:1048576,"list",value="MechList")
@@ -99,14 +126,20 @@ export_site_level_tool <- function(d) {
     colNames = F,
     keepNA = F
   )
-  openxlsx::writeData(
+  openxlsx::removeTable(wb,"SiteList","SiteList")
+  site_list<-data.frame(siteID=d$sites$name_full,Inactive=0)
+  openxlsx::writeDataTable(
     wb,
     "SiteList",
-    d$sites$name_full,
-    xy = c(1, 2),
-    colNames = F,
-    keepNA = F
+    site_list,
+    xy = c(1, 1),
+    colNames = T,
+    keepNA = F,
+    tableName = "SiteList"
   )
+  openxlsx::dataValidation(wb, "SiteList" , col = 2, rows = 1:nrow(site_list), 
+                 type = "whole"
+                 , operator = "between", value = c(0, 2))
   openxlsx::writeData(
     wb,
     "Mechs",
