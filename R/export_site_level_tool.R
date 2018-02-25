@@ -61,10 +61,10 @@ write_site_level_sheet <- function(wb,schema,df) {
         'IF(AND(',
         schema$sheet_name,
         '!$B',formula_cell_numbers,
-        '<>"",INDEX(sitelist[Inactive],MATCH(',
+        '<>"",INDEX(SiteList[Inactive],MATCH(',
         schema$sheet_name,
         '!$B',formula_cell_numbers,
-        ',sitelist[siteID],0)+1)=1),"!!","")')
+        ',SiteList[siteID],0)+1)=1),"!!","")')
         
    # inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
     openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
@@ -110,7 +110,6 @@ export_site_level_tool <- function(d) {
            " )")
   wb <- openxlsx::loadWorkbook(file = template_path)
   sheets<-openxlsx::getSheetNames(template_path)
-  openxlsx::sheetVisibility(wb)[which(sheets =="SiteList")]<-"veryHidden"
   openxlsx::sheetVisibility(wb)[which(sheets =="Mechs")]<-"veryHidden"
   
   #Fill in the Homepage details
