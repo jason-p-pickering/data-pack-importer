@@ -113,7 +113,7 @@ export_site_level_tool <- function(d) {
     wb,
     "Home",
     d$wb_info$ou_uid,
-    xy = c(15, 4),
+    xy = c(15, 3),
     colNames = F,
     keepNA = F
   )
@@ -122,10 +122,21 @@ export_site_level_tool <- function(d) {
     wb,
     "Home",
     d$wb_info$wb_type,
-    xy = c(15, 3),
+    xy = c(15, 2),
     colNames = F,
     keepNA = F
   )
+  #Distribution method
+  openxlsx::writeData(
+    wb,
+    "Home",
+    paste("Distribution method: ",d$wb_info$distribution_method),
+    xy = c(15, 5),
+    colNames = F,
+    keepNA = F
+  )
+  
+  
   openxlsx::removeTable(wb,"SiteList","SiteList")
   site_list<-data.frame(siteID=d$sites$name_full,Inactive=0)
   openxlsx::writeDataTable(
