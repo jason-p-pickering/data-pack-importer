@@ -41,8 +41,59 @@
 
 
 #' @export
-#' @title COPdataElements
+#' @title rCOP18deMap
 #'
 #' @description Object used for further processing and matching of data pack codes
 #' @return Returns an object with the following columns
-"COPdataElements"
+"rCOP18deMap"
+
+#' @export
+#' @title rCOP18deMapT
+#'
+#' @description Object used for further processing and matching of data pack codes
+#' @return Returns an object with the following columns
+"rCOP18deMapT"
+
+#' @export
+#' @title clusters
+#'
+#' @description Object used dealing with distribution of values from clusters to PSNUs
+#' @return Returns an object with the following columns
+"clusters"
+
+
+#' @export
+#' @title sites_exclude
+#'
+#' @description Vector of sites to exlcude
+#' @return Returns a character vector of UIDs
+"sites_exclude"
+
+#' @export
+#' @title psnus
+#'
+#' @description PSNU UIDs and names 
+#' @return Returns a list of data frames
+"psnus"
+
+#' @export
+#' @title militaryUnits
+#'
+#' @description PSNU UIDs and names 
+#' @return Returns a data frame of military units which shold be exlcuded
+"militaryUnits"
+
+#' @export
+#' @title hts_site_schema
+#'
+#' @description Schema of the HTS site level tool
+#' @return A list of column and row positions
+"hts_site_schema"
+
+#' @export
+#' @title main_site_schema
+#'
+#' @description Schema of the Normal site level tool
+#' @return  A list of column and row positions
+"main_site_schema"
+

@@ -4,13 +4,18 @@
 \alias{ValidateWorkbook}
 \title{ValidateWorkbook(wb_path)}
 \usage{
-ValidateWorkbook(wb_path)
+ValidateWorkbook(wb_path, distribution_method = NA, support_files_path = NA)
 }
 \arguments{
 \item{wb_path}{The absolute file path to the workbook.}
+
+\item{distribution_method}{The distribution method to use.}
+
+\item{support_files_path}{Path to the support files directory.}
 }
 \value{
-Returns a boolean value TRUE if the the workbook is valid, otherwise FALSE
+Returns an object with information about the workbook, if the file is valid.
+Otherwise, the function will produce an error.
 }
 \description{
 Validates the layout of all relevant sheets in a data pack workbook

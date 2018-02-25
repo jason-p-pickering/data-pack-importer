@@ -2,14 +2,16 @@
 % Please edit documentation in R/data-pack-importer.R
 \name{ValidateSheet}
 \alias{ValidateSheet}
-\title{ValidateSheet(schemas,sheet_name)}
+\title{ValidateSheet(schemas,sheet_name,wb_info)}
 \usage{
-ValidateSheet(schemas, sheet_name)
+ValidateSheet(schemas, sheet_name, wb_info)
 }
 \arguments{
 \item{schemas}{Schemas of this workbook.}
 
 \item{sheet_name}{Name of the sheet to be validated.}
+
+\item{wb_info}{Info about the workbook.}
 }
 \value{
 Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.

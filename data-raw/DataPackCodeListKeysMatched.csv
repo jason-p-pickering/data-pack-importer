@@ -1,0 +1,901 @@
+﻿DataPackKey,DataPackCode,DataPackFilename,DataPackTabName,indicator,numeratorDenom,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,IMPATT
+GEND_GBV|N|||||||||<10|<15||Female||Physical and/or Emotional Violence|FALSE,gend_gbv_u10_f_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,<10,<15,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||<10|<15||Female||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_u10_f_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,<10,<15,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||<10|<15||Male||Physical and/or Emotional Violence|FALSE,gend_gbv_u10_m_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,<10,<15,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||<10|<15||Male||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_u10_m_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,<10,<15,,Male,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||||||||FALSE,D_gend_gbv_fy19,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,,,,,,,FALSE
+GEND_GBV|N||||||||||||||PEP|FALSE,gend_gbv_pep,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,,,,,,PEP,FALSE
+GEND_GBV|N||||||||||||||Physical and/or Emotional Violence|FALSE,gend_gbv_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,,,,,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N||||||||||||||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,,,,,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||10-14|<15||Female||Physical and/or Emotional Violence|FALSE,gend_gbv_1014_f_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,10-14,<15,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||10-14|<15||Female||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_1014_f_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,10-14,<15,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||10-14|<15||Male||Physical and/or Emotional Violence|FALSE,gend_gbv_1014_m_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,10-14,<15,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||10-14|<15||Male||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_1014_m_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,10-14,<15,,Male,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||15-19|15+||Female||Physical and/or Emotional Violence|FALSE,gend_gbv_1519_f_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,15-19,15+,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||15-19|15+||Female||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_1519_f_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,15-19,15+,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||15-19|15+||Male||Physical and/or Emotional Violence|FALSE,gend_gbv_1519_m_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,15-19,15+,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||15-19|15+||Male||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_1519_m_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,15-19,15+,,Male,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||20-24|15+||Female||Physical and/or Emotional Violence|FALSE,gend_gbv_2024_f_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,20-24,15+,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||20-24|15+||Female||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_2024_f_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,20-24,15+,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||20-24|15+||Male||Physical and/or Emotional Violence|FALSE,gend_gbv_2024_m_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,20-24,15+,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||20-24|15+||Male||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_2024_m_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,20-24,15+,,Male,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||25-29|15+||Female||Physical and/or Emotional Violence|FALSE,gend_gbv_2529_f_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,25-29,15+,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||25-29|15+||Female||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_2529_f_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,25-29,15+,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||25-29|15+||Male||Physical and/or Emotional Violence|FALSE,gend_gbv_2529_m_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,25-29,15+,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||25-29|15+||Male||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_2529_m_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,25-29,15+,,Male,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||30-34|15+||Female||Physical and/or Emotional Violence|FALSE,gend_gbv_3034_f_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,30-34,15+,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||30-34|15+||Female||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_3034_f_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,30-34,15+,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||30-34|15+||Male||Physical and/or Emotional Violence|FALSE,gend_gbv_3034_m_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,30-34,15+,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||30-34|15+||Male||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_3034_m_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,30-34,15+,,Male,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||35-39|15+||Female||Physical and/or Emotional Violence|FALSE,gend_gbv_3539_f_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,35-39,15+,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||35-39|15+||Female||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_3539_f_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,35-39,15+,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||35-39|15+||Male||Physical and/or Emotional Violence|FALSE,gend_gbv_3539_m_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,35-39,15+,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||35-39|15+||Male||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_3539_m_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,35-39,15+,,Male,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||40-49|15+||Female||Physical and/or Emotional Violence|FALSE,gend_gbv_4049_f_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,40-49,15+,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||40-49|15+||Female||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_4049_f_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,40-49,15+,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||40-49|15+||Male||Physical and/or Emotional Violence|FALSE,gend_gbv_4049_m_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,40-49,15+,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||40-49|15+||Male||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_4049_m_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,40-49,15+,,Male,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||50+|15+||Female||Physical and/or Emotional Violence|FALSE,gend_gbv_o50_f_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,50+,15+,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||50+|15+||Female||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_o50_f_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,50+,15+,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||50+|15+||Male||Physical and/or Emotional Violence|FALSE,gend_gbv_o50_m_pev,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,50+,15+,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||50+|15+||Male||Sexual Violence (Post-Rape Care)|FALSE,gend_gbv_o50_m_sv,DisaggTool,GEND_GBV,GEND_GBV,N,,,,,,,,,50+,15+,,Male,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||Unknown Age|Unknown Age||Female||Physical and/or Emotional Violence|FALSE,,,,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||Unknown Age|Unknown Age||Female||Sexual Violence (Post-Rape Care)|FALSE,,,,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Sexual Violence (Post-Rape Care),FALSE
+GEND_GBV|N|||||||||Unknown Age|Unknown Age||Male||Physical and/or Emotional Violence|FALSE,,,,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Physical and/or Emotional Violence,FALSE
+GEND_GBV|N|||||||||Unknown Age|Unknown Age||Male||Sexual Violence (Post-Rape Care)|FALSE,,,,GEND_GBV,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Sexual Violence (Post-Rape Care),FALSE
+HTS_SELF|N||||||||||||||Directly-Assisted|FALSE,hts_self_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,,,,,,Directly-Assisted,FALSE
+HTS_SELF|N||||||||||||||Unassisted - Other|FALSE,hts_self_unasst_oth,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,,,,,,Unassisted - Other,FALSE
+HTS_SELF|N||||||||||||||Unassisted - Self|FALSE,hts_self_unasst_self,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,,,,,,Unassisted - Self,FALSE
+HTS_SELF|N||||||||||||||Unassisted - Sex Partner|FALSE,hts_self_unasst_partner,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,,,,,,Unassisted - Sex Partner,FALSE
+HTS_SELF|N||||||||||||||Unassisted|FALSE,hts_self_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,,,,,,Unassisted,FALSE
+HTS_SELF|N|||||||||10-14|<15||Female||Directly-Assisted|FALSE,hts_self_1014_f_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,10-14,<15,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||10-14|<15||Female||Unassisted|FALSE,hts_self_1014_f_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,10-14,<15,,Female,,Unassisted,FALSE
+HTS_SELF|N|||||||||10-14|<15||Male||Directly-Assisted|FALSE,hts_self_1014_m_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,10-14,<15,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||10-14|<15||Male||Unassisted|FALSE,hts_self_1014_m_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,10-14,<15,,Male,,Unassisted,FALSE
+HTS_SELF|N|||||||||15-19|15+||Female||Directly-Assisted|FALSE,hts_self_1519_f_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,15-19,15+,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||15-19|15+||Female||Unassisted|FALSE,hts_self_1519_f_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,15-19,15+,,Female,,Unassisted,FALSE
+HTS_SELF|N|||||||||15-19|15+||Male||Directly-Assisted|FALSE,hts_self_1519_m_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,15-19,15+,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||15-19|15+||Male||Unassisted|FALSE,hts_self_1519_m_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,15-19,15+,,Male,,Unassisted,FALSE
+HTS_SELF|N|||||||||20-24|15+||Female||Directly-Assisted|FALSE,hts_self_2024_f_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,20-24,15+,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||20-24|15+||Female||Unassisted|FALSE,hts_self_2024_f_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,20-24,15+,,Female,,Unassisted,FALSE
+HTS_SELF|N|||||||||20-24|15+||Male||Directly-Assisted|FALSE,hts_self_2024_m_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,20-24,15+,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||20-24|15+||Male||Unassisted|FALSE,hts_self_2024_m_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,20-24,15+,,Male,,Unassisted,FALSE
+HTS_SELF|N|||||||||25-29|15+||Female||Directly-Assisted|FALSE,hts_self_2529_f_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,25-29,15+,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||25-29|15+||Female||Unassisted|FALSE,hts_self_2529_f_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,25-29,15+,,Female,,Unassisted,FALSE
+HTS_SELF|N|||||||||25-29|15+||Male||Directly-Assisted|FALSE,hts_self_2529_m_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,25-29,15+,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||25-29|15+||Male||Unassisted|FALSE,hts_self_2529_m_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,25-29,15+,,Male,,Unassisted,FALSE
+HTS_SELF|N|||||||||30-34|15+||Female||Directly-Assisted|FALSE,hts_self_3034_f_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,30-34,15+,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||30-34|15+||Female||Unassisted|FALSE,hts_self_3034_f_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,30-34,15+,,Female,,Unassisted,FALSE
+HTS_SELF|N|||||||||30-34|15+||Male||Directly-Assisted|FALSE,hts_self_3034_m_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,30-34,15+,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||30-34|15+||Male||Unassisted|FALSE,hts_self_3034_m_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,30-34,15+,,Male,,Unassisted,FALSE
+HTS_SELF|N|||||||||35-39|15+||Female||Directly-Assisted|FALSE,hts_self_3539_f_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,35-39,15+,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||35-39|15+||Female||Unassisted|FALSE,hts_self_3539_f_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,35-39,15+,,Female,,Unassisted,FALSE
+HTS_SELF|N|||||||||35-39|15+||Male||Directly-Assisted|FALSE,hts_self_3539_m_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,35-39,15+,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||35-39|15+||Male||Unassisted|FALSE,hts_self_3539_m_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,35-39,15+,,Male,,Unassisted,FALSE
+HTS_SELF|N|||||||||40-49|15+||Female||Directly-Assisted|FALSE,hts_self_4049_f_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,40-49,15+,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||40-49|15+||Female||Unassisted|FALSE,hts_self_4049_f_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,40-49,15+,,Female,,Unassisted,FALSE
+HTS_SELF|N|||||||||40-49|15+||Male||Directly-Assisted|FALSE,hts_self_4049_m_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,40-49,15+,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||40-49|15+||Male||Unassisted|FALSE,hts_self_4049_m_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,40-49,15+,,Male,,Unassisted,FALSE
+HTS_SELF|N|||||||||50+|15+||Female||Directly-Assisted|FALSE,hts_self_o50_f_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,50+,15+,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||50+|15+||Female||Unassisted|FALSE,hts_self_o50_f_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,50+,15+,,Female,,Unassisted,FALSE
+HTS_SELF|N|||||||||50+|15+||Male||Directly-Assisted|FALSE,hts_self_o50_m_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,50+,15+,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||50+|15+||Male||Unassisted|FALSE,hts_self_o50_m_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,,,,,,,,50+,15+,,Male,,Unassisted,FALSE
+HTS_SELF|N|||||||||Unknown Age|Unknown Age||Female||Directly-Assisted|FALSE,,,,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||Unknown Age|Unknown Age||Female||Unassisted|FALSE,,,,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Female,,Unassisted,FALSE
+HTS_SELF|N|||||||||Unknown Age|Unknown Age||Male||Directly-Assisted|FALSE,,,,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N|||||||||Unknown Age|Unknown Age||Male||Unassisted|FALSE,,,,HTS_SELF,N,,,,,,,,,Unknown Age,Unknown Age,,Male,,Unassisted,FALSE
+HTS_SELF|N||FSW||||||||||Female||Directly-Assisted|FALSE,hts_self_fsw_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,FSW,,,,,,,,,,Female,,Directly-Assisted,FALSE
+HTS_SELF|N||FSW||||||||||Female||Unassisted|FALSE,hts_self_fsw_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,FSW,,,,,,,,,,Female,,Unassisted,FALSE
+HTS_SELF|N||MSM||||||||||Male||Directly-Assisted|FALSE,hts_self_msm_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,MSM,,,,,,,,,,Male,,Directly-Assisted,FALSE
+HTS_SELF|N||MSM||||||||||Male||Unassisted|FALSE,hts_self_msm_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,MSM,,,,,,,,,,Male,,Unassisted,FALSE
+HTS_SELF|N||People in prisons and other enclosed settings||||||||||||Directly-Assisted|FALSE,hts_self_prison_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,People in prisons and other enclosed settings,,,,,,,,,,,,Directly-Assisted,FALSE
+HTS_SELF|N||People in prisons and other enclosed settings||||||||||||Unassisted|FALSE,hts_self_prison_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,People in prisons and other enclosed settings,,,,,,,,,,,,Unassisted,FALSE
+HTS_SELF|N||PWID||||||||||||Directly-Assisted|FALSE,hts_self_pwid_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,PWID,,,,,,,,,,,,Directly-Assisted,FALSE
+HTS_SELF|N||PWID||||||||||||Unassisted|FALSE,hts_self_pwid_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,PWID,,,,,,,,,,,,Unassisted,FALSE
+HTS_SELF|N||TG||||||||||||Directly-Assisted|FALSE,hts_self_tg_direct,DisaggTool,HTS_SELF,HTS_SELF,N,,TG,,,,,,,,,,,,Directly-Assisted,FALSE
+HTS_SELF|N||TG||||||||||||Unassisted|FALSE,hts_self_tg_unasst,DisaggTool,HTS_SELF,HTS_SELF,N,,TG,,,,,,,,,,,,Unassisted,FALSE
+HTS_TST|N|||||||||||||||FALSE,,,,HTS_TST,N,,,,,,,,,,,,,,,FALSE
+HTS_TST|N||FSW||||||||||Female|Negative||FALSE,hts_tst_keypop_fsw_neg,HTS_DisaggTool,KeyPop,HTS_TST,N,,FSW,,,,,,,,,,Female,Negative,,FALSE
+HTS_TST|N||FSW||||||||||Female|Positive||FALSE,hts_tst_keypop_fsw_pos,HTS_DisaggTool,KeyPop,HTS_TST,N,,FSW,,,,,,,,,,Female,Positive,,FALSE
+HTS_TST|N||MSM||||||||||Male|Negative||FALSE,hts_tst_keypop_msm_neg,HTS_DisaggTool,KeyPop,HTS_TST,N,,MSM,,,,,,,,,,Male,Negative,,FALSE
+HTS_TST|N||MSM||||||||||Male|Positive||FALSE,hts_tst_keypop_msm_pos,HTS_DisaggTool,KeyPop,HTS_TST,N,,MSM,,,,,,,,,,Male,Positive,,FALSE
+HTS_TST|N||People in prisons and other enclosed settings|||||||||||Negative||FALSE,hts_tst_keypop_prison_neg,HTS_DisaggTool,KeyPop,HTS_TST,N,,People in prisons and other enclosed settings,,,,,,,,,,,Negative,,FALSE
+HTS_TST|N||People in prisons and other enclosed settings|||||||||||Positive||FALSE,hts_tst_keypop_prison_pos,HTS_DisaggTool,KeyPop,HTS_TST,N,,People in prisons and other enclosed settings,,,,,,,,,,,Positive,,FALSE
+HTS_TST|N||PWID|||||||||||Negative||FALSE,hts_tst_keypop_pwid_neg,HTS_DisaggTool,KeyPop,HTS_TST,N,,PWID,,,,,,,,,,,Negative,,FALSE
+HTS_TST|N||PWID|||||||||||Positive||FALSE,hts_tst_keypop_pwid_pos,HTS_DisaggTool,KeyPop,HTS_TST,N,,PWID,,,,,,,,,,,Positive,,FALSE
+HTS_TST|N||TG|||||||||||Negative||FALSE,hts_tst_keypop_tg_neg,HTS_DisaggTool,KeyPop,HTS_TST,N,,TG,,,,,,,,,,,Negative,,FALSE
+HTS_TST|N||TG|||||||||||Positive||FALSE,hts_tst_keypop_tg_pos,HTS_DisaggTool,KeyPop,HTS_TST,N,,TG,,,,,,,,,,,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_emergency_u1_unk_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_emergency_u1_unk_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_emergency_0109_unk_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_emergency_0109_unk_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||10-14|<15||Female|Negative||FALSE,hts_tst_emergency_1014_f_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||10-14|<15||Female|Positive||FALSE,hts_tst_emergency_1014_f_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||10-14|<15||Male|Negative||FALSE,hts_tst_emergency_1014_m_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||10-14|<15||Male|Positive||FALSE,hts_tst_emergency_1014_m_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||15-19|15+||Female|Negative||FALSE,hts_tst_emergency_1519_f_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||15-19|15+||Female|Positive||FALSE,hts_tst_emergency_1519_f_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||15-19|15+||Male|Negative||FALSE,hts_tst_emergency_1519_m_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||15-19|15+||Male|Positive||FALSE,hts_tst_emergency_1519_m_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||20-24|15+||Female|Negative||FALSE,hts_tst_emergency_2024_f_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||20-24|15+||Female|Positive||FALSE,hts_tst_emergency_2024_f_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||20-24|15+||Male|Negative||FALSE,hts_tst_emergency_2024_m_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||20-24|15+||Male|Positive||FALSE,hts_tst_emergency_2024_m_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||25-29|15+||Female|Negative||FALSE,hts_tst_emergency_2529_f_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||25-29|15+||Female|Positive||FALSE,hts_tst_emergency_2529_f_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||25-29|15+||Male|Negative||FALSE,hts_tst_emergency_2529_m_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||25-29|15+||Male|Positive||FALSE,hts_tst_emergency_2529_m_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||30-34|15+||Female|Negative||FALSE,hts_tst_emergency_3034_f_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||30-34|15+||Female|Positive||FALSE,hts_tst_emergency_3034_f_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||30-34|15+||Male|Negative||FALSE,hts_tst_emergency_3034_m_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||30-34|15+||Male|Positive||FALSE,hts_tst_emergency_3034_m_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||35-39|15+||Female|Negative||FALSE,hts_tst_emergency_3539_f_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||35-39|15+||Female|Positive||FALSE,hts_tst_emergency_3539_f_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||35-39|15+||Male|Negative||FALSE,hts_tst_emergency_3539_m_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||35-39|15+||Male|Positive||FALSE,hts_tst_emergency_3539_m_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||40-49|15+||Female|Negative||FALSE,hts_tst_emergency_4049_f_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||40-49|15+||Female|Positive||FALSE,hts_tst_emergency_4049_f_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||40-49|15+||Male|Negative||FALSE,hts_tst_emergency_4049_m_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||40-49|15+||Male|Positive||FALSE,hts_tst_emergency_4049_m_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||50+|15+||Female|Negative||FALSE,hts_tst_emergency_o50_f_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||50+|15+||Female|Positive||FALSE,hts_tst_emergency_o50_f_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||50+|15+||Male|Negative||FALSE,hts_tst_emergency_o50_m_neg,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||50+|15+||Male|Positive||FALSE,hts_tst_emergency_o50_m_pos,HTS_DisaggTool,Emergency,HTS_TST,N,Emergency Ward,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,Emergency Ward,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,Emergency Ward,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|Emergency Ward||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,Emergency Ward,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|Emergency Ward||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,Emergency Ward,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|Index||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_index_u1_unk_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|Index||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_index_u1_unk_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|Index||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_index_0109_unk_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|Index||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_index_0109_unk_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|Index||||||||10-14|<15||Female|Negative||FALSE,hts_tst_index_1014_f_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|Index||||||||10-14|<15||Female|Positive||FALSE,hts_tst_index_1014_f_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|Index||||||||10-14|<15||Male|Negative||FALSE,hts_tst_index_1014_m_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|Index||||||||10-14|<15||Male|Positive||FALSE,hts_tst_index_1014_m_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|Index||||||||15-19|15+||Female|Negative||FALSE,hts_tst_index_1519_f_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|Index||||||||15-19|15+||Female|Positive||FALSE,hts_tst_index_1519_f_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|Index||||||||15-19|15+||Male|Negative||FALSE,hts_tst_index_1519_m_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|Index||||||||15-19|15+||Male|Positive||FALSE,hts_tst_index_1519_m_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|Index||||||||20-24|15+||Female|Negative||FALSE,hts_tst_index_2024_f_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|Index||||||||20-24|15+||Female|Positive||FALSE,hts_tst_index_2024_f_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|Index||||||||20-24|15+||Male|Negative||FALSE,hts_tst_index_2024_m_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|Index||||||||20-24|15+||Male|Positive||FALSE,hts_tst_index_2024_m_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|Index||||||||25-29|15+||Female|Negative||FALSE,hts_tst_index_2529_f_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|Index||||||||25-29|15+||Female|Positive||FALSE,hts_tst_index_2529_f_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|Index||||||||25-29|15+||Male|Negative||FALSE,hts_tst_index_2529_m_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|Index||||||||25-29|15+||Male|Positive||FALSE,hts_tst_index_2529_m_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|Index||||||||30-34|15+||Female|Negative||FALSE,hts_tst_index_3034_f_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|Index||||||||30-34|15+||Female|Positive||FALSE,hts_tst_index_3034_f_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|Index||||||||30-34|15+||Male|Negative||FALSE,hts_tst_index_3034_m_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|Index||||||||30-34|15+||Male|Positive||FALSE,hts_tst_index_3034_m_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|Index||||||||35-39|15+||Female|Negative||FALSE,hts_tst_index_3539_f_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|Index||||||||35-39|15+||Female|Positive||FALSE,hts_tst_index_3539_f_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|Index||||||||35-39|15+||Male|Negative||FALSE,hts_tst_index_3539_m_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|Index||||||||35-39|15+||Male|Positive||FALSE,hts_tst_index_3539_m_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|Index||||||||40-49|15+||Female|Negative||FALSE,hts_tst_index_4049_f_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|Index||||||||40-49|15+||Female|Positive||FALSE,hts_tst_index_4049_f_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|Index||||||||40-49|15+||Male|Negative||FALSE,hts_tst_index_4049_m_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|Index||||||||40-49|15+||Male|Positive||FALSE,hts_tst_index_4049_m_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|Index||||||||50+|15+||Female|Negative||FALSE,hts_tst_index_o50_f_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|Index||||||||50+|15+||Female|Positive||FALSE,hts_tst_index_o50_f_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|Index||||||||50+|15+||Male|Negative||FALSE,hts_tst_index_o50_m_neg,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|Index||||||||50+|15+||Male|Positive||FALSE,hts_tst_index_o50_m_pos,HTS_DisaggTool,Index,HTS_TST,N,Index,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|Index||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,Index,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|Index||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,Index,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|Index||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,Index,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|Index||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,Index,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_indexmod_u1_unk_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_indexmod_u1_unk_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_indexmod_0109_unk_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_indexmod_0109_unk_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||10-14|<15||Female|Negative||FALSE,hts_tst_indexmod_1014_f_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||10-14|<15||Female|Positive||FALSE,hts_tst_indexmod_1014_f_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||10-14|<15||Male|Negative||FALSE,hts_tst_indexmod_1014_m_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||10-14|<15||Male|Positive||FALSE,hts_tst_indexmod_1014_m_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||15-19|15+||Female|Negative||FALSE,hts_tst_indexmod_1519_f_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||15-19|15+||Female|Positive||FALSE,hts_tst_indexmod_1519_f_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||15-19|15+||Male|Negative||FALSE,hts_tst_indexmod_1519_m_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||15-19|15+||Male|Positive||FALSE,hts_tst_indexmod_1519_m_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||20-24|15+||Female|Negative||FALSE,hts_tst_indexmod_2024_f_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||20-24|15+||Female|Positive||FALSE,hts_tst_indexmod_2024_f_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||20-24|15+||Male|Negative||FALSE,hts_tst_indexmod_2024_m_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||20-24|15+||Male|Positive||FALSE,hts_tst_indexmod_2024_m_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||25-29|15+||Female|Negative||FALSE,hts_tst_indexmod_2529_f_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||25-29|15+||Female|Positive||FALSE,hts_tst_indexmod_2529_f_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||25-29|15+||Male|Negative||FALSE,hts_tst_indexmod_2529_m_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||25-29|15+||Male|Positive||FALSE,hts_tst_indexmod_2529_m_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||30-34|15+||Female|Negative||FALSE,hts_tst_indexmod_3034_f_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||30-34|15+||Female|Positive||FALSE,hts_tst_indexmod_3034_f_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||30-34|15+||Male|Negative||FALSE,hts_tst_indexmod_3034_m_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||30-34|15+||Male|Positive||FALSE,hts_tst_indexmod_3034_m_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||35-39|15+||Female|Negative||FALSE,hts_tst_indexmod_3539_f_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||35-39|15+||Female|Positive||FALSE,hts_tst_indexmod_3539_f_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||35-39|15+||Male|Negative||FALSE,hts_tst_indexmod_3539_m_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||35-39|15+||Male|Positive||FALSE,hts_tst_indexmod_3539_m_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||40-49|15+||Female|Negative||FALSE,hts_tst_indexmod_4049_f_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||40-49|15+||Female|Positive||FALSE,hts_tst_indexmod_4049_f_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||40-49|15+||Male|Negative||FALSE,hts_tst_indexmod_4049_m_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||40-49|15+||Male|Positive||FALSE,hts_tst_indexmod_4049_m_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||50+|15+||Female|Negative||FALSE,hts_tst_indexmod_o50_f_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||50+|15+||Female|Positive||FALSE,hts_tst_indexmod_o50_f_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||50+|15+||Male|Negative||FALSE,hts_tst_indexmod_o50_m_neg,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||50+|15+||Male|Positive||FALSE,hts_tst_indexmod_o50_m_pos,HTS_DisaggTool,IndexMod,HTS_TST,N,IndexMod,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,IndexMod,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,IndexMod,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|IndexMod||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,IndexMod,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|IndexMod||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,IndexMod,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|Inpat||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_inpat_u1_unk_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|Inpat||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_inpat_u1_unk_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|Inpat||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_inpat_0109_unk_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|Inpat||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_inpat_0109_unk_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|Inpat||||||||10-14|<15||Female|Negative||FALSE,hts_tst_inpat_1014_f_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|Inpat||||||||10-14|<15||Female|Positive||FALSE,hts_tst_inpat_1014_f_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|Inpat||||||||10-14|<15||Male|Negative||FALSE,hts_tst_inpat_1014_m_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|Inpat||||||||10-14|<15||Male|Positive||FALSE,hts_tst_inpat_1014_m_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|Inpat||||||||15-19|15+||Female|Negative||FALSE,hts_tst_inpat_1519_f_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|Inpat||||||||15-19|15+||Female|Positive||FALSE,hts_tst_inpat_1519_f_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|Inpat||||||||15-19|15+||Male|Negative||FALSE,hts_tst_inpat_1519_m_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|Inpat||||||||15-19|15+||Male|Positive||FALSE,hts_tst_inpat_1519_m_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|Inpat||||||||20-24|15+||Female|Negative||FALSE,hts_tst_inpat_2024_f_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|Inpat||||||||20-24|15+||Female|Positive||FALSE,hts_tst_inpat_2024_f_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|Inpat||||||||20-24|15+||Male|Negative||FALSE,hts_tst_inpat_2024_m_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|Inpat||||||||20-24|15+||Male|Positive||FALSE,hts_tst_inpat_2024_m_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|Inpat||||||||25-29|15+||Female|Negative||FALSE,hts_tst_inpat_2529_f_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|Inpat||||||||25-29|15+||Female|Positive||FALSE,hts_tst_inpat_2529_f_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|Inpat||||||||25-29|15+||Male|Negative||FALSE,hts_tst_inpat_2529_m_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|Inpat||||||||25-29|15+||Male|Positive||FALSE,hts_tst_inpat_2529_m_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|Inpat||||||||30-34|15+||Female|Negative||FALSE,hts_tst_inpat_3034_f_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|Inpat||||||||30-34|15+||Female|Positive||FALSE,hts_tst_inpat_3034_f_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|Inpat||||||||30-34|15+||Male|Negative||FALSE,hts_tst_inpat_3034_m_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|Inpat||||||||30-34|15+||Male|Positive||FALSE,hts_tst_inpat_3034_m_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|Inpat||||||||35-39|15+||Female|Negative||FALSE,hts_tst_inpat_3539_f_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|Inpat||||||||35-39|15+||Female|Positive||FALSE,hts_tst_inpat_3539_f_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|Inpat||||||||35-39|15+||Male|Negative||FALSE,hts_tst_inpat_3539_m_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|Inpat||||||||35-39|15+||Male|Positive||FALSE,hts_tst_inpat_3539_m_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|Inpat||||||||40-49|15+||Female|Negative||FALSE,hts_tst_inpat_4049_f_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|Inpat||||||||40-49|15+||Female|Positive||FALSE,hts_tst_inpat_4049_f_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|Inpat||||||||40-49|15+||Male|Negative||FALSE,hts_tst_inpat_4049_m_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|Inpat||||||||40-49|15+||Male|Positive||FALSE,hts_tst_inpat_4049_m_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|Inpat||||||||50+|15+||Female|Negative||FALSE,hts_tst_inpat_o50_f_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|Inpat||||||||50+|15+||Female|Positive||FALSE,hts_tst_inpat_o50_f_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|Inpat||||||||50+|15+||Male|Negative||FALSE,hts_tst_inpat_o50_m_neg,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|Inpat||||||||50+|15+||Male|Positive||FALSE,hts_tst_inpat_o50_m_pos,HTS_DisaggTool,Inpat,HTS_TST,N,Inpat,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|Inpat||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,Inpat,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|Inpat||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,Inpat,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|Inpat||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,Inpat,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|Inpat||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,Inpat,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|Malnutrition||||||||<5|<15||Unknown Sex|Negative||FALSE,D_hts_tst_neg_malnutrition_u15_fy19,HTS_DisaggTool,Malnutrition,HTS_TST,N,Malnutrition,,,,,,,,<5,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|Malnutrition||||||||<5|<15||Unknown Sex|Positive||FALSE,D_hts_tst_pos_malnutrition_u15_fy19,HTS_DisaggTool,Malnutrition,HTS_TST,N,Malnutrition,,,,,,,,<5,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_mobilemod_u1_unk_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_mobilemod_u1_unk_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_mobilemod_0109_unk_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_mobilemod_0109_unk_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||10-14|<15||Female|Negative||FALSE,hts_tst_mobilemod_1014_f_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||10-14|<15||Female|Positive||FALSE,hts_tst_mobilemod_1014_f_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||10-14|<15||Male|Negative||FALSE,hts_tst_mobilemod_1014_m_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||10-14|<15||Male|Positive||FALSE,hts_tst_mobilemod_1014_m_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||15-19|15+||Female|Negative||FALSE,hts_tst_mobilemod_1519_f_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||15-19|15+||Female|Positive||FALSE,hts_tst_mobilemod_1519_f_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||15-19|15+||Male|Negative||FALSE,hts_tst_mobilemod_1519_m_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||15-19|15+||Male|Positive||FALSE,hts_tst_mobilemod_1519_m_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||20-24|15+||Female|Negative||FALSE,hts_tst_mobilemod_2024_f_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||20-24|15+||Female|Positive||FALSE,hts_tst_mobilemod_2024_f_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||20-24|15+||Male|Negative||FALSE,hts_tst_mobilemod_2024_m_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||20-24|15+||Male|Positive||FALSE,hts_tst_mobilemod_2024_m_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||25-29|15+||Female|Negative||FALSE,hts_tst_mobilemod_2529_f_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||25-29|15+||Female|Positive||FALSE,hts_tst_mobilemod_2529_f_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||25-29|15+||Male|Negative||FALSE,hts_tst_mobilemod_2529_m_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||25-29|15+||Male|Positive||FALSE,hts_tst_mobilemod_2529_m_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||30-34|15+||Female|Negative||FALSE,hts_tst_mobilemod_3034_f_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||30-34|15+||Female|Positive||FALSE,hts_tst_mobilemod_3034_f_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||30-34|15+||Male|Negative||FALSE,hts_tst_mobilemod_3034_m_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||30-34|15+||Male|Positive||FALSE,hts_tst_mobilemod_3034_m_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||35-39|15+||Female|Negative||FALSE,hts_tst_mobilemod_3539_f_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||35-39|15+||Female|Positive||FALSE,hts_tst_mobilemod_3539_f_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||35-39|15+||Male|Negative||FALSE,hts_tst_mobilemod_3539_m_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||35-39|15+||Male|Positive||FALSE,hts_tst_mobilemod_3539_m_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||40-49|15+||Female|Negative||FALSE,hts_tst_mobilemod_4049_f_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||40-49|15+||Female|Positive||FALSE,hts_tst_mobilemod_4049_f_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||40-49|15+||Male|Negative||FALSE,hts_tst_mobilemod_4049_m_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||40-49|15+||Male|Positive||FALSE,hts_tst_mobilemod_4049_m_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||50+|15+||Female|Negative||FALSE,hts_tst_mobilemod_o50_f_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||50+|15+||Female|Positive||FALSE,hts_tst_mobilemod_o50_f_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||50+|15+||Male|Negative||FALSE,hts_tst_mobilemod_o50_m_neg,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||50+|15+||Male|Positive||FALSE,hts_tst_mobilemod_o50_m_pos,HTS_DisaggTool,MobileMod,HTS_TST,N,MobileMod,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,MobileMod,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,MobileMod,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|MobileMod||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,MobileMod,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|MobileMod||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,MobileMod,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_othermod_u1_unk_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_othermod_u1_unk_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_othermod_0109_unk_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_othermod_0109_unk_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||10-14|<15||Female|Negative||FALSE,hts_tst_othermod_1014_f_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||10-14|<15||Female|Positive||FALSE,hts_tst_othermod_1014_f_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||10-14|<15||Male|Negative||FALSE,hts_tst_othermod_1014_m_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||10-14|<15||Male|Positive||FALSE,hts_tst_othermod_1014_m_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||15-19|15+||Female|Negative||FALSE,hts_tst_othermod_1519_f_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||15-19|15+||Female|Positive||FALSE,hts_tst_othermod_1519_f_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||15-19|15+||Male|Negative||FALSE,hts_tst_othermod_1519_m_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||15-19|15+||Male|Positive||FALSE,hts_tst_othermod_1519_m_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||20-24|15+||Female|Negative||FALSE,hts_tst_othermod_2024_f_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||20-24|15+||Female|Positive||FALSE,hts_tst_othermod_2024_f_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||20-24|15+||Male|Negative||FALSE,hts_tst_othermod_2024_m_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||20-24|15+||Male|Positive||FALSE,hts_tst_othermod_2024_m_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||25-29|15+||Female|Negative||FALSE,hts_tst_othermod_2529_f_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||25-29|15+||Female|Positive||FALSE,hts_tst_othermod_2529_f_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||25-29|15+||Male|Negative||FALSE,hts_tst_othermod_2529_m_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||25-29|15+||Male|Positive||FALSE,hts_tst_othermod_2529_m_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||30-34|15+||Female|Negative||FALSE,hts_tst_othermod_3034_f_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||30-34|15+||Female|Positive||FALSE,hts_tst_othermod_3034_f_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||30-34|15+||Male|Negative||FALSE,hts_tst_othermod_3034_m_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||30-34|15+||Male|Positive||FALSE,hts_tst_othermod_3034_m_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||35-39|15+||Female|Negative||FALSE,hts_tst_othermod_3539_f_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||35-39|15+||Female|Positive||FALSE,hts_tst_othermod_3539_f_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||35-39|15+||Male|Negative||FALSE,hts_tst_othermod_3539_m_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||35-39|15+||Male|Positive||FALSE,hts_tst_othermod_3539_m_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||40-49|15+||Female|Negative||FALSE,hts_tst_othermod_4049_f_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||40-49|15+||Female|Positive||FALSE,hts_tst_othermod_4049_f_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||40-49|15+||Male|Negative||FALSE,hts_tst_othermod_4049_m_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||40-49|15+||Male|Positive||FALSE,hts_tst_othermod_4049_m_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||50+|15+||Female|Negative||FALSE,hts_tst_othermod_o50_f_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||50+|15+||Female|Positive||FALSE,hts_tst_othermod_o50_f_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||50+|15+||Male|Negative||FALSE,hts_tst_othermod_o50_m_neg,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||50+|15+||Male|Positive||FALSE,hts_tst_othermod_o50_m_pos,HTS_DisaggTool,OtherMod,HTS_TST,N,OtherMod,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,OtherMod,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,OtherMod,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|OtherMod||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,OtherMod,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|OtherMod||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,OtherMod,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_otherpitc_u1_unk_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_otherpitc_u1_unk_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_otherpitc_0109_unk_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_otherpitc_0109_unk_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||10-14|<15||Female|Negative||FALSE,hts_tst_otherpitc_1014_f_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||10-14|<15||Female|Positive||FALSE,hts_tst_otherpitc_1014_f_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||10-14|<15||Male|Negative||FALSE,hts_tst_otherpitc_1014_m_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||10-14|<15||Male|Positive||FALSE,hts_tst_otherpitc_1014_m_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||15-19|15+||Female|Negative||FALSE,hts_tst_otherpitc_1519_f_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||15-19|15+||Female|Positive||FALSE,hts_tst_otherpitc_1519_f_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||15-19|15+||Male|Negative||FALSE,hts_tst_otherpitc_1519_m_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||15-19|15+||Male|Positive||FALSE,hts_tst_otherpitc_1519_m_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||20-24|15+||Female|Negative||FALSE,hts_tst_otherpitc_2024_f_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||20-24|15+||Female|Positive||FALSE,hts_tst_otherpitc_2024_f_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||20-24|15+||Male|Negative||FALSE,hts_tst_otherpitc_2024_m_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||20-24|15+||Male|Positive||FALSE,hts_tst_otherpitc_2024_m_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||25-29|15+||Female|Negative||FALSE,hts_tst_otherpitc_2529_f_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||25-29|15+||Female|Positive||FALSE,hts_tst_otherpitc_2529_f_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||25-29|15+||Male|Negative||FALSE,hts_tst_otherpitc_2529_m_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||25-29|15+||Male|Positive||FALSE,hts_tst_otherpitc_2529_m_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||30-34|15+||Female|Negative||FALSE,hts_tst_otherpitc_3034_f_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||30-34|15+||Female|Positive||FALSE,hts_tst_otherpitc_3034_f_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||30-34|15+||Male|Negative||FALSE,hts_tst_otherpitc_3034_m_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||30-34|15+||Male|Positive||FALSE,hts_tst_otherpitc_3034_m_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||35-39|15+||Female|Negative||FALSE,hts_tst_otherpitc_3539_f_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||35-39|15+||Female|Positive||FALSE,hts_tst_otherpitc_3539_f_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||35-39|15+||Male|Negative||FALSE,hts_tst_otherpitc_3539_m_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||35-39|15+||Male|Positive||FALSE,hts_tst_otherpitc_3539_m_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||40-49|15+||Female|Negative||FALSE,hts_tst_otherpitc_4049_f_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||40-49|15+||Female|Positive||FALSE,hts_tst_otherpitc_4049_f_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||40-49|15+||Male|Negative||FALSE,hts_tst_otherpitc_4049_m_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||40-49|15+||Male|Positive||FALSE,hts_tst_otherpitc_4049_m_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||50+|15+||Female|Negative||FALSE,hts_tst_otherpitc_o50_f_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||50+|15+||Female|Positive||FALSE,hts_tst_otherpitc_o50_f_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||50+|15+||Male|Negative||FALSE,hts_tst_otherpitc_o50_m_neg,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||50+|15+||Male|Positive||FALSE,hts_tst_otherpitc_o50_m_pos,HTS_DisaggTool,OtherPITC,HTS_TST,N,OtherPITC,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,OtherPITC,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,OtherPITC,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|OtherPITC||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,OtherPITC,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|OtherPITC||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,OtherPITC,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|Pediatric||||||||<5|<15||Unknown Sex|Negative||FALSE,D_hts_tst_neg_pediatric_u15_fy19,HTS_DisaggTool,PediatricServices,HTS_TST,N,Pediatric,,,,,,,,<5,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|Pediatric||||||||<5|<15||Unknown Sex|Positive||FALSE,D_hts_tst_pos_pediatric_u15_fy19,HTS_DisaggTool,PediatricServices,HTS_TST,N,Pediatric,,,,,,,,<5,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||<1|<15||Female|Negative||FALSE,hts_tst_pmtctanc_u1_f_neg,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,<1,<15,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||<1|<15||Female|Positive||FALSE,hts_tst_pmtctanc_u1_f_pos,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,<1,<15,,Female,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||1-9|<15||Female|Negative||FALSE,hts_tst_pmtctanc_0109_f_neg,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,1-9,<15,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||1-9|<15||Female|Positive||FALSE,hts_tst_pmtctanc_0109_f_pos,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,1-9,<15,,Female,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||10-14|<15||Female|Negative||FALSE,hts_tst_pmtctanc_1014_f_neg,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||10-14|<15||Female|Positive||FALSE,hts_tst_pmtctanc_1014_f_pos,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||15-19|15+||Female|Negative||FALSE,hts_tst_pmtctanc_1519_f_neg,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||15-19|15+||Female|Positive||FALSE,hts_tst_pmtctanc_1519_f_pos,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||20-24|15+||Female|Negative||FALSE,hts_tst_pmtctanc_2024_f_neg,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||20-24|15+||Female|Positive||FALSE,hts_tst_pmtctanc_2024_f_pos,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||25-29|15+||Female|Negative||FALSE,hts_tst_pmtctanc_2529_f_neg,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||25-29|15+||Female|Positive||FALSE,hts_tst_pmtctanc_2529_f_pos,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||30-34|15+||Female|Negative||FALSE,hts_tst_pmtctanc_3034_f_neg,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||30-34|15+||Female|Positive||FALSE,hts_tst_pmtctanc_3034_f_pos,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||35-39|15+||Female|Negative||FALSE,hts_tst_pmtctanc_3539_f_neg,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||35-39|15+||Female|Positive||FALSE,hts_tst_pmtctanc_3539_f_pos,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||40-49|15+||Female|Negative||FALSE,hts_tst_pmtctanc_4049_f_neg,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||40-49|15+||Female|Positive||FALSE,hts_tst_pmtctanc_4049_f_pos,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||50+|15+||Female|Negative||FALSE,hts_tst_pmtctanc_o50_f_neg,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||50+|15+||Female|Positive||FALSE,hts_tst_pmtctanc_o50_f_pos,HTS_DisaggTool,PMTCTANC,HTS_TST,N,PMTCT ANC,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|PMTCT ANC||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,PMTCT ANC,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|PMTCT ANC||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,PMTCT ANC,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_sti_u1_unk_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_sti_u1_unk_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_sti_0109_unk_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_sti_0109_unk_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||10-14|<15||Female|Negative||FALSE,hts_tst_sti_1014_f_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||10-14|<15||Female|Positive||FALSE,hts_tst_sti_1014_f_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||10-14|<15||Male|Negative||FALSE,hts_tst_sti_1014_m_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||10-14|<15||Male|Positive||FALSE,hts_tst_sti_1014_m_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||15-19|15+||Female|Negative||FALSE,hts_tst_sti_1519_f_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||15-19|15+||Female|Positive||FALSE,hts_tst_sti_1519_f_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||15-19|15+||Male|Negative||FALSE,hts_tst_sti_1519_m_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||15-19|15+||Male|Positive||FALSE,hts_tst_sti_1519_m_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||20-24|15+||Female|Negative||FALSE,hts_tst_sti_2024_f_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||20-24|15+||Female|Positive||FALSE,hts_tst_sti_2024_f_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||20-24|15+||Male|Negative||FALSE,hts_tst_sti_2024_m_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||20-24|15+||Male|Positive||FALSE,hts_tst_sti_2024_m_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||25-29|15+||Female|Negative||FALSE,hts_tst_sti_2529_f_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||25-29|15+||Female|Positive||FALSE,hts_tst_sti_2529_f_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||25-29|15+||Male|Negative||FALSE,hts_tst_sti_2529_m_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||25-29|15+||Male|Positive||FALSE,hts_tst_sti_2529_m_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||30-34|15+||Female|Negative||FALSE,hts_tst_sti_3034_f_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||30-34|15+||Female|Positive||FALSE,hts_tst_sti_3034_f_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||30-34|15+||Male|Negative||FALSE,hts_tst_sti_3034_m_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||30-34|15+||Male|Positive||FALSE,hts_tst_sti_3034_m_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||35-39|15+||Female|Negative||FALSE,hts_tst_sti_3539_f_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||35-39|15+||Female|Positive||FALSE,hts_tst_sti_3539_f_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||35-39|15+||Male|Negative||FALSE,hts_tst_sti_3539_m_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||35-39|15+||Male|Positive||FALSE,hts_tst_sti_3539_m_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||40-49|15+||Female|Negative||FALSE,hts_tst_sti_4049_f_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||40-49|15+||Female|Positive||FALSE,hts_tst_sti_4049_f_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||40-49|15+||Male|Negative||FALSE,hts_tst_sti_4049_m_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||40-49|15+||Male|Positive||FALSE,hts_tst_sti_4049_m_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||50+|15+||Female|Negative||FALSE,hts_tst_sti_o50_f_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||50+|15+||Female|Positive||FALSE,hts_tst_sti_o50_f_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||50+|15+||Male|Negative||FALSE,hts_tst_sti_o50_m_neg,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||50+|15+||Male|Positive||FALSE,hts_tst_sti_o50_m_pos,HTS_DisaggTool,STI,HTS_TST,N,STI Clinic,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,STI Clinic,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,STI Clinic,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|STI Clinic||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,STI Clinic,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|STI Clinic||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,STI Clinic,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_tbclinic_u1_unk_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_tbclinic_u1_unk_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_tbclinic_0109_unk_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_tbclinic_0109_unk_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||10-14|<15||Female|Negative||FALSE,hts_tst_tbclinic_1014_f_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||10-14|<15||Female|Positive||FALSE,hts_tst_tbclinic_1014_f_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||10-14|<15||Male|Negative||FALSE,hts_tst_tbclinic_1014_m_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||10-14|<15||Male|Positive||FALSE,hts_tst_tbclinic_1014_m_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||15-19|15+||Female|Negative||FALSE,hts_tst_tbclinic_1519_f_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||15-19|15+||Female|Positive||FALSE,hts_tst_tbclinic_1519_f_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||15-19|15+||Male|Negative||FALSE,hts_tst_tbclinic_1519_m_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||15-19|15+||Male|Positive||FALSE,hts_tst_tbclinic_1519_m_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||20-24|15+||Female|Negative||FALSE,hts_tst_tbclinic_2024_f_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||20-24|15+||Female|Positive||FALSE,hts_tst_tbclinic_2024_f_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||20-24|15+||Male|Negative||FALSE,hts_tst_tbclinic_2024_m_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||20-24|15+||Male|Positive||FALSE,hts_tst_tbclinic_2024_m_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||25-29|15+||Female|Negative||FALSE,hts_tst_tbclinic_2529_f_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||25-29|15+||Female|Positive||FALSE,hts_tst_tbclinic_2529_f_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||25-29|15+||Male|Negative||FALSE,hts_tst_tbclinic_2529_m_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||25-29|15+||Male|Positive||FALSE,hts_tst_tbclinic_2529_m_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||30-34|15+||Female|Negative||FALSE,hts_tst_tbclinic_3034_f_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||30-34|15+||Female|Positive||FALSE,hts_tst_tbclinic_3034_f_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||30-34|15+||Male|Negative||FALSE,hts_tst_tbclinic_3034_m_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||30-34|15+||Male|Positive||FALSE,hts_tst_tbclinic_3034_m_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||35-39|15+||Female|Negative||FALSE,hts_tst_tbclinic_3539_f_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||35-39|15+||Female|Positive||FALSE,hts_tst_tbclinic_3539_f_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||35-39|15+||Male|Negative||FALSE,hts_tst_tbclinic_3539_m_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||35-39|15+||Male|Positive||FALSE,hts_tst_tbclinic_3539_m_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||40-49|15+||Female|Negative||FALSE,hts_tst_tbclinic_4049_f_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||40-49|15+||Female|Positive||FALSE,hts_tst_tbclinic_4049_f_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||40-49|15+||Male|Negative||FALSE,hts_tst_tbclinic_4049_m_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||40-49|15+||Male|Positive||FALSE,hts_tst_tbclinic_4049_m_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||50+|15+||Female|Negative||FALSE,hts_tst_tbclinic_o50_f_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||50+|15+||Female|Positive||FALSE,hts_tst_tbclinic_o50_f_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||50+|15+||Male|Negative||FALSE,hts_tst_tbclinic_o50_m_neg,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||50+|15+||Male|Positive||FALSE,hts_tst_tbclinic_o50_m_pos,HTS_DisaggTool,TBClinic,HTS_TST,N,TBClinic,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,TBClinic,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,TBClinic,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|TBClinic||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,TBClinic,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|TBClinic||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,TBClinic,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|VCT||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_vct_u1_unk_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|VCT||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_vct_u1_unk_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|VCT||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_vct_0109_unk_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|VCT||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_vct_0109_unk_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|VCT||||||||10-14|<15||Female|Negative||FALSE,hts_tst_vct_1014_f_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|VCT||||||||10-14|<15||Female|Positive||FALSE,hts_tst_vct_1014_f_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|VCT||||||||10-14|<15||Male|Negative||FALSE,hts_tst_vct_1014_m_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|VCT||||||||10-14|<15||Male|Positive||FALSE,hts_tst_vct_1014_m_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|VCT||||||||15-19|15+||Female|Negative||FALSE,hts_tst_vct_1519_f_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCT||||||||15-19|15+||Female|Positive||FALSE,hts_tst_vct_1519_f_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCT||||||||15-19|15+||Male|Negative||FALSE,hts_tst_vct_1519_m_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCT||||||||15-19|15+||Male|Positive||FALSE,hts_tst_vct_1519_m_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCT||||||||20-24|15+||Female|Negative||FALSE,hts_tst_vct_2024_f_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCT||||||||20-24|15+||Female|Positive||FALSE,hts_tst_vct_2024_f_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCT||||||||20-24|15+||Male|Negative||FALSE,hts_tst_vct_2024_m_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCT||||||||20-24|15+||Male|Positive||FALSE,hts_tst_vct_2024_m_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCT||||||||25-29|15+||Female|Negative||FALSE,hts_tst_vct_2529_f_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCT||||||||25-29|15+||Female|Positive||FALSE,hts_tst_vct_2529_f_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCT||||||||25-29|15+||Male|Negative||FALSE,hts_tst_vct_2529_m_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCT||||||||25-29|15+||Male|Positive||FALSE,hts_tst_vct_2529_m_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCT||||||||30-34|15+||Female|Negative||FALSE,hts_tst_vct_3034_f_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCT||||||||30-34|15+||Female|Positive||FALSE,hts_tst_vct_3034_f_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCT||||||||30-34|15+||Male|Negative||FALSE,hts_tst_vct_3034_m_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCT||||||||30-34|15+||Male|Positive||FALSE,hts_tst_vct_3034_m_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCT||||||||35-39|15+||Female|Negative||FALSE,hts_tst_vct_3539_f_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCT||||||||35-39|15+||Female|Positive||FALSE,hts_tst_vct_3539_f_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCT||||||||35-39|15+||Male|Negative||FALSE,hts_tst_vct_3539_m_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCT||||||||35-39|15+||Male|Positive||FALSE,hts_tst_vct_3539_m_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCT||||||||40-49|15+||Female|Negative||FALSE,hts_tst_vct_4049_f_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCT||||||||40-49|15+||Female|Positive||FALSE,hts_tst_vct_4049_f_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCT||||||||40-49|15+||Male|Negative||FALSE,hts_tst_vct_4049_m_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCT||||||||40-49|15+||Male|Positive||FALSE,hts_tst_vct_4049_m_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCT||||||||50+|15+||Female|Negative||FALSE,hts_tst_vct_o50_f_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCT||||||||50+|15+||Female|Positive||FALSE,hts_tst_vct_o50_f_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCT||||||||50+|15+||Male|Negative||FALSE,hts_tst_vct_o50_m_neg,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCT||||||||50+|15+||Male|Positive||FALSE,hts_tst_vct_o50_m_pos,HTS_DisaggTool,VCT,HTS_TST,N,VCT,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCT||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,VCT,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|VCT||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,VCT,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|VCT||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,VCT,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|VCT||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,VCT,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||<1|<15||Unknown Sex|Negative||FALSE,hts_tst_vctmod_u1_unk_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,<1,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||<1|<15||Unknown Sex|Positive||FALSE,hts_tst_vctmod_u1_unk_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||1-9|<15||Unknown Sex|Negative||FALSE,hts_tst_vctmod_0109_unk_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,1-9,<15,,Unknown Sex,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||1-9|<15||Unknown Sex|Positive||FALSE,hts_tst_vctmod_0109_unk_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||10-14|<15||Female|Negative||FALSE,hts_tst_vctmod_1014_f_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,10-14,<15,,Female,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||10-14|<15||Female|Positive||FALSE,hts_tst_vctmod_1014_f_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||10-14|<15||Male|Negative||FALSE,hts_tst_vctmod_1014_m_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||10-14|<15||Male|Positive||FALSE,hts_tst_vctmod_1014_m_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||15-19|15+||Female|Negative||FALSE,hts_tst_vctmod_1519_f_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,15-19,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||15-19|15+||Female|Positive||FALSE,hts_tst_vctmod_1519_f_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||15-19|15+||Male|Negative||FALSE,hts_tst_vctmod_1519_m_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||15-19|15+||Male|Positive||FALSE,hts_tst_vctmod_1519_m_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||20-24|15+||Female|Negative||FALSE,hts_tst_vctmod_2024_f_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,20-24,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||20-24|15+||Female|Positive||FALSE,hts_tst_vctmod_2024_f_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||20-24|15+||Male|Negative||FALSE,hts_tst_vctmod_2024_m_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||20-24|15+||Male|Positive||FALSE,hts_tst_vctmod_2024_m_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||25-29|15+||Female|Negative||FALSE,hts_tst_vctmod_2529_f_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,25-29,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||25-29|15+||Female|Positive||FALSE,hts_tst_vctmod_2529_f_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||25-29|15+||Male|Negative||FALSE,hts_tst_vctmod_2529_m_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||25-29|15+||Male|Positive||FALSE,hts_tst_vctmod_2529_m_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||30-34|15+||Female|Negative||FALSE,hts_tst_vctmod_3034_f_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,30-34,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||30-34|15+||Female|Positive||FALSE,hts_tst_vctmod_3034_f_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||30-34|15+||Male|Negative||FALSE,hts_tst_vctmod_3034_m_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||30-34|15+||Male|Positive||FALSE,hts_tst_vctmod_3034_m_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||35-39|15+||Female|Negative||FALSE,hts_tst_vctmod_3539_f_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,35-39,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||35-39|15+||Female|Positive||FALSE,hts_tst_vctmod_3539_f_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||35-39|15+||Male|Negative||FALSE,hts_tst_vctmod_3539_m_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||35-39|15+||Male|Positive||FALSE,hts_tst_vctmod_3539_m_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||40-49|15+||Female|Negative||FALSE,hts_tst_vctmod_4049_f_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,40-49,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||40-49|15+||Female|Positive||FALSE,hts_tst_vctmod_4049_f_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||40-49|15+||Male|Negative||FALSE,hts_tst_vctmod_4049_m_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||40-49|15+||Male|Positive||FALSE,hts_tst_vctmod_4049_m_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||50+|15+||Female|Negative||FALSE,hts_tst_vctmod_o50_f_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,50+,15+,,Female,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||50+|15+||Female|Positive||FALSE,hts_tst_vctmod_o50_f_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,50+,15+,,Female,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||50+|15+||Male|Negative||FALSE,hts_tst_vctmod_o50_m_neg,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||50+|15+||Male|Positive||FALSE,hts_tst_vctmod_o50_m_pos,HTS_DisaggTool,VCTMod,HTS_TST,N,VCTMod,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,HTS_TST,N,VCTMod,,,,,,,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,HTS_TST,N,VCTMod,,,,,,,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+HTS_TST|N|VCTMod||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,VCTMod,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|VCTMod||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,VCTMod,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||<1|<15||Male|Negative||FALSE,hts_tst_vmmc_u1_m_neg,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,<1,<15,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||<1|<15||Male|Positive||FALSE,hts_tst_vmmc_u1_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,<1,<15,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||1-9|<15||Male|Negative||FALSE,hts_tst_vmmc_0109_unk_neg,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,1-9,<15,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||1-9|<15||Male|Positive||FALSE,hts_tst_vmmc_0109_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,1-9,<15,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||10-14|<15||Male|Negative||FALSE,hts_tst_vmmc_1014_m_neg,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,10-14,<15,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||10-14|<15||Male|Positive||FALSE,hts_tst_vmmc_1014_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||15-19|15+||Male|Negative||FALSE,hts_tst_vmmc_1519_m_neg,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,15-19,15+,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||15-19|15+||Male|Positive||FALSE,hts_tst_vmmc_1519_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||20-24|15+||Male|Negative||FALSE,hts_tst_vmmc_2024_m_neg,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,20-24,15+,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||20-24|15+||Male|Positive||FALSE,hts_tst_vmmc_2024_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||25-29|15+||Male|Negative||FALSE,hts_tst_vmmc_2529_m_neg,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,25-29,15+,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||25-29|15+||Male|Positive||FALSE,hts_tst_vmmc_2529_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||30-34|15+||Male|Negative||FALSE,hts_tst_vmmc_3034_m_neg,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,30-34,15+,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||30-34|15+||Male|Positive||FALSE,hts_tst_vmmc_3034_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||35-39|15+||Male|Negative||FALSE,hts_tst_vmmc_3539_m_neg,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,35-39,15+,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||35-39|15+||Male|Positive||FALSE,hts_tst_vmmc_3539_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||40-49|15+||Male|Negative||FALSE,hts_tst_vmmc_4049_m_neg,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,40-49,15+,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||40-49|15+||Male|Positive||FALSE,hts_tst_vmmc_4049_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||50+|15+||Male|Negative||FALSE,hts_tst_vmmc_o50_m_neg,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,50+,15+,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||50+|15+||Male|Positive||FALSE,hts_tst_vmmc_o50_m_pos,HTS_DisaggTool,VMMC,HTS_TST,N,VMMC,,,,,,,,50+,15+,,Male,Positive,,FALSE
+HTS_TST|N|VMMC||||||||Unknown Age|Unknown Age||Male|Negative||FALSE,,,,HTS_TST,N,VMMC,,,,,,,,Unknown Age,Unknown Age,,Male,Negative,,FALSE
+HTS_TST|N|VMMC||||||||Unknown Age|Unknown Age||Male|Positive||FALSE,,,,HTS_TST,N,VMMC,,,,,,,,Unknown Age,Unknown Age,,Male,Positive,,FALSE
+PLHIV||||||||||||||Positive||TRUE,plhiv_fy19,DisaggTool,IMPATT Table,PLHIV,,,,,,,,,,,,,,Positive,,TRUE
+KP_MAT|N||||||||||||Female|||FALSE,kp_mat_f,DisaggTool,Already Alloc Targets,KP_MAT,N,,,,,,,,,,,,Female,,,FALSE
+KP_MAT|N||||||||||||Male|||FALSE,kp_mat_m,DisaggTool,Already Alloc Targets,KP_MAT,N,,,,,,,,,,,,Male,,,FALSE
+KP_PREV|N||FSW||||||||||Female|||FALSE,kp_prev_fsw,DisaggTool,Already Alloc Targets,KP_PREV,N,,FSW,,,,,,,,,,Female,,,FALSE
+KP_PREV|N||MSM not SW||||||||||Male|||FALSE,kp_prev_msm_notsw,DisaggTool,Already Alloc Targets,KP_PREV,N,,MSM not SW,,,,,,,,,,Male,,,FALSE
+KP_PREV|N||MSM SW||||||||||Male|||FALSE,kp_prev_msm_sw,DisaggTool,Already Alloc Targets,KP_PREV,N,,MSM SW,,,,,,,,,,Male,,,FALSE
+KP_PREV|N||People in prisons and other enclosed settings|||||||||||||FALSE,kp_prev_prison,DisaggTool,Already Alloc Targets,KP_PREV,N,,People in prisons and other enclosed settings,,,,,,,,,,,,,FALSE
+KP_PREV|N||PWID||||||||||Female|||FALSE,kp_prev_f_pwid,DisaggTool,Already Alloc Targets,KP_PREV,N,,PWID,,,,,,,,,,Female,,,FALSE
+KP_PREV|N||PWID||||||||||Male|||FALSE,kp_prev_m_pwid,DisaggTool,Already Alloc Targets,KP_PREV,N,,PWID,,,,,,,,,,Male,,,FALSE
+KP_PREV|N||TG not SW|||||||||||||FALSE,kp_prev_tg_notsw,DisaggTool,Already Alloc Targets,KP_PREV,N,,TG not SW,,,,,,,,,,,,,FALSE
+KP_PREV|N||TG SW|||||||||||||FALSE,kp_prev_tg_sw,DisaggTool,Already Alloc Targets,KP_PREV,N,,TG SW,,,,,,,,,,,,,FALSE
+OVC_HIVSTAT|N|||||||||||||||FALSE,ovc_hivstat,DisaggTool,Already Alloc Targets,OVC_HIVSTAT,N,,,,,,,,,,,,,,,FALSE
+OVC_SERV|N|||||||||<1|<15||Unknown Sex|||FALSE,ovc_serv_u1_unk,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,<1,<15,,Unknown Sex,,,FALSE
+OVC_SERV|N|||||||||<1|<15||Unknown Sex||Economic Strengthening|FALSE,ovc_serv_u1_unk_econ,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,<1,<15,,Unknown Sex,,Economic Strengthening,FALSE
+OVC_SERV|N|||||||||<1|<15||Unknown Sex||Education Support|FALSE,ovc_serv_u1_unk_edu,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,<1,<15,,Unknown Sex,,Education Support,FALSE
+OVC_SERV|N|||||||||<1|<15||Unknown Sex||Other Service Areas|FALSE,ovc_serv_u1_unk_oth,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,<1,<15,,Unknown Sex,,Other Service Areas,FALSE
+OVC_SERV|N|||||||||<1|<15||Unknown Sex||Parenting/Caregiver Programs|FALSE,ovc_serv_u1_unk_care,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,<1,<15,,Unknown Sex,,Parenting/Caregiver Programs,FALSE
+OVC_SERV|N|||||||||<1|<15||Unknown Sex||Social Protection|FALSE,ovc_serv_u1_unk_sp,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,<1,<15,,Unknown Sex,,Social Protection,FALSE
+OVC_SERV|N||||||||||||||Active|FALSE,D_ovc_serv_active_fy19,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,,,,,,Active,FALSE
+OVC_SERV|N||||||||||||||Exited without Graduation|FALSE,D_ovc_serv_exited_fy19,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,,,,,,Exited without Graduation,FALSE
+OVC_SERV|N||||||||||||||Graduated|FALSE,D_ovc_serv_grad_fy19,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,,,,,,Graduated,FALSE
+OVC_SERV|N||||||||||||||Transferred|FALSE,D_ovc_serv_trans_fy19,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,,,,,,Transferred,FALSE
+OVC_SERV|N|||||||||1-9|<15||Unknown Sex|||FALSE,ovc_serv_0109_unk,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,1-9,<15,,Unknown Sex,,,FALSE
+OVC_SERV|N|||||||||1-9|<15||Unknown Sex||Economic Strengthening|FALSE,ovc_serv_0109_unk_econ,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,1-9,<15,,Unknown Sex,,Economic Strengthening,FALSE
+OVC_SERV|N|||||||||1-9|<15||Unknown Sex||Education Support|FALSE,ovc_serv_0109_unk_edu,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,1-9,<15,,Unknown Sex,,Education Support,FALSE
+OVC_SERV|N|||||||||1-9|<15||Unknown Sex||Other Service Areas|FALSE,ovc_serv_0109_unk_oth,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,1-9,<15,,Unknown Sex,,Other Service Areas,FALSE
+OVC_SERV|N|||||||||1-9|<15||Unknown Sex||Parenting/Caregiver Programs|FALSE,ovc_serv_0109_unk_care,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,1-9,<15,,Unknown Sex,,Parenting/Caregiver Programs,FALSE
+OVC_SERV|N|||||||||1-9|<15||Unknown Sex||Social Protection|FALSE,ovc_serv_0109_unk_sp,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,1-9,<15,,Unknown Sex,,Social Protection,FALSE
+OVC_SERV|N|||||||||10-14|<15||Female|||FALSE,ovc_serv_1014_f,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Female,,,FALSE
+OVC_SERV|N|||||||||10-14|<15||Female||Economic Strengthening|FALSE,ovc_serv_1014_f_econ,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Female,,Economic Strengthening,FALSE
+OVC_SERV|N|||||||||10-14|<15||Female||Education Support|FALSE,ovc_serv_1014_f_edu,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Female,,Education Support,FALSE
+OVC_SERV|N|||||||||10-14|<15||Female||Other Service Areas|FALSE,ovc_serv_1014_f_oth,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Female,,Other Service Areas,FALSE
+OVC_SERV|N|||||||||10-14|<15||Female||Parenting/Caregiver Programs|FALSE,ovc_serv_1014_f_care,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Female,,Parenting/Caregiver Programs,FALSE
+OVC_SERV|N|||||||||10-14|<15||Female||Social Protection|FALSE,ovc_serv_1014_f_sp,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Female,,Social Protection,FALSE
+OVC_SERV|N|||||||||10-14|<15||Male|||FALSE,ovc_serv_1014_m,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Male,,,FALSE
+OVC_SERV|N|||||||||10-14|<15||Male||Economic Strengthening|FALSE,ovc_serv_1014_m_econ,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Male,,Economic Strengthening,FALSE
+OVC_SERV|N|||||||||10-14|<15||Male||Education Support|FALSE,ovc_serv_1014_m_edu,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Male,,Education Support,FALSE
+OVC_SERV|N|||||||||10-14|<15||Male||Other Service Areas|FALSE,ovc_serv_1014_m_oth,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Male,,Other Service Areas,FALSE
+OVC_SERV|N|||||||||10-14|<15||Male||Parenting/Caregiver Programs|FALSE,ovc_serv_1014_m_care,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Male,,Parenting/Caregiver Programs,FALSE
+OVC_SERV|N|||||||||10-14|<15||Male||Social Protection|FALSE,ovc_serv_1014_m_sp,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,10-14,<15,,Male,,Social Protection,FALSE
+OVC_SERV|N|||||||||15-17|15+||Female|||FALSE,ovc_serv_1517_f,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Female,,,FALSE
+OVC_SERV|N|||||||||15-17|15+||Female||Economic Strengthening|FALSE,ovc_serv_1517_f_econ,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Female,,Economic Strengthening,FALSE
+OVC_SERV|N|||||||||15-17|15+||Female||Education Support|FALSE,ovc_serv_1517_f_edu,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Female,,Education Support,FALSE
+OVC_SERV|N|||||||||15-17|15+||Female||Other Service Areas|FALSE,ovc_serv_1517_f_oth,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Female,,Other Service Areas,FALSE
+OVC_SERV|N|||||||||15-17|15+||Female||Parenting/Caregiver Programs|FALSE,ovc_serv_1517_f_care,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Female,,Parenting/Caregiver Programs,FALSE
+OVC_SERV|N|||||||||15-17|15+||Female||Social Protection|FALSE,ovc_serv_1517_f_sp,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Female,,Social Protection,FALSE
+OVC_SERV|N|||||||||15-17|15+||Male|||FALSE,ovc_serv_1517_m,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Male,,,FALSE
+OVC_SERV|N|||||||||15-17|15+||Male||Economic Strengthening|FALSE,ovc_serv_1517_m_econ,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Male,,Economic Strengthening,FALSE
+OVC_SERV|N|||||||||15-17|15+||Male||Education Support|FALSE,ovc_serv_1517_m_edu,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Male,,Education Support,FALSE
+OVC_SERV|N|||||||||15-17|15+||Male||Other Service Areas|FALSE,ovc_serv_1517_m_oth,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Male,,Other Service Areas,FALSE
+OVC_SERV|N|||||||||15-17|15+||Male||Parenting/Caregiver Programs|FALSE,ovc_serv_1517_m_care,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Male,,Parenting/Caregiver Programs,FALSE
+OVC_SERV|N|||||||||15-17|15+||Male||Social Protection|FALSE,ovc_serv_1517_m_sp,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,15-17,15+,,Male,,Social Protection,FALSE
+OVC_SERV|N|||||||||18-24|15+||Female|||FALSE,ovc_serv_1824_f,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Female,,,FALSE
+OVC_SERV|N|||||||||18-24|15+||Female||Economic Strengthening|FALSE,ovc_serv_1824_f_econ,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Female,,Economic Strengthening,FALSE
+OVC_SERV|N|||||||||18-24|15+||Female||Education Support|FALSE,ovc_serv_1824_f_edu,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Female,,Education Support,FALSE
+OVC_SERV|N|||||||||18-24|15+||Female||Other Service Areas|FALSE,ovc_serv_1824_f_oth,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Female,,Other Service Areas,FALSE
+OVC_SERV|N|||||||||18-24|15+||Female||Parenting/Caregiver Programs|FALSE,ovc_serv_1824_f_care,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Female,,Parenting/Caregiver Programs,FALSE
+OVC_SERV|N|||||||||18-24|15+||Female||Social Protection|FALSE,ovc_serv_1824_f_sp,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Female,,Social Protection,FALSE
+OVC_SERV|N|||||||||18-24|15+||Male|||FALSE,ovc_serv_1824_m,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Male,,,FALSE
+OVC_SERV|N|||||||||18-24|15+||Male||Economic Strengthening|FALSE,ovc_serv_1824_m_econ,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Male,,Economic Strengthening,FALSE
+OVC_SERV|N|||||||||18-24|15+||Male||Education Support|FALSE,ovc_serv_1824_m_edu,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Male,,Education Support,FALSE
+OVC_SERV|N|||||||||18-24|15+||Male||Other Service Areas|FALSE,ovc_serv_1824_m_oth,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Male,,Other Service Areas,FALSE
+OVC_SERV|N|||||||||18-24|15+||Male||Parenting/Caregiver Programs|FALSE,ovc_serv_1824_m_care,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Male,,Parenting/Caregiver Programs,FALSE
+OVC_SERV|N|||||||||18-24|15+||Male||Social Protection|FALSE,ovc_serv_1824_m_sp,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,18-24,15+,,Male,,Social Protection,FALSE
+OVC_SERV|N|||||||||25+|15+||Female|||FALSE,ovc_serv_o25_f,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Female,,,FALSE
+OVC_SERV|N|||||||||25+|15+||Female||Economic Strengthening|FALSE,ovc_serv_o25_f_econ,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Female,,Economic Strengthening,FALSE
+OVC_SERV|N|||||||||25+|15+||Female||Education Support|FALSE,ovc_serv_o25_f_edu,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Female,,Education Support,FALSE
+OVC_SERV|N|||||||||25+|15+||Female||Other Service Areas|FALSE,ovc_serv_o25_f_oth,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Female,,Other Service Areas,FALSE
+OVC_SERV|N|||||||||25+|15+||Female||Parenting/Caregiver Programs|FALSE,ovc_serv_o25_f_care,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Female,,Parenting/Caregiver Programs,FALSE
+OVC_SERV|N|||||||||25+|15+||Female||Social Protection|FALSE,ovc_serv_o25_f_sp,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Female,,Social Protection,FALSE
+OVC_SERV|N|||||||||25+|15+||Male|||FALSE,ovc_serv_o25_m,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Male,,,FALSE
+OVC_SERV|N|||||||||25+|15+||Male||Economic Strengthening|FALSE,ovc_serv_o25_m_econ,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Male,,Economic Strengthening,FALSE
+OVC_SERV|N|||||||||25+|15+||Male||Education Support|FALSE,ovc_serv_o25_m_edu,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Male,,Education Support,FALSE
+OVC_SERV|N|||||||||25+|15+||Male||Other Service Areas|FALSE,ovc_serv_o25_m_oth,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Male,,Other Service Areas,FALSE
+OVC_SERV|N|||||||||25+|15+||Male||Parenting/Caregiver Programs|FALSE,ovc_serv_o25_m_care,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Male,,Parenting/Caregiver Programs,FALSE
+OVC_SERV|N|||||||||25+|15+||Male||Social Protection|FALSE,ovc_serv_o25_m_sp,DisaggTool,OVC_SERV,OVC_SERV,N,,,,,,,,,25+,15+,,Male,,Social Protection,FALSE
+PMTCT_ART|N||||Already|||Pregnant|||||Female|Positive||FALSE,D_pmtct_art_already_fy19,DisaggTool,Already Alloc Targets,PMTCT_ART,N,,,,Already,,,Pregnant,,,,,Female,Positive,,FALSE
+PMTCT_ART|N||||New|||Pregnant|||||Female|Positive||FALSE,D_pmtct_art_new_fy19,DisaggTool,Already Alloc Targets,PMTCT_ART,N,,,,New,,,Pregnant,,,,,Female,Positive,,FALSE
+PMTCT_EID|N|||||||||<= 2 months|<15|||||FALSE,D_pmtct_eid_u2mo_fy19,DisaggTool,Already Alloc Targets,PMTCT_EID,N,,,,,,,,,<= 2 months,<15,,,,,FALSE
+PMTCT_EID|N|||||||||2 - 12 months|<15|||||FALSE,D_pmtct_eid_o2mo_fy19,DisaggTool,Already Alloc Targets,PMTCT_EID,N,,,,,,,,,2 - 12 months,<15,,,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||<10|<15||Female|||FALSE,pmtct_stat_D_u10_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,<10,<15,,Female,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||10-14|<15||Female|||FALSE,pmtct_stat_D_1014_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,10-14,<15,,Female,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||15-19|15+||Female|||FALSE,pmtct_stat_D_1519_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,15-19,15+,,Female,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||20-24|15+||Female|||FALSE,pmtct_stat_D_2024_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,20-24,15+,,Female,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||25-29|15+||Female|||FALSE,pmtct_stat_D_2529_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,25-29,15+,,Female,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||30-34|15+||Female|||FALSE,pmtct_stat_D_3034_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,30-34,15+,,Female,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||35-39|15+||Female|||FALSE,pmtct_stat_D_3539_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,35-39,15+,,Female,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||40-49|15+||Female|||FALSE,pmtct_stat_D_4049_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,40-49,15+,,Female,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||50+|15+||Female|||FALSE,pmtct_stat_D_o50_f,DisaggTool,PMTCT,PMTCT_STAT,D,,,,,,,Pregnant,,50+,15+,,Female,,,FALSE
+PMTCT_STAT|D|||||||Pregnant||Unknown Age|Unknown Age||Female|||FALSE,,,,PMTCT_STAT,D,,,,,,,Pregnant,,Unknown Age,Unknown Age,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||<10|<15||Female|||FALSE,pmtct_stat_u10_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,<10,<15,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant|||||Female|||FALSE,D_pmtct_stat_fy19,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,,,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||10-14|<15||Female|||FALSE,pmtct_stat_1014_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,10-14,<15,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||15-19|15+||Female|||FALSE,pmtct_stat_1519_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,15-19,15+,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||20-24|15+||Female|||FALSE,pmtct_stat_2024_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,20-24,15+,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||25-29|15+||Female|||FALSE,pmtct_stat_2529_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,25-29,15+,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||30-34|15+||Female|||FALSE,pmtct_stat_3034_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,30-34,15+,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||35-39|15+||Female|||FALSE,pmtct_stat_3539_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,35-39,15+,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||40-49|15+||Female|||FALSE,pmtct_stat_4049_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,40-49,15+,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||50+|15+||Female|||FALSE,pmtct_stat_o50_f,DisaggTool,PMTCT,PMTCT_STAT,N,,,,,,,Pregnant,,50+,15+,,Female,,,FALSE
+PMTCT_STAT|N|||||||Pregnant||Unknown Age|Unknown Age||Female|||FALSE,,,,PMTCT_STAT,N,,,,,,,Pregnant,,Unknown Age,Unknown Age,,Female,,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||<10|<15||Female|Positive||FALSE,pmtct_stat_u10_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,<10,<15,,Female,Positive,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||10-14|<15||Female|Positive||FALSE,pmtct_stat_1014_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,10-14,<15,,Female,Positive,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||15-19|15+||Female|Positive||FALSE,pmtct_stat_1519_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,15-19,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||20-24|15+||Female|Positive||FALSE,pmtct_stat_2024_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,20-24,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||25-29|15+||Female|Positive||FALSE,pmtct_stat_2529_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,25-29,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||30-34|15+||Female|Positive||FALSE,pmtct_stat_3034_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,30-34,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||35-39|15+||Female|Positive||FALSE,pmtct_stat_3539_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,35-39,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||40-49|15+||Female|Positive||FALSE,pmtct_stat_4049_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,40-49,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||50+|15+||Female|Positive||FALSE,pmtct_stat_o50_f_known,DisaggTool,PMTCT,PMTCT_STAT,N,,,Known,,,,Pregnant,,50+,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||Known||||Pregnant||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,PMTCT_STAT,N,,,Known,,,,Pregnant,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||<10|<15||Female|Negative||FALSE,pmtct_stat_u10_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,<10,<15,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||<10|<15||Female|Positive||FALSE,pmtct_stat_u10_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,<10,<15,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||10-14|<15||Female|Negative||FALSE,pmtct_stat_1014_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,10-14,<15,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||10-14|<15||Female|Positive||FALSE,pmtct_stat_1014_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,10-14,<15,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||15-19|15+||Female|Negative||FALSE,pmtct_stat_1519_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,15-19,15+,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||15-19|15+||Female|Positive||FALSE,pmtct_stat_1519_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,15-19,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||20-24|15+||Female|Negative||FALSE,pmtct_stat_2024_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,20-24,15+,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||20-24|15+||Female|Positive||FALSE,pmtct_stat_2024_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,20-24,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||25-29|15+||Female|Negative||FALSE,pmtct_stat_2529_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,25-29,15+,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||25-29|15+||Female|Positive||FALSE,pmtct_stat_2529_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,25-29,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||30-34|15+||Female|Negative||FALSE,pmtct_stat_3034_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,30-34,15+,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||30-34|15+||Female|Positive||FALSE,pmtct_stat_3034_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,30-34,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||35-39|15+||Female|Negative||FALSE,pmtct_stat_3539_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,35-39,15+,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||35-39|15+||Female|Positive||FALSE,pmtct_stat_3539_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,35-39,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||40-49|15+||Female|Negative||FALSE,pmtct_stat_4049_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,40-49,15+,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||40-49|15+||Female|Positive||FALSE,pmtct_stat_4049_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,40-49,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||50+|15+||Female|Negative||FALSE,pmtct_stat_o50_f_newneg,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,50+,15+,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||50+|15+||Female|Positive||FALSE,pmtct_stat_o50_f_newpos,DisaggTool,PMTCT,PMTCT_STAT,N,,,New,,,,Pregnant,,50+,15+,,Female,Positive,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||Unknown Age|Unknown Age||Female|Negative||FALSE,,,,PMTCT_STAT,N,,,New,,,,Pregnant,,Unknown Age,Unknown Age,,Female,Negative,,FALSE
+PMTCT_STAT|N|||New||||Pregnant||Unknown Age|Unknown Age||Female|Positive||FALSE,,,,PMTCT_STAT,N,,,New,,,,Pregnant,,Unknown Age,Unknown Age,,Female,Positive,,FALSE
+PP_PREV|N|||||||||||||||FALSE,D_pp_prev_fy19,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,,,,,,,FALSE
+PP_PREV|N|||||||||10-14|<15||Female|||FALSE,pp_prev_1014_f,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,10-14,<15,,Female,,,FALSE
+PP_PREV|N|||||||||10-14|<15||Male|||FALSE,pp_prev_1014_m,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,10-14,<15,,Male,,,FALSE
+PP_PREV|N|||||||||15-19|15+||Female|||FALSE,pp_prev_1519_f,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,15-19,15+,,Female,,,FALSE
+PP_PREV|N|||||||||15-19|15+||Male|||FALSE,pp_prev_1519_m,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,15-19,15+,,Male,,,FALSE
+PP_PREV|N|||||||||20-24|15+||Female|||FALSE,pp_prev_2024_f,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,20-24,15+,,Female,,,FALSE
+PP_PREV|N|||||||||20-24|15+||Male|||FALSE,pp_prev_2024_m,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,20-24,15+,,Male,,,FALSE
+PP_PREV|N|||||||||25-29|15+||Female|||FALSE,pp_prev_2529_f,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,25-29,15+,,Female,,,FALSE
+PP_PREV|N|||||||||25-29|15+||Male|||FALSE,pp_prev_2529_m,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,25-29,15+,,Male,,,FALSE
+PP_PREV|N|||||||||30-34|15+||Female|||FALSE,pp_prev_3034_f,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,30-34,15+,,Female,,,FALSE
+PP_PREV|N|||||||||30-34|15+||Male|||FALSE,pp_prev_3034_m,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,30-34,15+,,Male,,,FALSE
+PP_PREV|N|||||||||35-39|15+||Female|||FALSE,pp_prev_3539_f,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,35-39,15+,,Female,,,FALSE
+PP_PREV|N|||||||||35-39|15+||Male|||FALSE,pp_prev_3539_m,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,35-39,15+,,Male,,,FALSE
+PP_PREV|N|||||||||40-49|15+||Female|||FALSE,pp_prev_4049_f,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,40-49,15+,,Female,,,FALSE
+PP_PREV|N|||||||||40-49|15+||Male|||FALSE,pp_prev_4049_m,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,40-49,15+,,Male,,,FALSE
+PP_PREV|N|||||||||50+|15+||Female|||FALSE,pp_prev_o50_f,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,50+,15+,,Female,,,FALSE
+PP_PREV|N|||||||||50+|15+||Male|||FALSE,pp_prev_o50_m,DisaggTool,PP_PREV,PP_PREV,N,,,,,,,,,50+,15+,,Male,,,FALSE
+PrEP_NEW|N|||||||||||||||FALSE,D_prep_new_fy19,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,,,,,,,FALSE
+PrEP_NEW|N|||||||||15-19|15+||Female|||FALSE,prep_new_1519_f,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,15-19,15+,,Female,,,FALSE
+PrEP_NEW|N|||||||||15-19|15+||Male|||FALSE,prep_new_1519_m,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,15-19,15+,,Male,,,FALSE
+PrEP_NEW|N|||||||||20-24|15+||Female|||FALSE,prep_new_2024_f,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,20-24,15+,,Female,,,FALSE
+PrEP_NEW|N|||||||||20-24|15+||Male|||FALSE,prep_new_2024_m,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,20-24,15+,,Male,,,FALSE
+PrEP_NEW|N|||||||||25-29|15+||Female|||FALSE,prep_new_2529_f,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,25-29,15+,,Female,,,FALSE
+PrEP_NEW|N|||||||||25-29|15+||Male|||FALSE,prep_new_2529_m,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,25-29,15+,,Male,,,FALSE
+PrEP_NEW|N|||||||||30-34|15+||Female|||FALSE,prep_new_3034_f,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,30-34,15+,,Female,,,FALSE
+PrEP_NEW|N|||||||||30-34|15+||Male|||FALSE,prep_new_3034_m,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,30-34,15+,,Male,,,FALSE
+PrEP_NEW|N|||||||||35-39|15+||Female|||FALSE,prep_new_3539_f,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,35-39,15+,,Female,,,FALSE
+PrEP_NEW|N|||||||||35-39|15+||Male|||FALSE,prep_new_3539_m,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,35-39,15+,,Male,,,FALSE
+PrEP_NEW|N|||||||||40-49|15+||Female|||FALSE,prep_new_4049_f,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,40-49,15+,,Female,,,FALSE
+PrEP_NEW|N|||||||||40-49|15+||Male|||FALSE,prep_new_4049_m,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,40-49,15+,,Male,,,FALSE
+PrEP_NEW|N|||||||||50+|15+||Female|||FALSE,prep_new_o50_f,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,50+,15+,,Female,,,FALSE
+PrEP_NEW|N|||||||||50+|15+||Male|||FALSE,prep_new_o50_m,DisaggTool,PrEP_NEW,PrEP_NEW,N,,,,,,,,,50+,15+,,Male,,,FALSE
+PrEP_NEW|N||FSW||||||||||Female|||FALSE,prep_new_fsw,DisaggTool,PrEP_NEW,PrEP_NEW,N,,FSW,,,,,,,,,,Female,,,FALSE
+PrEP_NEW|N||MSM||||||||||Male|||FALSE,prep_new_msm,DisaggTool,PrEP_NEW,PrEP_NEW,N,,MSM,,,,,,,,,,Male,,,FALSE
+PrEP_NEW|N||Other Key Populations|||||||||||||FALSE,prep_new_oth_kp,DisaggTool,PrEP_NEW,PrEP_NEW,N,,Other Key Populations,,,,,,,,,,,,,FALSE
+PrEP_NEW|N||TG|||||||||||||FALSE,prep_new_tg,DisaggTool,PrEP_NEW,PrEP_NEW,N,,TG,,,,,,,,,,,,,FALSE
+TB_ART|N||||||TB Positive|||<15|<15|AgeAggregated|Female|Positive||FALSE,tb_art_u15_f_pos,DisaggTool,TB_ART,TB_ART,N,,,,,,TB Positive,,,<15,<15,AgeAggregated,Female,Positive,,FALSE
+TB_ART|N||||||TB Positive|||<15|<15|AgeAggregated|Male|Positive||FALSE,tb_art_u15_m_pos,DisaggTool,TB_ART,TB_ART,N,,,,,,TB Positive,,,<15,<15,AgeAggregated,Male,Positive,,FALSE
+TB_ART|N||||||TB Positive|||||||Positive||FALSE,D_tb_art_fy19,DisaggTool,TB_ART,TB_ART,N,,,,,,TB Positive,,,,,,,Positive,,FALSE
+TB_ART|N||||||TB Positive|||15+|15+|AgeAggregated|Female|Positive||FALSE,tb_art_o15_f_pos,DisaggTool,TB_ART,TB_ART,N,,,,,,TB Positive,,,15+,15+,AgeAggregated,Female,Positive,,FALSE
+TB_ART|N||||||TB Positive|||15+|15+|AgeAggregated|Male|Positive||FALSE,tb_art_o15_m_pos,DisaggTool,TB_ART,TB_ART,N,,,,,,TB Positive,,,15+,15+,AgeAggregated,Male,Positive,,FALSE
+TB_PREV|D|||||||||<15|<15|AgeAggregated|Female|Positive||FALSE,tb_prev_D_u15_f_pos,DisaggTool,TB_PREV,TB_PREV,D,,,,,,,,,<15,<15,AgeAggregated,Female,Positive,,FALSE
+TB_PREV|D|||||||||<15|<15|AgeAggregated|Male|Positive||FALSE,tb_prev_D_u15_m_pos,DisaggTool,TB_PREV,TB_PREV,D,,,,,,,,,<15,<15,AgeAggregated,Male,Positive,,FALSE
+TB_PREV|D|||||||||||||Positive||FALSE,D_tb_prev_D_fy19,DisaggTool,TB_PREV,TB_PREV,D,,,,,,,,,,,,,Positive,,FALSE
+TB_PREV|D|||||||||15+|15+|AgeAggregated|Female|Positive||FALSE,tb_prev_D_o15_f_pos,DisaggTool,TB_PREV,TB_PREV,D,,,,,,,,,15+,15+,AgeAggregated,Female,Positive,,FALSE
+TB_PREV|D|||||||||15+|15+|AgeAggregated|Male|Positive||FALSE,tb_prev_D_o15_m_pos,DisaggTool,TB_PREV,TB_PREV,D,,,,,,,,,15+,15+,AgeAggregated,Male,Positive,,FALSE
+TB_PREV|D||||Already|||||||||Positive|Alternative TPT Regimen|FALSE,tb_prev_D_alt_tpt_life_already_pos,DisaggTool,TB_PREV,TB_PREV,D,,,,Already,,,,,,,,,Positive,Alternative TPT Regimen,FALSE
+TB_PREV|D||||Already|||||||||Positive|IPT|FALSE,tb_prev_D_ipt_life_already_pos,DisaggTool,TB_PREV,TB_PREV,D,,,,Already,,,,,,,,,Positive,IPT,FALSE
+TB_PREV|D||||New|||||||||Positive|Alternative TPT Regimen|FALSE,tb_prev_D_alt_tpt_life_new_pos,DisaggTool,TB_PREV,TB_PREV,D,,,,New,,,,,,,,,Positive,Alternative TPT Regimen,FALSE
+TB_PREV|D||||New|||||||||Positive|IPT|FALSE,tb_prev_D_ipt_life_new_pos,DisaggTool,TB_PREV,TB_PREV,D,,,,New,,,,,,,,,Positive,IPT,FALSE
+TB_PREV|N|||||||||<15|<15|AgeAggregated|Female|Positive||FALSE,tb_prev_u15_f_pos,DisaggTool,TB_PREV,TB_PREV,N,,,,,,,,,<15,<15,AgeAggregated,Female,Positive,,FALSE
+TB_PREV|N|||||||||<15|<15|AgeAggregated|Male|Positive||FALSE,tb_prev_u15_m_pos,DisaggTool,TB_PREV,TB_PREV,N,,,,,,,,,<15,<15,AgeAggregated,Male,Positive,,FALSE
+TB_PREV|N|||||||||||||Positive||FALSE,D_tb_prev_fy19,DisaggTool,TB_PREV,TB_PREV,N,,,,,,,,,,,,,Positive,,FALSE
+TB_PREV|N|||||||||15+|15+|AgeAggregated|Female|Positive||FALSE,tb_prev_o15_f_pos,DisaggTool,TB_PREV,TB_PREV,N,,,,,,,,,15+,15+,AgeAggregated,Female,Positive,,FALSE
+TB_PREV|N|||||||||15+|15+|AgeAggregated|Male|Positive||FALSE,tb_prev_o15_m_pos,DisaggTool,TB_PREV,TB_PREV,N,,,,,,,,,15+,15+,AgeAggregated,Male,Positive,,FALSE
+TB_PREV|N||||Already|||||||||Positive|Alternative TPT Regimen|FALSE,tb_prev_alt_tpt_life_already_pos,DisaggTool,TB_PREV,TB_PREV,N,,,,Already,,,,,,,,,Positive,Alternative TPT Regimen,FALSE
+TB_PREV|N||||Already|||||||||Positive|IPT|FALSE,tb_prev_ipt_life_already_pos,DisaggTool,TB_PREV,TB_PREV,N,,,,Already,,,,,,,,,Positive,IPT,FALSE
+TB_PREV|N||||New|||||||||Positive|Alternative TPT Regimen|FALSE,tb_prev_alt_tpt_life_new_pos,DisaggTool,TB_PREV,TB_PREV,N,,,,New,,,,,,,,,Positive,Alternative TPT Regimen,FALSE
+TB_PREV|N||||New|||||||||Positive|IPT|FALSE,tb_prev_ipt_life_new_pos,DisaggTool,TB_PREV,TB_PREV,N,,,,New,,,,,,,,,Positive,IPT,FALSE
+TB_STAT|D||||||TB Positive|||<15|<15|AgeAggregated|Female|||FALSE,tb_stat_D_u15_f,DisaggTool,TB_STAT,TB_STAT,D,,,,,,TB Positive,,,<15,<15,AgeAggregated,Female,,,FALSE
+TB_STAT|D||||||TB Positive|||<15|<15|AgeAggregated|Male|||FALSE,tb_stat_D_u15_m,DisaggTool,TB_STAT,TB_STAT,D,,,,,,TB Positive,,,<15,<15,AgeAggregated,Male,,,FALSE
+TB_STAT|D||||||TB Positive|||||||||FALSE,D_tb_stat_D_fy19,DisaggTool,TB_STAT,TB_STAT,D,,,,,,TB Positive,,,,,,,,,FALSE
+TB_STAT|D||||||TB Positive|||15+|15+|AgeAggregated|Female|||FALSE,tb_stat_D_o15_f,DisaggTool,TB_STAT,TB_STAT,D,,,,,,TB Positive,,,15+,15+,AgeAggregated,Female,,,FALSE
+TB_STAT|D||||||TB Positive|||15+|15+|AgeAggregated|Male|||FALSE,tb_stat_D_o15_m,DisaggTool,TB_STAT,TB_STAT,D,,,,,,TB Positive,,,15+,15+,AgeAggregated,Male,,,FALSE
+TB_STAT|N||||||TB Positive|||<15|<15|AgeAggregated|Female|||FALSE,tb_stat_u15_f_newneg,DisaggTool,TB_STAT,TB_STAT,N,,,,,,TB Positive,,,<15,<15,AgeAggregated,Female,,,FALSE
+TB_STAT|N||||||TB Positive|||<15|<15|AgeAggregated|Male|||FALSE,tb_stat_u15_m_newneg,DisaggTool,TB_STAT,TB_STAT,N,,,,,,TB Positive,,,<15,<15,AgeAggregated,Male,,,FALSE
+TB_STAT|N||||||TB Positive|||||||||FALSE,D_tb_stat_fy19,DisaggTool,TB_STAT,TB_STAT,N,,,,,,TB Positive,,,,,,,,,FALSE
+TB_STAT|N||||||TB Positive|||15+|15+|AgeAggregated|Female|||FALSE,tb_stat_o15_f_newneg,DisaggTool,TB_STAT,TB_STAT,N,,,,,,TB Positive,,,15+,15+,AgeAggregated,Female,,,FALSE
+TB_STAT|N||||||TB Positive|||15+|15+|AgeAggregated|Male|||FALSE,tb_stat_o15_m_newneg,DisaggTool,TB_STAT,TB_STAT,N,,,,,,TB Positive,,,15+,15+,AgeAggregated,Male,,,FALSE
+TX_CURR|N|||||||||<1|<15||Unknown Sex|Positive||FALSE,tx_curr_u1_unk_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+TX_CURR|N|||||||||||||Positive||FALSE,D_tx_curr_fy19,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,,,,,Positive,,FALSE
+TX_CURR|N|||||||||1-9|<15||Unknown Sex|Positive||FALSE,tx_curr_0109_unk_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+TX_CURR|N|||||||||10-14|<15||Female|Positive||FALSE,tx_curr_1014_f_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+TX_CURR|N|||||||||10-14|<15||Male|Positive||FALSE,tx_curr_1014_m_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+TX_CURR|N|||||||||15-19|15+||Female|Positive||FALSE,tx_curr_1519_f_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+TX_CURR|N|||||||||15-19|15+||Male|Positive||FALSE,tx_curr_1519_m_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+TX_CURR|N|||||||||20-24|15+||Female|Positive||FALSE,tx_curr_2024_f_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+TX_CURR|N|||||||||20-24|15+||Male|Positive||FALSE,tx_curr_2024_m_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+TX_CURR|N|||||||||25-29|15+||Female|Positive||FALSE,tx_curr_2529_f_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+TX_CURR|N|||||||||25-29|15+||Male|Positive||FALSE,tx_curr_2529_m_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+TX_CURR|N|||||||||30-34|15+||Female|Positive||FALSE,tx_curr_3034_f_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+TX_CURR|N|||||||||30-34|15+||Male|Positive||FALSE,tx_curr_3034_m_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+TX_CURR|N|||||||||35-39|15+||Female|Positive||FALSE,tx_curr_3539_f_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+TX_CURR|N|||||||||35-39|15+||Male|Positive||FALSE,tx_curr_3539_m_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+TX_CURR|N|||||||||40-49|15+||Female|Positive||FALSE,tx_curr_4049_f_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+TX_CURR|N|||||||||40-49|15+||Male|Positive||FALSE,tx_curr_4049_m_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+TX_CURR|N|||||||||50+|15+||Female|Positive||FALSE,tx_curr_o50_f_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,50+,15+,,Female,Positive,,FALSE
+TX_CURR|N|||||||||50+|15+||Male|Positive||FALSE,tx_curr_o50_m_pos,DisaggTool,TX_CURR,TX_CURR,N,,,,,,,,,50+,15+,,Male,Positive,,FALSE
+TX_NEW|N|||||||||<1|<15||Unknown Sex|Positive||FALSE,tx_new_u01_unk_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,<1,<15,,Unknown Sex,Positive,,FALSE
+TX_NEW|N|||||||||||||Positive||FALSE,D_tx_new_fy19,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,,,,,Positive,,FALSE
+TX_NEW|N|||||||||1-9|<15||Unknown Sex|Positive||FALSE,tx_new_0109_unk_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,1-9,<15,,Unknown Sex,Positive,,FALSE
+TX_NEW|N|||||||||10-14|<15||Female|Positive||FALSE,tx_new_1014_f_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,10-14,<15,,Female,Positive,,FALSE
+TX_NEW|N|||||||||10-14|<15||Male|Positive||FALSE,tx_new_1014_m_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,10-14,<15,,Male,Positive,,FALSE
+TX_NEW|N|||||||||15-19|15+||Female|Positive||FALSE,tx_new_1519_f_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,15-19,15+,,Female,Positive,,FALSE
+TX_NEW|N|||||||||15-19|15+||Male|Positive||FALSE,tx_new_1519_m_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,15-19,15+,,Male,Positive,,FALSE
+TX_NEW|N|||||||||20-24|15+||Female|Positive||FALSE,tx_new_2024_f_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,20-24,15+,,Female,Positive,,FALSE
+TX_NEW|N|||||||||20-24|15+||Male|Positive||FALSE,tx_new_2024_m_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,20-24,15+,,Male,Positive,,FALSE
+TX_NEW|N|||||||||25-29|15+||Female|Positive||FALSE,tx_new_2529_f_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,25-29,15+,,Female,Positive,,FALSE
+TX_NEW|N|||||||||25-29|15+||Male|Positive||FALSE,tx_new_2529_m_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,25-29,15+,,Male,Positive,,FALSE
+TX_NEW|N|||||||||30-34|15+||Female|Positive||FALSE,tx_new_3034_f_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,30-34,15+,,Female,Positive,,FALSE
+TX_NEW|N|||||||||30-34|15+||Male|Positive||FALSE,tx_new_3034_m_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,30-34,15+,,Male,Positive,,FALSE
+TX_NEW|N|||||||||35-39|15+||Female|Positive||FALSE,tx_new_3539_f_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,35-39,15+,,Female,Positive,,FALSE
+TX_NEW|N|||||||||35-39|15+||Male|Positive||FALSE,tx_new_3539_m_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,35-39,15+,,Male,Positive,,FALSE
+TX_NEW|N|||||||||40-49|15+||Female|Positive||FALSE,tx_new_4049_f_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,40-49,15+,,Female,Positive,,FALSE
+TX_NEW|N|||||||||40-49|15+||Male|Positive||FALSE,tx_new_4049_m_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,40-49,15+,,Male,Positive,,FALSE
+TX_NEW|N|||||||||50+|15+||Female|Positive||FALSE,tx_new_o50_f_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,50+,15+,,Female,Positive,,FALSE
+TX_NEW|N|||||||||50+|15+||Male|Positive||FALSE,tx_new_o50_m_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,,,50+,15+,,Male,Positive,,FALSE
+TX_NEW|N|||||||Breastfeeding||||||Positive||FALSE,tx_new_bf_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,Breastfeeding,,,,,,Positive,,FALSE
+TX_NEW|N|||||||Pregnant||||||Positive||FALSE,tx_new_preg_pos,DisaggTool,TX_NEW,TX_NEW,N,,,,,,,Pregnant,,,,,,Positive,,FALSE
+TX_NEW|N||FSW||||||||||Female|Positive||FALSE,tx_new_fsw_pos,DisaggTool,TX_NEW,TX_NEW,N,,FSW,,,,,,,,,,Female,Positive,,FALSE
+TX_NEW|N||MSM||||||||||Male|Positive||FALSE,tx_new_msm_pos,DisaggTool,TX_NEW,TX_NEW,N,,MSM,,,,,,,,,,Male,Positive,,FALSE
+TX_NEW|N||People in prisons and other enclosed settings|||||||||||Positive||FALSE,tx_new_prison_pos,DisaggTool,TX_NEW,TX_NEW,N,,People in prisons and other enclosed settings,,,,,,,,,,,Positive,,FALSE
+TX_NEW|N||PWID|||||||||||Positive||FALSE,tx_new_pwid_pos,DisaggTool,TX_NEW,TX_NEW,N,,PWID,,,,,,,,,,,Positive,,FALSE
+TX_NEW|N||TG|||||||||||Positive||FALSE,tx_new_tg_pos,DisaggTool,TX_NEW,TX_NEW,N,,TG,,,,,,,,,,,Positive,,FALSE
+TX_PVLS|D|||||||||||||Positive||FALSE,D_tx_pvls_D_fy19,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,,,,,,,,,Positive,,FALSE
+TX_PVLS|D|||||Routine||||<15|<15|AgeAggregated|Female|Positive||FALSE,tx_pvls_D_u15_f_rtn,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Routine,,,,<15,<15,AgeAggregated,Female,Positive,,FALSE
+TX_PVLS|D|||||Routine||||<15|<15|AgeAggregated|Male|Positive||FALSE,tx_pvls_D_u15_m_rtn,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Routine,,,,<15,<15,AgeAggregated,Male,Positive,,FALSE
+TX_PVLS|D|||||Routine||||||||Positive||FALSE,tx_pvls_D_rtn_pos,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Routine,,,,,,,,Positive,,FALSE
+TX_PVLS|D|||||Routine||||15+|15+|AgeAggregated|Female|Positive||FALSE,tx_pvls_D_o15_f_rtn,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Routine,,,,15+,15+,AgeAggregated,Female,Positive,,FALSE
+TX_PVLS|D|||||Routine||||15+|15+|AgeAggregated|Male|Positive||FALSE,tx_pvls_D_o15_m_rtn,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Routine,,,,15+,15+,AgeAggregated,Male,Positive,,FALSE
+TX_PVLS|D|||||Targeted||||<15|<15|AgeAggregated|Female|Positive||FALSE,tx_pvls_D_u15_f_targeted,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Targeted,,,,<15,<15,AgeAggregated,Female,Positive,,FALSE
+TX_PVLS|D|||||Targeted||||<15|<15|AgeAggregated|Male|Positive||FALSE,tx_pvls_D_u15_m_targeted,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Targeted,,,,<15,<15,AgeAggregated,Male,Positive,,FALSE
+TX_PVLS|D|||||Targeted||||||||Positive||FALSE,tx_pvls_D_targeted_pos,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Targeted,,,,,,,,Positive,,FALSE
+TX_PVLS|D|||||Targeted||||15+|15+|AgeAggregated|Female|Positive||FALSE,tx_pvls_D_o15_f_targeted,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Targeted,,,,15+,15+,AgeAggregated,Female,Positive,,FALSE
+TX_PVLS|D|||||Targeted||||15+|15+|AgeAggregated|Male|Positive||FALSE,tx_pvls_D_o15_m_targeted,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Targeted,,,,15+,15+,AgeAggregated,Male,Positive,,FALSE
+TX_PVLS|D|||||Undocumented Test Indication||||<15|<15|AgeAggregated|Female|Positive||FALSE,tx_pvls_D_u15_f_undoctest,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Undocumented Test Indication,,,,<15,<15,AgeAggregated,Female,Positive,,FALSE
+TX_PVLS|D|||||Undocumented Test Indication||||<15|<15|AgeAggregated|Male|Positive||FALSE,tx_pvls_D_u15_m_undoctest,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Undocumented Test Indication,,,,<15,<15,AgeAggregated,Male,Positive,,FALSE
+TX_PVLS|D|||||Undocumented Test Indication||||||||Positive||FALSE,tx_pvls_D_undoctest_pos,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Undocumented Test Indication,,,,,,,,Positive,,FALSE
+TX_PVLS|D|||||Undocumented Test Indication||||15+|15+|AgeAggregated|Female|Positive||FALSE,tx_pvls_D_o15_f_undoctest,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Undocumented Test Indication,,,,15+,15+,AgeAggregated,Female,Positive,,FALSE
+TX_PVLS|D|||||Undocumented Test Indication||||15+|15+|AgeAggregated|Male|Positive||FALSE,tx_pvls_D_o15_m_undoctest,DisaggTool,TX_PVLS,TX_PVLS,D,,,,,Undocumented Test Indication,,,,15+,15+,AgeAggregated,Male,Positive,,FALSE
+TX_RET|D|||||||||<15|<15|AgeAggregated|Female|Positive|12mo|FALSE,tx_ret_D_u15_f_pos,DisaggTool,TX_RET,TX_RET,D,,,,,,,,,<15,<15,AgeAggregated,Female,Positive,12mo,FALSE
+TX_RET|D|||||||||<15|<15|AgeAggregated|Male|Positive|12mo|FALSE,tx_ret_D_u15_m_pos,DisaggTool,TX_RET,TX_RET,D,,,,,,,,,<15,<15,AgeAggregated,Male,Positive,12mo,FALSE
+TX_RET|D|||||||||||||Positive|12mo|FALSE,D_tx_ret_D_fy19,DisaggTool,TX_RET,TX_RET,D,,,,,,,,,,,,,Positive,12mo,FALSE
+TX_RET|D|||||||||15+|15+|AgeAggregated|Female|Positive|12mo|FALSE,tx_ret_D_o15_f_pos,DisaggTool,TX_RET,TX_RET,D,,,,,,,,,15+,15+,AgeAggregated,Female,Positive,12mo,FALSE
+TX_RET|D|||||||||15+|15+|AgeAggregated|Male|Positive|12mo|FALSE,tx_ret_D_o15_m_pos,DisaggTool,TX_RET,TX_RET,D,,,,,,,,,15+,15+,AgeAggregated,Male,Positive,12mo,FALSE
+TX_RET|D|||||||Breastfeeding||||||Positive|12mo|FALSE,tx_ret_D_bf_pos,DisaggTool,TX_RET,TX_RET,D,,,,,,,Breastfeeding,,,,,,Positive,12mo,FALSE
+TX_RET|D|||||||Pregnant||||||Positive|12mo|FALSE,tx_ret_D_preg_pos,DisaggTool,TX_RET,TX_RET,D,,,,,,,Pregnant,,,,,,Positive,12mo,FALSE
+TX_RET|N|||||||||<15|<15|AgeAggregated|Female|Positive|12mo|FALSE,tx_ret_u15_f_pos,DisaggTool,TX_RET,TX_RET,N,,,,,,,,,<15,<15,AgeAggregated,Female,Positive,12mo,FALSE
+TX_RET|N|||||||||<15|<15|AgeAggregated|Male|Positive|12mo|FALSE,tx_ret_u15_m_pos,DisaggTool,TX_RET,TX_RET,N,,,,,,,,,<15,<15,AgeAggregated,Male,Positive,12mo,FALSE
+TX_RET|N|||||||||||||Positive|12mo|FALSE,D_tx_ret_fy19,DisaggTool,TX_RET,TX_RET,N,,,,,,,,,,,,,Positive,12mo,FALSE
+TX_RET|N|||||||||15+|15+|AgeAggregated|Female|Positive|12mo|FALSE,tx_ret_o15_f_pos,DisaggTool,TX_RET,TX_RET,N,,,,,,,,,15+,15+,AgeAggregated,Female,Positive,12mo,FALSE
+TX_RET|N|||||||||15+|15+|AgeAggregated|Male|Positive|12mo|FALSE,tx_ret_o15_m_pos,DisaggTool,TX_RET,TX_RET,N,,,,,,,,,15+,15+,AgeAggregated,Male,Positive,12mo,FALSE
+TX_RET|N|||||||Breastfeeding||||||Positive|12mo|FALSE,tx_ret_bf_pos,DisaggTool,TX_RET,TX_RET,N,,,,,,,Breastfeeding,,,,,,Positive,12mo,FALSE
+TX_RET|N|||||||Pregnant||||||Positive|12mo|FALSE,tx_ret_preg_pos,DisaggTool,TX_RET,TX_RET,N,,,,,,,Pregnant,,,,,,Positive,12mo,FALSE
+TX_TB|D|||||||||<15|<15|AgeAggregated|Female|Positive||FALSE,tx_tb_D_u15_f_pos2,DisaggTool,TX_TB,TX_TB,D,,,,,,,,,<15,<15,AgeAggregated,Female,Positive,,FALSE
+TX_TB|D|||||||||<15|<15|AgeAggregated|Male|Positive||FALSE,tx_tb_D_u15_m_pos,DisaggTool,TX_TB,TX_TB,D,,,,,,,,,<15,<15,AgeAggregated,Male,Positive,,FALSE
+TX_TB|D|||||||||||||Positive||FALSE,D_tx_tb_D_fy19,DisaggTool,TX_TB,TX_TB,D,,,,,,,,,,,,,Positive,,FALSE
+TX_TB|D|||||||||||||Positive|Other|FALSE,tx_tb_D_oth_pos,DisaggTool,TX_TB,TX_TB,D,,,,,,,,,,,,,Positive,Other,FALSE
+TX_TB|D|||||||||||||Positive|Smear|FALSE,tx_tb_D_smear_pos,DisaggTool,TX_TB,TX_TB,D,,,,,,,,,,,,,Positive,Smear,FALSE
+TX_TB|D|||||||||||||Positive|Specimen Sent|FALSE,tx_tb_D_sent_pos,DisaggTool,TX_TB,TX_TB,D,,,,,,,,,,,,,Positive,Specimen Sent,FALSE
+TX_TB|D|||||||||||||Positive|Xpert|FALSE,tx_tb_D_xpert_pos,DisaggTool,TX_TB,TX_TB,D,,,,,,,,,,,,,Positive,Xpert,FALSE
+TX_TB|D|||||||||15+|15+|AgeAggregated|Female|Positive||FALSE,tx_tb_D_o15_f_pos,DisaggTool,TX_TB,TX_TB,D,,,,,,,,,15+,15+,AgeAggregated,Female,Positive,,FALSE
+TX_TB|D|||||||||15+|15+|AgeAggregated|Male|Positive||FALSE,tx_tb_D_o15_m_pos,DisaggTool,TX_TB,TX_TB,D,,,,,,,,,15+,15+,AgeAggregated,Male,Positive,,FALSE
+TX_TB|D||||Already||TB Negative|||||||Positive||FALSE,tx_tb_D_life_already_scrn_neg_pos,DisaggTool,TX_TB,TX_TB,D,,,,Already,,TB Negative,,,,,,,Positive,,FALSE
+TX_TB|D||||Already||TB Positive|||||||Positive||FALSE,tx_tb_D_life_already_scrn_pos_pos,DisaggTool,TX_TB,TX_TB,D,,,,Already,,TB Positive,,,,,,,Positive,,FALSE
+TX_TB|D||||New||TB Negative|||||||Positive||FALSE,tx_tb_D_life_new_scrn_neg_pos,DisaggTool,TX_TB,TX_TB,D,,,,New,,TB Negative,,,,,,,Positive,,FALSE
+TX_TB|D||||New||TB Positive|||||||Positive||FALSE,tx_tb_D_life_new_scrn_pos_pos,DisaggTool,TX_TB,TX_TB,D,,,,New,,TB Positive,,,,,,,Positive,,FALSE
+TX_TB|N||||||TB Positive|||<15|<15|AgeAggregated|Female|Positive||FALSE,,,,TX_TB,N,,,,,,TB Positive,,,<15,<15,AgeAggregated,Female,Positive,,FALSE
+TX_TB|N||||||TB Positive|||<15|<15|AgeAggregated|Male|Positive||FALSE,,,,TX_TB,N,,,,,,TB Positive,,,<15,<15,AgeAggregated,Male,Positive,,FALSE
+TX_TB|N||||||TB Positive|||||||Positive||FALSE,,,,TX_TB,N,,,,,,TB Positive,,,,,,,Positive,,FALSE
+TX_TB|N||||||TB Positive|||15+|15+|AgeAggregated|Female|Positive||FALSE,,,,TX_TB,N,,,,,,TB Positive,,,15+,15+,AgeAggregated,Female,Positive,,FALSE
+TX_TB|N||||||TB Positive|||15+|15+|AgeAggregated|Male|Positive||FALSE,,,,TX_TB,N,,,,,,TB Positive,,,15+,15+,AgeAggregated,Male,Positive,,FALSE
+VMMC_CIRC|N|||||||||< 2 months|<15||Male|||FALSE,vmmc_circ_u02mo_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,< 2 months,<15,,Male,,,FALSE
+VMMC_CIRC|N||||||||||||Male|||FALSE,D_vmmc_circ_fy19,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,,,,Male,,,FALSE
+VMMC_CIRC|N|||||||||10-14|<15||Male|||FALSE,vmmc_circ_1014_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,10-14,<15,,Male,,,FALSE
+VMMC_CIRC|N|||||||||15-19|15+||Male|||FALSE,vmmc_circ_1519_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,15-19,15+,,Male,,,FALSE
+VMMC_CIRC|N|||||||||2 months - 9 years|<15||Male|||FALSE,vmmc_circ_02mo9_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,2 months - 9 years,<15,,Male,,,FALSE
+VMMC_CIRC|N|||||||||20-24|15+||Male|||FALSE,vmmc_circ_2024_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,20-24,15+,,Male,,,FALSE
+VMMC_CIRC|N|||||||||25-29|15+||Male|||FALSE,vmmc_circ_2529_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,25-29,15+,,Male,,,FALSE
+VMMC_CIRC|N|||||||||30-34|15+||Male|||FALSE,vmmc_circ_3034_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,30-34,15+,,Male,,,FALSE
+VMMC_CIRC|N|||||||||35-39|15+||Male|||FALSE,vmmc_circ_3539_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,35-39,15+,,Male,,,FALSE
+VMMC_CIRC|N|||||||||40-49|15+||Male|||FALSE,vmmc_circ_4049_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,40-49,15+,,Male,,,FALSE
+VMMC_CIRC|N|||||||||50+|15+||Male|||FALSE,vmmc_circ_o50_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,,50+,15+,,Male,,,FALSE
+VMMC_CIRC|N||||||||Device based||||Male|||FALSE,vmmc_circ_device_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,Device based,,,,Male,,,FALSE
+VMMC_CIRC|N||||||||Surgical Technique||||Male|||FALSE,vmmc_circ_surg_m,DisaggTool,VMMC_CIRC,VMMC_CIRC,N,,,,,,,,Surgical Technique,,,,Male,,,FALSE

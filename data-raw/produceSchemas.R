@@ -1,8 +1,8 @@
 library(readxl)
 library(rlist)
-require(jsonlite)
-require(datimvalidation)
-
+library(jsonlite)
+library(datimvalidation)
+library(tidyr)
 
 ProduceSchema <-
   function(row = 6,
@@ -79,11 +79,17 @@ produceSchemas <- function(sheet_path,mode) {
   #Exclude these two , as they are custom
   custom_sheets<-c("Home")
   sheets <-sheets[!(sheets %in% custom_sheets)]
-  foo <- list()
-  for (i in 1:length(sheets)) {
-    bar <- ProduceSchema(sheet_path = sheet_path, sheet_name = sheets[i])
-    foo <- list.append(foo, bar)
-  }
+  foo<-lapply(sheets,function(x) {ProduceSchema(sheet_name=x,sheet_path = sheet_path)})
+  return(list(mode=mode,schema=foo))
+}
+
+produceSiteToolSchemas <- function(sheet_path,mode) {
+  
+  sheets <- excel_sheets(sheet_path)
+  #Exclude these two , as they are custom
+  custom_sheets<-c("SiteList","Mechs")
+  sheets <-sheets[!(sheets %in% custom_sheets)]
+  foo<-lapply(sheets,function(x) {ProduceSchema(sheet_name=x,sheet_path = sheet_path,start_col = 1)})
   return(list(mode=mode,schema=foo))
 }
 
@@ -102,76 +108,113 @@ processDataElements<-function() {
     dplyr::filter(.,complete.cases(.))
   }
 
-## COPdataElements
-## TODO: Move this to one of the standard views so we 
-## do not need to login to DATIM
-
-GenerateCOPDataElements <- function() {
-  
-  getCOPDataElements <- function(dataset_uid,period,level) {
-    de <- read.csv(url(paste0(getOption("baseurl"),"api/sqlViews/DotdxKrNZxG/data.csv?var=dataSets:",dataset_uid)),stringsAsFactors=FALSE,header=TRUE)
-    de$period <- period
-    de$level <- level
-    de$pdLvl <- paste("pd",period,level,sep="_",collapse=NULL)
-    de$indicator <- str_trim(str_extract(str_replace_all(de$dataelement,"(?<=IMPATT)\\.","_"),"^\\w+\\s"))
-    return(de)
-  }
-  
-  dataset_config<-data.frame(
-  dataset = c(
-    #2019 Targets
-    #(Facility,       Community,        PSNU)
-    "eyI0UOWJnDk",    "l796jk9SW7q",    "msJImKkTJkV",
-    #IMPATT
-    "pTuDWXzkAkJ",
-    #2018 Targets
-    #(Facility,       Community)
-    "AitXBHsC7RA",    "BuRoS9i851o",
-    #2017Q4
-    #(Facility,       Community)
-    "uTvHPA1zqzi",    "O3VMNi8EZSV"),
-  period = c(rep("19_T",3),"IMPT",rep(c("18_T","17_4"), each=2)),
-  level = c("F","C","P","P",rep(c("F","C"),2)))
-  
-  COPdataElements=NULL
-  for (i in 1:length(dataset_config)) {
-    COPdataElements=rbind(COPdataElements,getCOPDataElements(dataset_config$dataset[i],dataset_config$period[i],dataset_config$level[i]))
-  }
-  
-  #TEMPORARY: Code List Fix --> add four lines for PMTCT_ART in PSNU code list which are currently not appearing in sqlView.
-  COPdataElements <- COPdataElements %>%
-    rbind(c("MER Target Setting: PSNU (Facility and Community Combined)","PMTCT_ART (N, DSD, NewExistingArt/Sex/HIVStatus) T_PSNU: ART","PMTCT_ART (N, DSD, NewExistingArt/Sex/HIV) T_PSNU","PMTCT_ART_N_DSD_NewExistingArt_Sex_HIV_T_PSNU","DFdm1fjKS5u","Number of HIV-positive pregnant women who received ART to reduce risk of mother-to-child-transmission during pregnancy.","Life-long ART, New, Female, Positive","Q2EBeMBa8Ga","Q2EBeMBa8Ga","19_T","P","pd_19_T_P","PMTCT_ART")
-          ,c("MER Target Setting: PSNU (Facility and Community Combined)","PMTCT_ART (N, DSD, NewExistingArt/Sex/HIVStatus) T_PSNU: ART","PMTCT_ART (N, DSD, NewExistingArt/Sex/HIV) T_PSNU","PMTCT_ART_N_DSD_NewExistingArt_Sex_HIV_T_PSNU","DFdm1fjKS5u","Number of HIV-positive pregnant women who received ART to reduce risk of mother-to-child-transmission during pregnancy.","Life-long ART, Already, Female, Positive","RTYO8ycjbCt","RTYO8ycjbCt","19_T","P","pd_19_T_P","PMTCT_ART")
-          ,c("MER Target Setting: PSNU (Facility and Community Combined)","PMTCT_ART (N, TA, NewExistingArt/Sex/HIVStatus) T_PSNU: ART", "PMTCT_ART (N, TA, NewExistingArt/Sex/HIV) T_PSNU", "PMTCT_ART_N_TA_NewExistingArt_Sex_HIV_T_PSNU", "w4pjh8fNZx8","Number of HIV-positive pregnant women who received ART to reduce risk of mother-to-child-transmission during pregnancy.","Life-long ART, New, Female, Positive","Q2EBeMBa8Ga","Q2EBeMBa8Ga","19_T","P","pd_19_T_P","PMTCT_ART")
-          ,c("MER Target Setting: PSNU (Facility and Community Combined)","PMTCT_ART (N, TA, NewExistingArt/Sex/HIVStatus) T_PSNU: ART", "PMTCT_ART (N, TA, NewExistingArt/Sex/HIV) T_PSNU", "PMTCT_ART_N_TA_NewExistingArt_Sex_HIV_T_PSNU", "w4pjh8fNZx8","Number of HIV-positive pregnant women who received ART to reduce risk of mother-to-child-transmission during pregnancy.","Life-long ART, Already, Female, Positive","RTYO8ycjbCt","RTYO8ycjbCt","19_T","P","pd_19_T_P","PMTCT_ART")
-    ) %>%
-    unique() %>% 
-    subset(.,COPdataElements$indicator %in% c("TX_RET","TX_NEW","TX_CURR","TX_PVLS","PMTCT_STAT","PMTCT_ART","PMTCT_EID","TB_STAT","TB_ART","TB_PREV","TX_TB","HTS_TST","VMMC_CIRC","HTS_SELF","OVC_SERV","OVC_HIVSTAT","KP_PREV","PP_PREV","KP_MAT","GEND_GBV","GEND_GBV_PEP","PrEP_NEW","IMPATT_PLHIV"))
-
-  return(COPdataElements)
-  
+getOrganisationUnitGroups <- function() {
+  url <-
+    paste0(getOption("baseurl"),
+           "api/organisationUnitGroups?format=json&paging=false")
+  organisationUnitGroups <-
+    fromJSON(content(GET(url), "text"), flatten = TRUE)
+  organisationUnitGroups <- as.data.frame(organisationUnitGroups)
+  names(organisationUnitGroups) <- c("siteTypeUID", "siteType")
+  return(organisationUnitGroups)
 }
 
 
+siteToolSchema<-function(wb_path) {
+  sheets <- excel_sheets(wb_path)
+}
+
+getSiteList <- function(siteType) {
+            organisationUnitGroups <- getOrganisationUnitGroups()
+            stUID<-organisationUnitGroups[organisationUnitGroups$siteType==siteType,][1]
+            url<-paste0(getOption("baseurl"),"api/organisationUnitGroups/",stUID,"?fields=organisationUnits[id],id,name&format=json")
+            resp<-fromJSON(content(GET(url),"text"), flatten=TRUE)
+            resp<-as.data.frame(resp)
+            names(resp)<-c("siteType","siteTypeUID","orgUnit")
+            return(resp)
+}
 
 ##Procedural logic to generate the actual schemas
+##PSNU HTS Template
 sheet_path = "data-raw/MalawiCOP18DisaggTool_HTSv2018.02.10.xlsx"
 mode="HTS"
 hts_schema<-produceSchemas(sheet_path,mode)
 
+##Normal PSNU template
 sheet_path = "data-raw/MalawiCOP18DisaggToolv2018.02.10.xlsx"
 mode="NORMAL"
 main_schema<-produceSchemas(sheet_path,mode)
 
+#Normal Site level  tools
+sheet_path="data-raw/SiteLevelReview_TEMPLATE.xlsx"
+mode="NORMAL_SITE"
+main_site_schema<-produceSiteToolSchemas(sheet_path,mode)
+
+#Normal HTS Site level  tool
+sheet_path="data-raw/SiteLevelReview_HTS_TEMPLATE.xlsx"
+mode="HTS_SITE"
+hts_site_schema<-produceSiteToolSchemas(sheet_path,mode)
+
 schemas<-list(hts=hts_schema,normal=main_schema)
 names(schemas)<-c("hts","normal")
 
+#List of mechanisms
 mechs<-processMechs()
+#List of data elements
 des<-processDataElements()
+#IMPATT option set
 impatt<-fromJSON("data-raw/impatt_option_set.json")
 
-loadSecrets("/home/jason/.secrets/datim.json")
-COPdataElements<-GenerateCOPDataElements()
+datimvalidation::loadSecrets("/home/jason/.secrets/datim.json")
+source("data-raw/transform_code_lists.R")
+rCOP18deMapT<-generateCodeListT()%>% mapDataPackCodes()
+rCOP18deMap<-generateCOP18deMap(rCOP18deMapT)
 
 
-devtools::use_data(hts_schema,main_schema,mechs,des,impatt,COPdataElements, internal = TRUE,overwrite = TRUE)
+#MilitaryUnits
+militaryUnits<-getSiteList("Military")
+
+clusters <- function() {
+  df<- read.csv("data-raw/COP18Clusters.csv",stringsAsFactors=F,header=T) %>%
+    mutate(operatingUnitUID=case_when(operatingunit=="Botswana"~"l1KFEXKI4Dg"
+                                      ,operatingunit=="Cameroon"~"bQQJe0cC1eD"
+                                      ,operatingunit=="Haiti"~"JTypsdEUNPw"
+                                      ,operatingunit=="Mozambique"~"h11OyvlPxpJ"
+                                      ,operatingunit=="Namibia"~"FFVkaV9Zk1S"
+                                      ,TRUE~""))
+  return(df)
+}
+
+clusters<-clusters()
+#Sites to exclude
+sites_exclude<-c('fNH1Ny5vXI5', 'Tiqj6KDtx3p', 'BspXUn4c2i0', 'wnFyQ8gWVuP', 'b0WbjlNgwpg', 'Smw76afBRxh', 'TyDdI16aem2', 'u6UHEEYSsrY', 'ZHAEPwL6s87', 'oitze45vmuG', 'imQAg2FmqIi', 'JWb1FJrb6u0', 'oU9JrXHFBwo', 'ZvjmhaNkDJP', 'ph5hfp4TDYa', 'NDGAjm5He3s', 'S0wsB3mH7As', 'WKQumwV8vzz', 'aIl7B0aJZE7', 'EwvYCRwMaj2', 'Zj3QFD5LCN0', 'DWqxLhccQpN', 'FMA01mDjzg9', 'Wt4Ap0dVT0K', 'kTDYtuRlsRJ', 'B2aBYUFKEtP', 'eBMjxJa6Hyo', 'Jn8Dy8Kt8r6', 'BP8kSSf9mVh', 'uM7bKbyQMUb', 'xRNWRGhiL2x', 'CLsTOua0sYz', 'foN7Fc7qqd5', 'Pn5Egy0nEvw', 'ZU5YFwWSAM7', 'ahCpXE5nYKO', 'WQUnNhUravY', 'lSrgJWMVhKP', 'SWMW9b7WMMG', 'LdH3sTixu4G', 'PUWNeEDqKjG', 'kQLMdNG7tOr', 'qjxX1U1zOV9', 'un7KU5UBkTp', 'nMYhhbh463E', 'cugQdSJzIzf', 'Vgz3Af04heg', 'VXhW2lbMHeT', 'o1OrLbuDePL', 'gdWruPti7dW', 'kpLxWaoSWp5', 'GGNlHihWQLS', 'c78scqZGQPc', 'WXCDaZ8ldbb', 'DmpYVwgbt0k', 'kbLOPXlsHH4', 'KabE1XwF8CH', 'sk68oHctZOt', 'boqES0AhYHD', 'ecpaElyx1MZ', 'TDk0oLAqK6H', 'p3n96zLyWoP', 'hF8sLm9vE1U', 't5GdyeN9riy', 'Fu0wZlUnntH', 'TixiR1SsebU', 'u86Kfypb8DG', 'JJJOwYzvDZo', 'Dgi2sUBjGzO', 'e9eJh4Dn286', 'dV6akh4l1Ej', 'I93yMz1rjkQ', 'TVrtknExg0t', 'FL40UCPHJke', 'WxIBVamFcg0', 'BpLP6v9NeWX', 'D7uuBfToHfb', 'ItoS9FGQg24', 'M8Yb2Y9rgNe', 'tBcAME3DNk1', 'jBOH9BBbqEW', 'J9Nmumn9DRc', 'sEJ8peJ3Jz6', 'g0HJxd9XWMy', 'tLcy3vpV6LF', 'QITi8Rd6xV5', 'zrHn3k5oIAT', 'szenMEdV4sF', 'EzzYi29hyNF', 'RJWMt1CU1HW', 'JSmcOMrC6zZ', 'RQykElqy1HR', 'Ae8uPosEFeF', 'NEk0GiXI2SW', 'HSoAojlwB7Q', 'hRq9qYMyBE7', 'Rq9EVeiR0PU', 'OyDnBG2RCgS', 'q3WGbWcjdWf', 'aGQbouk9S3E', 'GMHwNlqPAzS', 'm6eYOfLPzmF', 'lAhBMeGXsvQ', 'zZXWPXydW2S', 'VGVbROfDHWh', 'bMtviLCfDub', 'ZCbh020F2TA', 'cVnfnV5N1w5', 'L6HMMjCf2em', 'U9YejzJibuv', 'ASSntKFP1Ns')
+
+#Map of OUs and PSNUs
+ous<-httr::GET(paste0(getOption("baseurl"),"api/organisationUnits?filter=level:eq:3&fields=id,name")) %>% 
+  httr::content("text") %>% 
+  jsonlite::fromJSON() %>%
+  rlist::list.extract("organisationUnits") 
+
+ou_prioritization_levels<-httr::GET(paste0(getOption("baseurl"),"api/dataStore/dataSetAssignments/ous")) %>% 
+  httr::content("text") %>% 
+  jsonlite::fromJSON() %>% 
+    plyr::ldply(function(x) {data.frame(x,stringsAsFactors = FALSE)}) %>%
+  dplyr::select(name=name3,prioritization) %>%
+  distinct %>%
+  inner_join(ous,by=c("name")) 
+
+getOrgunitsAtLevel <- function(parent_id,level) {
+  url<-paste0(getOption("baseurl"),"api/organisationUnits?filter=path:like:",parent_id,"&filter=level:eq:",level,"&fields=id,name&paging=false")
+  
+  httr::GET(url) %>%
+    httr::content("text") %>% 
+    jsonlite::fromJSON() %>%
+    rlist::list.extract("organisationUnits") 
+}
+
+psnus<-mapply(getOrgunitsAtLevel,ou_prioritization_levels$id,ou_prioritization_levels$prioritization)
+
+militaryUnits<-getSiteList("Military")
+
+#Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
+devtools::use_data(hts_schema,main_schema,main_site_schema,hts_site_schema,mechs,des,impatt,rCOP18deMap,rCOP18deMapT,clusters, sites_exclude,psnus,militaryUnits,internal = TRUE,overwrite = TRUE)

@@ -4,18 +4,18 @@
 \alias{ImportSheet}
 \title{ImportSheet(wb_path,schema)}
 \usage{
-ImportSheet(wb_path, schema)
+ImportSheet(wb_info, schema)
 }
 \arguments{
-\item{wb_path}{The absolute file path to the workbook.}
+\item{wb_info}{Workbook info object.}
 
 \item{schema}{Schema of the sheet}
 }
 \value{
 Returns a data frame with the following columns. 
-Will return an empty data frame if the sheet cannot be processed.
+Will return an empty data frame if the the sheet is blank.
 
-#' \itemize{
+ \itemize{
   \item datalement: UID of the data elememnt
   \item period: ISO string of the period
   \item orgunit: UID of the organisation unit

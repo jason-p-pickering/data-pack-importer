@@ -2,12 +2,16 @@
 % Please edit documentation in R/data-pack-importer.R
 \name{GetWorkbookInfo}
 \alias{GetWorkbookInfo}
-\title{GetWorkbookInfo(wb_path)}
+\title{GetWorkbookInfo(wb_path,distribution_method,support_files_path)}
 \usage{
-GetWorkbookInfo(wb_path)
+GetWorkbookInfo(wb_path, distribution_method = NA, support_files_path = NA)
 }
 \arguments{
 \item{wb_path}{The absolute file path to the workbook.}
+
+\item{distribution_method}{The distribution method to use.}
+
+\item{support_files_path}{Path to the support files directory.}
 }
 \value{
 Returns a list consiting of :
