@@ -126,7 +126,7 @@ export_site_level_tool <- function(d) {
   openxlsx::writeData(
     wb,
     "Home",
-    d$wb_info$wb_type,
+    d$wb_info$ou_name,
     xy = c(15, 2),
     colNames = F,
     keepNA = F
@@ -167,7 +167,7 @@ export_site_level_tool <- function(d) {
     colNames = F,
     keepNA = F
   )
-  
+  openxlsx::showGridLines(wb,"Home",showGridLines = FALSE)
   site_list<-data.frame(siteID=d$sites$name_full,Inactive=0)
   openxlsx::writeDataTable(
     wb,
