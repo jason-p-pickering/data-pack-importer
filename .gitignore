@@ -5,3 +5,15 @@
 packrat/lib*/
 .R_Cache/
 .DS_Store
+
+# vagrant stuff
+vagrant/.vagrant
+vagrant/ubuntu-xenial-*.log
+*.box
+!*.gitkeep
+vagrant/disagg_tools/*.xls*
+vagrant/support_files/*.xlsx
+vagrant/support_files/*.json
+vagrant/support_files/*.rds
+vagrant/support_files/*.csv
+vagrant/support_files/*.rda
