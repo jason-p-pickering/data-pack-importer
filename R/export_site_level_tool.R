@@ -7,6 +7,8 @@
 #' @param df Data frame object 
 
 write_site_level_sheet <- function(wb,schema,df) {
+  
+  
   #Is this always true??
   fields<-unlist(schema$fields)[-c(1:4)]
   #Filter  out this indicator
@@ -14,6 +16,17 @@ write_site_level_sheet <- function(wb,schema,df) {
     dplyr::filter(match_code %in% fields) %>%
     na.omit()
   if (nrow(df_indicator) > 0){
+    #Dont error even if the table does not exist
+    foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
+                     error = function(err) {},
+                     finally = {} )  
+    
+    #Subtotal fomulas
+    subtotal_formula_columns<-seq(from=0,to=(length(fields)-1),by=1) + 5 
+    subtotal_fomulas<-paste0('=SUBTOTAL(109,INDIRECT($B$1&"["&',openxlsx::int2col(subtotal_formula_columns),'6&"]"))')
+    for (i in 1:(length(subtotal_fomulas))) {
+    openxlsx::writeFormula(wb, schema$sheet_name,subtotal_fomulas[i],xy = c(i+4, 5))
+    }
     #Create the OU level summary
     sums<- df_indicator %>% dplyr::group_by(match_code) %>%
       dplyr::summarise(value=sum(value,na.rm = TRUE)) %>%
@@ -32,8 +45,7 @@ write_site_level_sheet <- function(wb,schema,df) {
     df_indicator<-df_indicator %>% 
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
       tidyr::spread(match_code,value,drop=FALSE)
-    #Does this error of the table is not present in the template?
-    openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)
+
     openxlsx::writeDataTable(
       wb,
       sheet = schema$sheet_name,
@@ -56,9 +68,9 @@ write_site_level_sheet <- function(wb,schema,df) {
         
    # inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
     openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:1048576,"list",value="SiteList")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:1048576,"list",value="MechList")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=7:1048576,"list",value="DSDTA")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:5000,"list",value="SiteList")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:5000,"list",value="MechList")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=7:5000,"list",value="DSDTA")
   }
   
   
@@ -97,6 +109,9 @@ export_site_level_tool <- function(d) {
            d$sites$organisationunituid,
            " )")
   wb <- openxlsx::loadWorkbook(file = template_path)
+  sheets<-openxlsx::getSheetNames(template_path)
+  openxlsx::sheetVisibility(wb)[which(sheets =="SiteList")]<-"veryHidden"
+  openxlsx::sheetVisibility(wb)[which(sheets =="Mechs")]<-"veryHidden"
   
   #Fill in the Homepage details
   #TODO Do this from the schema
@@ -105,15 +120,6 @@ export_site_level_tool <- function(d) {
     "Home",
     d$wb_info$ou_name,
     xy = c(15, 1),
-    colNames = F,
-    keepNA = F
-  )
-  #OU UID
-  openxlsx::writeData(
-    wb,
-    "Home",
-    d$wb_info$ou_uid,
-    xy = c(15, 3),
     colNames = F,
     keepNA = F
   )
@@ -126,6 +132,15 @@ export_site_level_tool <- function(d) {
     colNames = F,
     keepNA = F
   )
+  #OU UID
+  openxlsx::writeData(
+    wb,
+    "Home",
+    d$wb_info$ou_uid,
+    xy = c(15, 3),
+    colNames = F,
+    keepNA = F
+  )
   #Distribution method
   openxlsx::writeData(
     wb,
@@ -135,9 +150,25 @@ export_site_level_tool <- function(d) {
     colNames = F,
     keepNA = F
   )
+  #Generation timestamp
+  openxlsx::writeData(
+    wb,
+    "Home",
+    paste("Generated on:",Sys.time(), "by", rlist::list.extract(as.list(Sys.info()),"user")),
+    xy = c(15, 6),
+    colNames = F,
+    keepNA = F
+  )
+  #Package version
+  openxlsx::writeData(
+    wb,
+    "Home",
+    as.character(packageVersion("datapackimporter")),
+    xy = c(15, 7),
+    colNames = F,
+    keepNA = F
+  )
   
-  
-  openxlsx::removeTable(wb,"SiteList","SiteList")
   site_list<-data.frame(siteID=d$sites$name_full,Inactive=0)
   openxlsx::writeDataTable(
     wb,
@@ -184,7 +215,8 @@ export_site_level_tool <- function(d) {
                            schema = schema,
                            df = df)
   }
-  openxlsx::saveWorkbook(wb = wb,
+
+    openxlsx::saveWorkbook(wb = wb,
                          file = output_file_path,
                          overwrite = TRUE)
   print(paste0("Successfully saved output to ",output_file_path))
