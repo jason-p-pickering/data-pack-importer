@@ -2,14 +2,12 @@
 
 ## Installation
 
-You will need to install the package from source with the following commands.
-
 ### Ubuntu
 
-Tested on 16.04
+Tested on 16.04, you may need to install the following packages:
 
 ```bash
-sudo apt-get install openssl-devel libcurl4-openssl-dev libxml2-dev
+sudo apt install openssl-devel libcurl4-openssl-dev libxml2-dev
 ```
 
 ### Windows
@@ -19,7 +17,7 @@ todo
 
 ## Run
 
-1. Download support files from [Sharepoint](https://www.pepfar.net/Project-Pages/collab-38/Shared%20Documents/Forms/AllItems.aspx?RootFolder=%2FProject-Pages%2Fcollab-38%2FShared%20Documents%2FCOP18%20Target%20Setting%20Process%20Improvement%2FImport%20Team&FolderCTID=0x012000C4AC9B35DC4AB84FAEEF47AE703A28CE00C799CA85D140EF45960B9C47CE99E19F&View=%7BA8BAC8D0-846B-4EFE-8763-758855081F5D%7D&InitialTabId=Ribbon%2EDocument&VisibilityContext=WSSTabPersistence#InplviewHasha8bac8d0-846b-4efe-8763-758855081f5d=RootFolder%3D%252FProject%252DPages%252Fcollab%252D38%252FShared%2520Documents%252FCOP18%2520Target%2520Setting%2520Process%2520Improvement%252FImport%2520Team)
+1. Download support files from [Sharepoint](https://www.pepfar.net/Project-Pages/collab-38/Shared%20Documents/Forms/AllItems.aspx?RootFolder=%2FProject-Pages%2Fcollab-38%2FShared%20Documents%2FCOP18%20Target%20Setting%20Process%20Improvement%2FImport%20Team&FolderCTID=0x012000C4AC9B35DC4AB84FAEEF47AE703A28CE00C799CA85D140EF45960B9C47CE99E19F&View=%7BA8BAC8D0-846B-4EFE-8763-758855081F5D%7D&InitialTabId=Ribbon%2EDocument&VisibilityContext=WSSTabPersistence#InplviewHasha8bac8d0-846b-4efe-8763-758855081f5d=RootFolder%3D%252FProject%252DPages%252Fcollab%252D38%252FShared%2520Documents%252FCOP18%2520Target%2520Setting%2520Process%2520Improvement%252FImport%2520Team) and place it into one folder.
 
 2. Adjust `support_files` path below (it should be a path and ending with a `/`)
 
@@ -81,5 +79,4 @@ export_site_level_tool(site_data)
 
 cat(toJSON(site_data, auto_unbox = TRUE), 
     file = site_json_file)
-```
 ```
