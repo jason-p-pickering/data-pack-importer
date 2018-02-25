@@ -2,19 +2,6 @@
 
 ## Installation
 
-### Ubuntu
-
-Tested on 16.04, you may need to install the following packages:
-
-```bash
-sudo apt install openssl-devel libcurl4-openssl-dev libxml2-dev
-```
-
-### Windows
-
-todo
-
-
 ### Vagrant
 
 Vagrant isolates all requirements into a Virtual Machine (Ubuntu). The "host" is your local computer while the "guest" is a isolated VM. Shared documents can only be transferred via the `/vagrant` folder in your repository.
