@@ -159,21 +159,21 @@ export_site_level_tool <- function(d) {
     colNames = F,
     keepNA = F
   )
-  #Style both of the sums and formula rows and columns
-  s <-
-    openxlsx::createStyle(numFmt = "TEXT",
-                          fontSize = 44,
-                          fontColour = "#8E271D",
-                          valign = "center")
-  openxlsx::addStyle(
-    wb,
-    "Home",
-    style = s,
-    rows = 26,
-    cols =2,
-    gridExpand = FALSE
-  )
-  
+  # #Style both of the sums and formula rows and columns
+  # s <-
+  #   openxlsx::createStyle(numFmt = "TEXT",
+  #                         fontSize = 44,
+  #                         fontColour = "#8E271D",
+  #                         valign = "center")
+  # openxlsx::addStyle(
+  #   wb,
+  #   "Home",
+  #   style = s,
+  #   rows = 26,
+  #   cols =2,
+  #   gridExpand = FALSE
+  # )
+  # 
   #OU UID
   openxlsx::writeData(
     wb,
