@@ -7,15 +7,17 @@
 #' @param df Data frame object 
 
 write_site_level_sheet <- function(wb,schema,df) {
-  
-  
+
   #Is this always true??
   fields<-unlist(schema$fields)[-c(1:4)]
   #Filter  out this indicator
   df_indicator<- df %>% 
     dplyr::filter(match_code %in% fields) %>%
     na.omit()
+  
   if (nrow(df_indicator) > 0){
+    #Create the styling for the main data table
+    s <- createStyle(numFmt = "#,##0;-#,##0;;")
     #Dont error even if the table does not exist
     foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
                      error = function(err) {},
@@ -27,12 +29,12 @@ write_site_level_sheet <- function(wb,schema,df) {
     for (i in 1:(length(subtotal_fomulas))) {
     openxlsx::writeFormula(wb, schema$sheet_name,subtotal_fomulas[i],xy = c(i+4, 5))
     }
+    
     #Create the OU level summary
     sums<- df_indicator %>% dplyr::group_by(match_code) %>%
       dplyr::summarise(value=sum(value,na.rm = TRUE)) %>%
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
       tidyr::spread(match_code,value,drop=FALSE)
-    
     openxlsx::writeData(
       wb,
       sheet = schema$sheet_name,
@@ -41,11 +43,22 @@ write_site_level_sheet <- function(wb,schema,df) {
       colNames = F,
       keepNA = F
     )
+    #Style both of the sums and formula rows and columns
+    openxlsx::addStyle(
+      wb,
+      schema$sheet_name,
+      style = s,
+      rows = 4:5,
+      cols = 5:(length(fields) + 5),
+      gridExpand = TRUE
+    )
     
+    #Spread the data, being sure not to drop any levels
     df_indicator<-df_indicator %>% 
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
       tidyr::spread(match_code,value,drop=FALSE)
-
+    
+    #Write the main data table
     openxlsx::writeDataTable(
       wb,
       sheet = schema$sheet_name,
@@ -55,6 +68,16 @@ write_site_level_sheet <- function(wb,schema,df) {
       keepNA = FALSE,
       tableName = schema$sheet_name
     )
+    #Style the data table
+    openxlsx::addStyle(
+      wb,
+      schema$sheet_name,
+      style = s,
+      rows = 7:(NROW(df_indicator) + 100),
+      cols = 5:(length(fields) + 5),
+      gridExpand = TRUE
+    )
+    
     formula_cell_numbers<- ( 1:NROW(df_indicator) ) + 6
     inactiveFormula <-
       paste0(
@@ -214,8 +237,7 @@ export_site_level_tool <- function(d) {
                            schema = schema,
                            df = df)
   }
-
-    openxlsx::saveWorkbook(wb = wb,
+  openxlsx::saveWorkbook(wb = wb,
                          file = output_file_path,
                          overwrite = TRUE)
   print(paste0("Successfully saved output to ",output_file_path))
