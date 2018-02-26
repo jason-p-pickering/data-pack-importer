@@ -19,7 +19,7 @@ sudo apt install libcurl4-gnutls-dev libxml2-dev libcurl4-openssl-dev libssl-dev
 install.packages("devtools")
 library(devtools)
 install_github(repo="jason-p-pickering/datim-validation")
-install_github(repo="jason-p-pickering/data-pack-importer", branch="production")
-install_github(repo="tkunstek/openxlsx")
+install_github(repo="jason-p-pickering/data-pack-importer", ref="prod")
+install_github(repo="jason-p-pickering/openxlsx", ref="26a6f60")
 ```
 
