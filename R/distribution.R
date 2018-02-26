@@ -168,5 +168,6 @@ distributeSite <- function(d) {
     return(list(wb_info=d$wb_info,
                 mechanisms=mechanisms,
                 sites=sites,
+                sums=d$sums,
                 data=ds))
 }

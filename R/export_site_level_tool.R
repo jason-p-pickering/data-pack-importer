@@ -11,11 +11,11 @@ write_site_level_sheet <- function(wb,schema,df) {
   #Is this always true??
   fields<-unlist(schema$fields)[-c(1:4)]
   #Filter  out this indicator
-  df_indicator<- df %>% 
+  df_indicator<- df$data_prepared %>% 
     dplyr::filter(match_code %in% fields) %>%
     na.omit()
   
-  if (nrow(df_indicator) > 0){
+  if (NROW(df_indicator) > 0){
     #Create the styling for the main data table
     s <- openxlsx::createStyle(numFmt = "#,##0;-#,##0;;")
     #Dont error even if the table does not exist
@@ -31,18 +31,21 @@ write_site_level_sheet <- function(wb,schema,df) {
     }
     
     #Create the OU level summary
-    sums<- df_indicator %>% dplyr::group_by(match_code) %>%
-      dplyr::summarise(value=sum(value,na.rm = TRUE)) %>%
+    sums<- df$sums %>% 
+      dplyr::select(match_code,value) %>%
+      filter(match_code %in% fields) %>%
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
       tidyr::spread(match_code,value,drop=FALSE)
-    openxlsx::writeData(
-      wb,
-      sheet = schema$sheet_name,
-      sums,
-      xy = c(5, 4),
-      colNames = F,
-      keepNA = F
-    )
+      
+      openxlsx::writeData(
+        wb,
+        sheet = schema$sheet_name,
+        sums,
+        xy = c(5, 4),
+        colNames = F,
+        keepNA = F
+      )
+  
     #Style both of the sums and formula rows and columns
     openxlsx::addStyle(
       wb,
@@ -244,8 +247,8 @@ export_site_level_tool <- function(d) {
   }
   
   #Munge the data a bit to get it into shape
-  df <- d$data %>% dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
-    dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
+  d$data_prepared <- d$data %>% dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
+    dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::left_join(d$mechanisms, by = "attributeoptioncombo") %>%
     dplyr::left_join(d$sites, by = c("orgunit" = "organisationunituid")) %>%
     dplyr::select(name = name_full, mechanism, supportType, match_code, value) %>%
@@ -258,7 +261,7 @@ export_site_level_tool <- function(d) {
     schema <- schemas$schema[[i]]
     write_site_level_sheet(wb = wb,
                            schema = schema,
-                           df = df)
+                           d = d)
   }
   openxlsx::saveWorkbook(wb = wb,
                          file = output_file_path,

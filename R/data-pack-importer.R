@@ -340,6 +340,18 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
     
     }
   
+  #Generate the sums
+  sums<-df %>%
+    dplyr::mutate(value=as.numeric(value),
+           pd_2019_P=paste0(dataelement,".",categoryoptioncombo)) %>%
+    dplyr::left_join(unique(datapackimporter::rCOP18deMapT[,c("pd_2019_P","DataPackCode")]),by=c("pd_2019_P")) %>%
+    dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
+    dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
+    dplyr::select(match_code,value) %>%
+    dplyr::group_by(match_code) %>%
+    dplyr::summarise(value=sum(value))
+    
+  
   #Import the follow on mechs
   if (wb_info$wb_type == "NORMAL") {
   follow_on_mechs<-ImportFollowOnMechs(wb_info)
@@ -349,5 +361,6 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
   
   return ( list(wb_info = wb_info,
     follow_on_mechs=follow_on_mechs,
-              data = df) )
+    sums=sums,
+    data = df) )
 }
