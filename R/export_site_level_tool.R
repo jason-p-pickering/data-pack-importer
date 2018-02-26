@@ -17,7 +17,7 @@ write_site_level_sheet <- function(wb,schema,df) {
   
   if (nrow(df_indicator) > 0){
     #Create the styling for the main data table
-    s <- createStyle(numFmt = "#,##0;-#,##0;;")
+    s <- openxlsx::createStyle(numFmt = "#,##0;-#,##0;;")
     #Dont error even if the table does not exist
     foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
                      error = function(err) {},
@@ -79,15 +79,16 @@ write_site_level_sheet <- function(wb,schema,df) {
     )
     
     formula_cell_numbers<- ( 1:NROW(df_indicator) ) + 6
+    
     inactiveFormula <-
       paste0(
         'IF(AND(',
         schema$sheet_name,
         '!$B',formula_cell_numbers,
-        '<>"",INDEX(SiteList[Inactive],MATCH(',
+        '<>"",INDEX(site_list[Inactive],MATCH(',
         schema$sheet_name,
         '!$B',formula_cell_numbers,
-        ',SiteList[siteID],0)+1)=1),"!!","")')
+        ',site_list[siteID],0)+1)=1),"!!","")')
         
    # inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
     openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
@@ -111,6 +112,7 @@ export_site_level_tool <- function(d) {
   } else if (d$wb_info$wb_type == "HTS") {
     template_name = "SiteLevelReview_HTS_TEMPLATE.xlsx"
   }
+  
   template_path <- paste0(d$wb_info$support_files_path, template_name)
   
   output_file_path <- paste0(
@@ -123,6 +125,7 @@ export_site_level_tool <- function(d) {
     format(Sys.time(), "%Y%m%d%H%M%S"),
     ".xlsx"
   )
+  
   #Create the concatenated PSNU > OU_Name (UID) string
   d$sites$name_full <-
     paste0(d$sites$psnu_name,
@@ -131,21 +134,14 @@ export_site_level_tool <- function(d) {
            " ( ",
            d$sites$organisationunituid,
            " )")
+  
   wb <- openxlsx::loadWorkbook(file = template_path)
   sheets<-openxlsx::getSheetNames(template_path)
   openxlsx::sheetVisibility(wb)[which(sheets =="Mechs")]<-"veryHidden"
   
   #Fill in the Homepage details
-  #TODO Do this from the schema
-  openxlsx::writeData(
-    wb,
-    "Home",
-    d$wb_info$ou_name,
-    xy = c(15, 1),
-    colNames = F,
-    keepNA = F
-  )
-  #OU
+  
+  #OU Hidden
   openxlsx::writeData(
     wb,
     "Home",
@@ -154,6 +150,30 @@ export_site_level_tool <- function(d) {
     colNames = F,
     keepNA = F
   )
+  #OU Styled
+  openxlsx::writeData(
+    wb,
+    "Home",
+    d$wb_info$ou_name,
+    xy = c(2, 26),
+    colNames = F,
+    keepNA = F
+  )
+  #Style both of the sums and formula rows and columns
+  s <-
+    openxlsx::createStyle(numFmt = "TEXT",
+                          fontSize = 44,
+                          fontColour = "#8E271D",
+                          valign = "center")
+  openxlsx::addStyle(
+    wb,
+    "Home",
+    style = s,
+    rows = 26,
+    cols =2,
+    gridExpand = FALSE
+  )
+  
   #OU UID
   openxlsx::writeData(
     wb,
@@ -191,6 +211,8 @@ export_site_level_tool <- function(d) {
     keepNA = F
   )
   openxlsx::showGridLines(wb,"Home",showGridLines = FALSE)
+  
+  #SiteList sheet
   site_list<-data.frame(siteID=d$sites$name_full,Inactive=0)
   openxlsx::writeDataTable(
     wb,
@@ -199,11 +221,12 @@ export_site_level_tool <- function(d) {
     xy = c(1, 1),
     colNames = T,
     keepNA = F,
-    tableName = "SiteList"
+    tableName = "site_list"
   )
   openxlsx::dataValidation(wb, "SiteList" , col = 2, rows = 1:nrow(site_list), 
                  type = "whole"
                  , operator = "between", value = c(0, 2))
+  
   openxlsx::writeData(
     wb,
     "Mechs",
