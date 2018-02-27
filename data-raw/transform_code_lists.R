@@ -381,7 +381,7 @@ rCOP18deMap <- COP18deMapT %>%
                                  ,finererAge=c("25-29","30-34","35-39","40-49","30-34","35-39","40-49"),stringsAsFactors = FALSE)
 
             rCOP18deMap <- rCOP18deMap %>%
-              filter(Age %in% c("30-49","25-49") & !indicator %in% c("TX_PVLS","TX_RET","TB_ART")) %>%
+              filter(Age %in% c("30-49","25-49") & !indicator %in% c("TX_PVLS","TX_RET","TB_ART") & !str_detect(matchCode,"(\\|){3,}(Physical and\\/or Emotional Violence|Sexual Violence \\(Post-Rape Care\\))") ) %>%
               left_join(ageBands,by=c("Age")) %>%
               mutate(matchCode=paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,finererAge,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|")) %>%
               select(names(rCOP18deMap)) %>%
@@ -398,7 +398,7 @@ rCOP18deMap <- COP18deMapT %>%
                   filter(indicator %in% c("TX_PVLS","TX_RET","TB_ART") & Age %in% c("<1","1-9")) %>%
                   mutate(matchCode=str_replace(matchCode,"\\|Male\\|","\\|Female\\|")) %>%
                     bind_rows(rCOP18deMap,.) %>%
-                  ###(Convert Age bands from fine to coarse)
+            ###(Convert Age bands from fine to coarse)
                   mutate(matchCode=case_when(indicator %in% c("TX_PVLS","TX_RET","TB_ART") & Age %in% c("10-14","15-19","20-24","25-49","50+") ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,AggregatedAge,AggregatedAge,"AgeAggregated",Sex,HIVStatus,otherDisagg,sep="|")
                                              ,TRUE~matchCode))
 
@@ -417,7 +417,7 @@ rCOP18deMap <- COP18deMapT %>%
                     bind_rows(rCOP18deMap,.)
     
         ##B) New Disaggs
-            ###TX_TB (Positive,Negative ->Positive-New,Positive-Already,Negative-New,Negative-Already)
+            ###TX_TB (D) (Positive,Negative ->Positive-New,Positive-Already,Negative-New,Negative-Already)
                 rCOP18deMap<-rCOP18deMap %>%
                   mutate(matchCode=case_when(indicator=="TX_TB" & numeratorDenom=="D" & TBStatus!="" ~ paste(indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,"Already",Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,sep="|"),TRUE~matchCode))
                 rCOP18deMap<-rCOP18deMap %>%
@@ -474,7 +474,7 @@ rCOP18deMap <- COP18deMapT %>%
 
 rCOP18deMap <- rCOP18deMap %>%
   full_join(FY19deMap,by=c("matchCode")) %>%
-    select(COPidName,indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,IMPATT,DataPackCode,DataPackFilename,DataPackTabName,FiscalYear,pd_2017_2018_S,pd_2019_S,pd_2019_P) %>%
+    select(COPidName,matchCode,indicator,numeratorDenom,supportType,Modality,KeyPop,KnownNewStatus,NewExistingART,Indication,TBStatus,pregBF,VMMCTechnique,Age,AggregatedAge,AggregatedAgeFlag,Sex,HIVStatus,otherDisagg,IMPATT,DataPackCode,DataPackFilename,DataPackTabName,FiscalYear,pd_2017_2018_S,pd_2019_S,pd_2019_P) %>%
     arrange(COPidName)
 
 return(rCOP18deMap)

@@ -31,6 +31,7 @@ write_site_level_sheet <- function(wb,schema,df) {
     }
     
     #Create the OU level summary
+
     sums<- df$sums %>% 
       dplyr::select(match_code,value) %>%
       filter(match_code %in% fields) %>%
@@ -110,9 +111,9 @@ write_site_level_sheet <- function(wb,schema,df) {
 #' @param d Object returned from the site level distribution function
 
 export_site_level_tool <- function(d) {
-  if (d$wb_info$wb_type == "NORMAL") {
+  if (d$wb_info$wb_type == "NORMAL_SITE") {
     template_name = "SiteLevelReview_TEMPLATE.xlsx"
-  } else if (d$wb_info$wb_type == "HTS") {
+  } else if (d$wb_info$wb_type == "HTS_SITE") {
     template_name = "SiteLevelReview_HTS_TEMPLATE.xlsx"
   }
   
@@ -240,10 +241,10 @@ export_site_level_tool <- function(d) {
     tableName = "mech_list"
   )
 
-  if (d$wb_info$wb_type == "HTS") {
+  if (d$wb_info$wb_type == "HTS_SITE") {
     schemas <- datapackimporter::hts_site_schema
   }
-  if (d$wb_info$wb_type == "NORMAL") {
+  if (d$wb_info$wb_type == "NORMAL_SITE") {
     schemas <- datapackimporter::main_site_schema
   }
   
