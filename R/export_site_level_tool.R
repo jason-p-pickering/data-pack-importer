@@ -11,11 +11,11 @@ write_site_level_sheet <- function(wb,schema,df) {
   #Is this always true??
   fields<-unlist(schema$fields)[-c(1:4)]
   #Filter  out this indicator
-  df_indicator<- df %>% 
+  df_indicator<- df$data_prepared %>% 
     dplyr::filter(match_code %in% fields) %>%
     na.omit()
   
-  if (nrow(df_indicator) > 0){
+  if (NROW(df_indicator) > 0){
     #Create the styling for the main data table
     s <- openxlsx::createStyle(numFmt = "#,##0;-#,##0;;")
     #Dont error even if the table does not exist
@@ -31,20 +31,22 @@ write_site_level_sheet <- function(wb,schema,df) {
     }
     
     #Create the OU level summary
-    sums<- df_indicator %>% dplyr::group_by(match_code) %>%
-      dplyr::summarise(value=sum(value,na.rm = TRUE)) %>%
-      na.omit() %>%
+
+    sums<- df$sums %>% 
+      dplyr::select(match_code,value) %>%
+      filter(match_code %in% fields) %>%
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
       tidyr::spread(match_code,value,drop=FALSE)
       
-    openxlsx::writeData(
-      wb,
-      sheet = schema$sheet_name,
-      sums,
-      xy = c(5, 4),
-      colNames = F,
-      keepNA = F
-    )
+      openxlsx::writeData(
+        wb,
+        sheet = schema$sheet_name,
+        sums,
+        xy = c(5, 4),
+        colNames = F,
+        keepNA = F
+      )
+  
     #Style both of the sums and formula rows and columns
     openxlsx::addStyle(
       wb,
@@ -94,8 +96,8 @@ write_site_level_sheet <- function(wb,schema,df) {
         
    # inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
     openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:5000,"list",value="SiteList")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:5000,"list",value="MechList")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:5000,"list",value="site_list")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:5000,"list",value="mech_list")
     openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=7:5000,"list",value="DSDTA")
   }
   
@@ -229,13 +231,14 @@ export_site_level_tool <- function(d) {
                  type = "whole"
                  , operator = "between", value = c(0, 2))
   
-  openxlsx::writeData(
+  openxlsx::writeDataTable(
     wb,
     "Mechs",
     d$mechanisms$mechanism,
     xy = c(1, 2),
     colNames = F,
-    keepNA = F
+    keepNA = F,
+    tableName = "mech_list"
   )
 
   if (d$wb_info$wb_type == "HTS_SITE") {
@@ -246,8 +249,8 @@ export_site_level_tool <- function(d) {
   }
   
   #Munge the data a bit to get it into shape
-  df <- d$data %>% dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
-    dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
+  d$data_prepared <- d$data %>% dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
+    dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::left_join(d$mechanisms, by = "attributeoptioncombo") %>%
     dplyr::left_join(d$sites, by = c("orgunit" = "organisationunituid")) %>%
     dplyr::select(name = name_full, mechanism, supportType, match_code, value) %>%
@@ -260,7 +263,7 @@ export_site_level_tool <- function(d) {
     schema <- schemas$schema[[i]]
     write_site_level_sheet(wb = wb,
                            schema = schema,
-                           df = df)
+                           d = d)
   }
   openxlsx::saveWorkbook(wb = wb,
                          file = output_file_path,
