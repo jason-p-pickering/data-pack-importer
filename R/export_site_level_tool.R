@@ -25,9 +25,34 @@ write_site_level_sheet <- function(wb,schema,df) {
     
     #Subtotal fomulas
     subtotal_formula_columns<-seq(from=0,to=(length(fields)-1),by=1) + 5 
-    subtotal_fomulas<-paste0('=SUBTOTAL(109,INDIRECT($B$1&"["&',openxlsx::int2col(subtotal_formula_columns),'6&"]"))')
+    subtotal_formula_column_letters<-openxlsx::int2col(subtotal_formula_columns)
+    subtotal_fomulas<-paste0('=SUBTOTAL(109,INDIRECT($B$1&"["&',subtotal_formula_column_letters,'6&"]"))')
+    
+    #Conditional formatting
+    #Create the conditional formatting 
+    cond_format_forumla<-paste0(
+      'OR(',
+      subtotal_formula_column_letters,
+      '5<(0.95*',
+      subtotal_formula_column_letters,
+      '4),',
+      subtotal_formula_column_letters,
+      '5>(1.05*',
+      subtotal_formula_column_letters,
+      '4))')
+      
+    negStyle <- openxlsx::createStyle(fontColour = "#000000", bgFill = "#FFFFFF")
+    posStyle <- openxlsx::createStyle(fontColour = "#000000", bgFill = "#ffc000")
+    
     for (i in 1:(length(subtotal_fomulas))) {
     openxlsx::writeFormula(wb, schema$sheet_name,subtotal_fomulas[i],xy = c(i+4, 5))
+    openxlsx::conditionalFormatting(wb, sheet = schema$sheet_name, 
+                                      cols = i + 4, 
+                                      rows = 5,
+                                      rule=cond_format_forumla[i],
+                                      style=posStyle
+                            
+      )
     }
     
     #Create the OU level summary
@@ -94,6 +119,7 @@ write_site_level_sheet <- function(wb,schema,df) {
         '!$B',formula_cell_numbers,
         ',site_list[siteID],0)+1)=1),"!!","")')
         
+
    # inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
     openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
     openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:5000,"list",value="site_list")
@@ -234,7 +260,7 @@ export_site_level_tool <- function(d) {
   openxlsx::writeDataTable(
     wb,
     "Mechs",
-    d$mechanisms$mechanism,
+    data.frame(mechID=d$mechanisms$mechanism),
     xy = c(1, 2),
     colNames = F,
     keepNA = F,
