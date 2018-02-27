@@ -158,7 +158,7 @@ distributeSite <- function(d) {
         #Pull in distribution percentages, keeping all data
         dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
        #Do we need to round or what here?
-        dplyr::mutate(value = round_trunc(as.numeric(value))) %>%
+        dplyr::mutate(value = round_trunc(as.numeric(value) * sitePct)) %>%
       #Don't we have to remap back to the Site level data elements from the PSNU data elements?
         dplyr::select(dataelement,period,orgunit=orgUnit,categoryoptioncombo,attributeoptioncombo,value) %>%
         dplyr::mutate(pd_2019_P=paste0(`dataelement`,".",`categoryoptioncombo`)) %>%
