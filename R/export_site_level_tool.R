@@ -95,8 +95,8 @@ write_site_level_sheet <- function(wb,schema,df) {
         
    # inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
     openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:5000,"list",value="SiteList")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:5000,"list",value="MechList")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:5000,"list",value="site_list")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:5000,"list",value="mech_list")
     openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=7:5000,"list",value="DSDTA")
   }
   
@@ -230,13 +230,14 @@ export_site_level_tool <- function(d) {
                  type = "whole"
                  , operator = "between", value = c(0, 2))
   
-  openxlsx::writeData(
+  openxlsx::writeDataTable(
     wb,
     "Mechs",
     d$mechanisms$mechanism,
     xy = c(1, 2),
     colNames = F,
-    keepNA = F
+    keepNA = F,
+    tableName = "mech_list"
   )
 
   if (d$wb_info$wb_type == "HTS") {
