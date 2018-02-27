@@ -1,4 +1,16 @@
 #' @export
+#' @title round
+#'
+#' @description Rounds values by the rule of half away from zero -- consistent for both positive and negative numbers.
+#' @param x Value to be rounded
+#' @return Returns a vector of integers with length=length(x)
+#'
+
+round<- function(x){trunc(abs(x)+0.5)*sign(x)}
+
+
+
+#' @export
 #' @title distributeCluster(data)
 #'
 #' @description Distributes clustered Data Pack data to PSNU level for DATIM import
@@ -8,6 +20,7 @@
 
 distributeCluster <- function(d) {
   
+    #@jason-p-pickering - Curious purpose of below null statements
   cluster_psnuuid<-NULL
   psnuuid<-NULL
   n<-NULL
@@ -40,6 +53,7 @@ distributeCluster <- function(d) {
     Pcts<-readRDS( file = file_path )
     clusterMap<-datapackimporter::clusters
     militaryUnits<-datapackimporter::militaryUnits
+    ou_uid<-d$wb_info$ou_uid
     
     #Prepare Cluster Averages
     clusterAvgs <- clusterMap %>%
@@ -50,32 +64,34 @@ distributeCluster <- function(d) {
         dplyr::mutate(avg=num/den) %>%
         dplyr::select(-num,-den)
     
-    ds <- d$data %>%
-        dplyr::filter(orgunit %in% unique(clusterMap$cluster_psnuuid)) %>%
-        dplyr::mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
-        dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
-        #Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
-        dplyr::left_join(clusterAvgs,by=c("orgunit"="cluster_psnuuid")) %>%
-        dplyr::mutate(value=dplyr::case_when(is.na(psnuPct)~value*avg ,TRUE~value*psnuPct)) %>%
-        dplyr::mutate(value = round(value)) %>%
-        dplyr::filter(value != "0") 
-        dplyr::mutate(orgunit=PSNUuid) %>%
-        dplyr::select(dataelement,period,PSNUuid,orgunit,categoryoptioncombo,attributeoptioncombo,value) %>%
-        dplyr::bind_rows(d$data[!d$data$orgunit %in% unique(clusterMap$cluster_psnuuid),])
-    
-        # ds <- DataPack %>%
-        # filter(orgunit %in% unique(clusterMap$cluster_psnuuid)
-        #        & !orgunit %in% militaryUnits$orgUnit) %>%
-        # mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
-        # left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
-        # #Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
-        #     left_join(clusterAvgs,by=c("orgunit"="cluster_psnuuid")) %>%
-        #     mutate(Value=case_when(is.na(psnuPct)~Value*avg
-        #                           ,TRUE~Value*psnuPct)) %>%
-        # mutate(orgunit=PSNUuid) %>%
-        # select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,Value) %>%
-        # rbind(DataPack[!DataPack$orgunit %in% unique(clusterMap$cluster_psnuuid),],DataPack[orgunit %in% militaryUnits$orgUnit,])
+    if(d$wb_info$is_clustered){
         
+        #At this point, data may still contain both clustered and nonclustered data within a "Clustered" OU, and likely will contain some _Military data
+        
+        ds <- d$data %>%
+            #Pull _Military units out separately. Will bind back in at end. These need no manipulation
+                dplyr::filter(!orgunit %in% militaryUnits)
+            #Create join key
+                dplyr::mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
+            #Join with Percentage distribution file (For non-clustered units, will pull in a series of 100%'s)
+                dplyr::left_join(Pcts[Pcts$uidlevel3==ou_uid,],by=c("whereWhoWhatHuh")) %>%
+            #Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
+                dplyr::left_join(clusterAvgs,by=c("orgunit"="cluster_psnuuid")) %>%
+                dplyr::mutate(value=dplyr::case_when(is.na(psnuPct)~value*avg,TRUE~value*psnuPct)) %>%
+                dplyr::mutate(orgunit=PSNUuid) %>%
+            #Round to integer values per MER requirements
+                dplyr::mutate(value = round(value)) %>%
+            #Remove zero value targets
+                dplyr::filter(value != "0") %>%
+            #Keep only columns needed for DATIM import
+                dplyr::select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value) %>%
+            #Bind _Military units back in
+                    #@sjackson - make sure column orders/types conform
+                dplyr::bind_rows(d$data[!d$data$orgunit %in% militaryUnits,])
+    
+    } else {#Else do nothing (if entirely unclustered OU)
+        ds <- d$data
+    }
     
     return(list(wb_info=d$wb_info,
                 follow_on_mechs=d$follow_on_mechs,
@@ -111,16 +127,16 @@ distributeSite <- function(d) {
   name<-NULL
   
   #Not sure what to do with this. I think we should exlcude them. 
-  militaryUnits<-datapackimporter::militaryUnits
+        militaryUnits<-datapackimporter::militaryUnits
   #Default distribution is 2018 if not otherwise specified
-  if (d$wb_info$distribution_method == 2017) {
-    file_name = "distrSiteFY17.rda"
-  } else if (d$wb_info$distribution_method ==  2018) {
-    file_name = "distrSiteFY18.rda"
-  } else
-  {
-    stop("Distribution year must either 2017 or 2018! ")
-  }
+      if (d$wb_info$distribution_method == 2017) {
+        file_name = "distrSiteFY17.rda"
+      } else if (d$wb_info$distribution_method ==  2018) {
+        file_name = "distrSiteFY18.rda"
+      } else
+      {
+        stop("Distribution year must either 2017 or 2018! ")
+      }
   
   file_path = paste0(d$wb_info$support_files_path, file_name)
   
@@ -170,3 +186,6 @@ distributeSite <- function(d) {
                 sites=sites,
                 data=ds))
 }
+
+
+round<- function(x){trunc(abs(x)+0.5)*sign(x)}
