@@ -1,12 +1,12 @@
 #' @export
-#' @title round
+#' @title round_trunc(x)
 #'
 #' @description Rounds values by the rule of half away from zero -- consistent for both positive and negative numbers.
 #' @param x Value to be rounded
 #' @return Returns a vector of integers with length=length(x)
 #'
 
-round<- function(x){trunc(abs(x)+0.5)*sign(x)}
+round_trunc<- function(x){trunc(abs(x)+0.5)*sign(x)}
 
 
 
@@ -20,55 +20,59 @@ round<- function(x){trunc(abs(x)+0.5)*sign(x)}
 
 distributeCluster <- function(d) {
   
-    #@jason-p-pickering - Curious purpose of below null statements
-  cluster_psnuuid<-NULL
-  psnuuid<-NULL
-  n<-NULL
-  num<-NULL
-  den<-NULL
-  orgUnit<-NULL
-  attributeoptioncombo<-NULL
-  dataelement<-NULL
-  categoryoptioncombo<-NULL
-  orgunit<-NULL
-  value<-NULL
-  PSNUuid<-NULL
-  period<-NULL
-  n<-NULL
-  
-  distros_path=d$wb_info$support_files_path
-    #Default distribution is 2018 if not otherwise specified
-    if (d$wb_info$distribution_method == 2017) {
-      file_name = "distrClusterFY17.rda"
-    } else {
-      file_name = "distrClusterFY18.rda"
-    }
-  
-    file_path = paste0(distros_path, file_name)
-    
-    if (!file.exists(file_path)) {
-      stop(paste("Distribution file could not be found. Please check it exists at",file_path))
-    }
-    
-    Pcts<-readRDS( file = file_path )
-    clusterMap<-datapackimporter::clusters
-    militaryUnits<-datapackimporter::militaryUnits
-    ou_uid<-d$wb_info$ou_uid
-    
-    #Prepare Cluster Averages
-    clusterAvgs <- clusterMap %>%
+  if(!d$wb_info$is_clustered) {
+    return(d)
+  } else {
+      
+      #Note: All of these null assignments are for 
+      #package checks, which provide warnings if these
+      #impiled variables used in dplyr are not initialized.
+      cluster_psnuuid<-NULL
+      psnuuid<-NULL
+      n<-NULL
+      num<-NULL
+      den<-NULL
+      orgUnit<-NULL
+      attributeoptioncombo<-NULL
+      dataelement<-NULL
+      categoryoptioncombo<-NULL
+      orgunit<-NULL
+      value<-NULL
+      PSNUuid<-NULL
+      period<-NULL
+      n<-NULL
+      
+      distros_path=d$wb_info$support_files_path
+      #Default distribution is 2018 if not otherwise specified
+      if (d$wb_info$distribution_method == 2017) {
+        file_name = "distrClusterFY17.rda"
+      } else {
+        file_name = "distrClusterFY18.rda"
+      }
+      
+      file_path = paste0(distros_path, file_name)
+      
+      if (!file.exists(file_path)) {
+        stop(paste("Distribution file could not be found. Please check it exists at",file_path))
+      }
+      
+      Pcts<-readRDS( file = file_path )
+      clusterMap<-datapackimporter::clusters
+      militaryUnits<-datapackimporter::militaryUnits
+      ou_uid<-d$wb_info$ou_uid
+      
+      #Prepare Cluster Averages
+      clusterAvgs <- clusterMap %>%
         dplyr::select(cluster_psnuuid,psnuuid) %>%
         dplyr::group_by(cluster_psnuuid) %>%
         dplyr::mutate(num=1,
-               den=n()) %>%
+                      den=n()) %>%
         dplyr::mutate(avg=num/den) %>%
         dplyr::select(-num,-den)
-    
-    if(d$wb_info$is_clustered){
         
         #At this point, data may still contain both clustered and nonclustered data within a "Clustered" OU, and likely will contain some _Military data
         
-        ds <- d$data %>%
+        d$data <- d$data %>%
             #Pull _Military units out separately. Will bind back in at end. These need no manipulation
                 dplyr::filter(!orgunit %in% militaryUnits)
             #Create join key
@@ -88,14 +92,9 @@ distributeCluster <- function(d) {
             #Bind _Military units back in
                     #@sjackson - make sure column orders/types conform
                 dplyr::bind_rows(d$data[!d$data$orgunit %in% militaryUnits,])
-    
-    } else {#Else do nothing (if entirely unclustered OU)
-        ds <- d$data
-    }
-    
-    return(list(wb_info=d$wb_info,
-                follow_on_mechs=d$follow_on_mechs,
-                data=ds))
+                
+          return(d)
+    } 
 }
 
 
@@ -109,6 +108,9 @@ distributeCluster <- function(d) {
 
 distributeSite <- function(d) {
   
+  #Note: All of these null assignments are for 
+  #package checks, which provide warnings if these
+  #impiled variables used in dplyr are not initialized.
   supportType<-NULL
   pd_2019_S<-NULL
   pd_2019_P<-NULL
@@ -156,7 +158,7 @@ distributeSite <- function(d) {
         #Pull in distribution percentages, keeping all data
         dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
        #Do we need to round or what here?
-        dplyr::mutate(value= trunc( ( as.numeric(value) * sitePct  ) + 0.5 )) %>%
+        dplyr::mutate(value = round_trunc(as.numeric(value))) %>%
       #Don't we have to remap back to the Site level data elements from the PSNU data elements?
         dplyr::select(dataelement,period,orgunit=orgUnit,categoryoptioncombo,attributeoptioncombo,value) %>%
         dplyr::mutate(pd_2019_P=paste0(`dataelement`,".",`categoryoptioncombo`)) %>%
@@ -181,11 +183,10 @@ distributeSite <- function(d) {
       dplyr::filter(!(psnu_name =="" | is.na(psnu_name))) %>%
       dplyr::select(organisationunituid,name,psnu_name)
     
+    #Alter the workbook info
+    d$wb_info$wb_type<-ifelse(d$wb_info$wb_type=="NORMAL","NORMAL_SITE","HTS_SITE")
     return(list(wb_info=d$wb_info,
                 mechanisms=mechanisms,
                 sites=sites,
                 data=ds))
 }
-
-
-round<- function(x){trunc(abs(x)+0.5)*sign(x)}
