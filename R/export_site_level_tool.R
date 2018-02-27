@@ -180,15 +180,15 @@ export_site_level_tool <- function(d) {
     colNames = F,
     keepNA = F
   )
-  #OU Styled
-  openxlsx::writeData(
-    wb,
-    "Home",
-    d$wb_info$ou_name,
-    xy = c(2, 26),
-    colNames = F,
-    keepNA = F
-  )
+  # #OU Styled
+  # openxlsx::writeData(
+  #   wb,
+  #   "Home",
+  #   d$wb_info$ou_name,
+  #   xy = c(2, 26),
+  #   colNames = F,
+  #   keepNA = F
+  # )
   # #Style both of the sums and formula rows and columns
   # s <-
   #   openxlsx::createStyle(numFmt = "TEXT",
