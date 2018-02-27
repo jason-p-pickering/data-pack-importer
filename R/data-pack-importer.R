@@ -192,7 +192,11 @@ ImportSheet <- function(wb_info, schema) {
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(NA, schema$end_col))
   mechs<-datapackimporter::mechs
-  des<-datapackimporter::des
+  des<-datapackimporter::rCOP18deMapT %>% 
+    dplyr::select(code=DataPackCode,combi=pd_2019_P) %>%
+    dplyr::filter(.,complete.cases(.)) %>%
+    dplyr::distinct()
+  
   if ( schema$method == "standard") {
   d <-
     readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
