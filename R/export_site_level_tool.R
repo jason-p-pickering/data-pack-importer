@@ -58,9 +58,8 @@ write_site_level_sheet <- function(wb,schema,df) {
     #Create the OU level summary
 
     sums<- df$sums %>% 
-      dplyr::select(match_code,value) %>%
       filter(match_code %in% fields) %>%
-      dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
+      dplyr::mutate(match_code=factor(.$match_code,levels = fields)) %>%
       tidyr::spread(match_code,value,drop=FALSE)
       
       openxlsx::writeData(
