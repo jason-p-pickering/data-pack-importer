@@ -1,24 +1,28 @@
 ---
-title: "Data Import Guide"
+title: "Tier II Data Validation Guide"
 author: "Jason P. Pickering, David Huser"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data Import Guide}
+  %\VignetteIndexEntry{Tier II Data Validation Guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-## Data Import Guide
+## Tier II Data Validation Guide
 
-This manual should guide through the Data Import process for COP18.
+This manual should guide through the Tier II DataPack / DisaggTool process for COP18.
 
 **Status: DRAFT**
 
 ### Set up your environment
 
 - Follow the instructions here: [data-pack-importer-vagrant](https://github.com/davidhuser/data-pack-importer-vagrant)
-- Check for updates to the `prod` branch
+- Check for updates to the `prod` branch. To update your environment with the latest code changes, run in RStudio:
+
+```R
+devtools::install_github('jason-p-pickering/data-pack-importer', ref='prod')
+```
 
 ### Reveive and download the country DisaggTools
 
@@ -51,7 +55,7 @@ export_site_level_tool(site_data)
 It creates the following files:
 
 - `SiteLevelReview_*.xlsx` -> send back to the country team via Datim Support. There may be errors, *include that log* into your response so the country team can correct their Disagg Tools and re-submit it. Re-run the DisaggTool validation.
-- `*_import_*.csv` -> depending of issues (see below), continue to run Validation #2
+- `*_import_*.csv` -> depending of issues, continue to run _Import File Validation_ or act as below.
 
 
 **TBD**
@@ -69,10 +73,9 @@ Possible issues and their consequences:
 - Missing PSNUs: *continue*
 
 
-### Import file validation
+### Import File Validation
 
-In above step a CSV file was generated. This step checks if it is a valid DHIS2 import file. See this file for doing so:
-https://github.com/jason-p-pickering/datim-validation/blob/master/vignettes/validating_data.Rmd
+In above step a CSV file was generated. This step checks if it is a valid DATIM import file. See these instructions for doing so: https://github.com/jason-p-pickering/datim-validation/blob/master/vignettes/validating_data.Rmd
 
 If the validation passes, reroute file to Tier III.
 
