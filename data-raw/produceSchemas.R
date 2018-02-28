@@ -136,6 +136,7 @@ getSiteList <- function(siteType) {
 
 
 get_full_site_list <- function() {
+  #Change this to grab the CSV file from the API
   source_file<-paste0(getOption("datapack_support_files"),"A flat view of OU to level 9.csv")
 
   psnu_levels <-
