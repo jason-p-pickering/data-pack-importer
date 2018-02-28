@@ -20,9 +20,7 @@ round_trunc<- function(x){trunc(abs(x)+0.5)*sign(x)}
 
 distributeCluster <- function(d) {
   
-  if(!d$wb_info$is_clustered) {
-    return(d)
-  } else {
+  if(d$wb_info$is_clustered) {
       
       #Note: All of these null assignments are for 
       #package checks, which provide warnings if these
@@ -86,15 +84,14 @@ distributeCluster <- function(d) {
             #Round to integer values per MER requirements
                 dplyr::mutate(value = round(value)) %>%
             #Remove zero value targets
-                dplyr::filter(value != "0") %>%
-            #Keep only columns needed for DATIM import
-                dplyr::select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value) %>%
+                dplyr::filter(value != "0")  %>%
             #Bind _Military units back in
                     #@sjackson - make sure column orders/types conform
                 dplyr::bind_rows(d$data[!d$data$orgunit %in% militaryUnits,])
-                
-          return(d)
-    } 
+  } 
+  
+  #Keep only columns needed for DATIM import
+  dplyr::select(d,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
 }
 
 
