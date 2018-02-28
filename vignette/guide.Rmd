@@ -20,7 +20,7 @@ This manual should guide through the Tier II DataPack / DisaggTool process for C
 - Follow the instructions here: [data-pack-importer-vagrant](https://github.com/davidhuser/data-pack-importer-vagrant)
 - Check for updates to the `prod` branch. To update your environment with the latest code changes, run in RStudio:
 
-```R
+```{r eval=FALSE}
 devtools::install_github('jason-p-pickering/data-pack-importer', ref='prod')
 ```
 
@@ -32,7 +32,7 @@ They are Excel spreadsheets either attached to the Datim Support Zendesk or link
 
 Run a first validation. Adjust the following code and paste it into RStudio code (http://localhost:8787) and hit `ENTER`.
 
-```
+```{r eval=FALSE}
 # ADJUST THIS --->
 disagg_tool_file="DisaggTool_filename.xlsx"
 distribution_year=2017
