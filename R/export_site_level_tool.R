@@ -7,70 +7,30 @@
 #' @param df Data frame object 
 
 write_site_level_sheet <- function(wb,schema,df) {
-
+  
+  
   #Is this always true??
-  fields<-unlist(schema$fields)[-c(1:4)]
-  #Filter  out this indicator
-  df_indicator<- df$data_prepared %>% 
+  fields <- unlist(schema$fields)[-c(1:4)]
+  #Create the styling for the main data table
+  s <- openxlsx::createStyle(numFmt = "#,##0;-#,##0;;")
+  #Create the OU level summary
+  
+  sums <- df$sums %>%
     dplyr::filter(match_code %in% fields) %>%
-    na.omit()
+    dplyr::mutate(match_code = factor(match_code, levels = fields)) %>%
+    tidyr::spread(match_code, value, drop = FALSE)
   
-  if (NROW(df_indicator) > 0){
-    #Create the styling for the main data table
-    s <- openxlsx::createStyle(numFmt = "#,##0;-#,##0;;")
-    #Dont error even if the table does not exist
-    foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
-                     error = function(err) {},
-                     finally = {} )  
+  if (NROW(sums) == 1) {
     
-    #Subtotal fomulas
-    subtotal_formula_columns<-seq(from=0,to=(length(fields)-1),by=1) + 5 
-    subtotal_formula_column_letters<-openxlsx::int2col(subtotal_formula_columns)
-    subtotal_fomulas<-paste0('=SUBTOTAL(109,INDIRECT($B$1&"["&',subtotal_formula_column_letters,'6&"]"))')
+    openxlsx::writeData(
+      wb,
+      sheet = schema$sheet_name,
+      sums,
+      xy = c(5, 4),
+      colNames = F,
+      keepNA = F
+    )
     
-    #Conditional formatting
-    #Create the conditional formatting 
-    cond_format_forumla<-paste0(
-      'OR(',
-      subtotal_formula_column_letters,
-      '5<(0.95*',
-      subtotal_formula_column_letters,
-      '4),',
-      subtotal_formula_column_letters,
-      '5>(1.05*',
-      subtotal_formula_column_letters,
-      '4))')
-      
-    negStyle <- openxlsx::createStyle(fontColour = "#000000", bgFill = "#FFFFFF")
-    posStyle <- openxlsx::createStyle(fontColour = "#000000", bgFill = "#ffc000")
-    
-    for (i in 1:(length(subtotal_fomulas))) {
-    openxlsx::writeFormula(wb, schema$sheet_name,subtotal_fomulas[i],xy = c(i+4, 5))
-    openxlsx::conditionalFormatting(wb, sheet = schema$sheet_name, 
-                                      cols = i + 4, 
-                                      rows = 5,
-                                      rule=cond_format_forumla[i],
-                                      style=posStyle
-                            
-      )
-    }
-    
-    #Create the OU level summary
-
-    sums<- df$sums %>% 
-      dplyr::filter(match_code %in% fields) %>%
-      dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
-      tidyr::spread(match_code,value,drop=FALSE)
-      
-      openxlsx::writeData(
-        wb,
-        sheet = schema$sheet_name,
-        sums,
-        xy = c(5, 4),
-        colNames = F,
-        keepNA = F
-      )
-  
     #Style both of the sums and formula rows and columns
     openxlsx::addStyle(
       wb,
@@ -81,11 +41,70 @@ write_site_level_sheet <- function(wb,schema,df) {
       gridExpand = TRUE
     )
     
+    #Subtotal fomulas
+    subtotal_formula_columns <-
+      seq(from = 0,
+          to = (length(fields) - 1),
+          by = 1) + 5
+    subtotal_formula_column_letters <-
+      openxlsx::int2col(subtotal_formula_columns)
+    subtotal_fomulas <-
+      paste0('=SUBTOTAL(109,INDIRECT($B$1&"["&',
+             subtotal_formula_column_letters,
+             '6&"]"))')
+    
+    #Conditional formatting
+    #Create the conditional formatting
+    cond_format_forumla <- paste0(
+      'OR(',
+      subtotal_formula_column_letters,
+      '5<(0.95*',
+      subtotal_formula_column_letters,
+      '4),',
+      subtotal_formula_column_letters,
+      '5>(1.05*',
+      subtotal_formula_column_letters,
+      '4))'
+    )
+    
+    negStyle <-
+      openxlsx::createStyle(fontColour = "#000000", bgFill = "#FFFFFF")
+    posStyle <-
+      openxlsx::createStyle(fontColour = "#000000", bgFill = "#ffc000")
+    
+    for (i in 1:(length(subtotal_fomulas))) {
+      openxlsx::writeFormula(wb, schema$sheet_name, subtotal_fomulas[i], xy = c(i + 4, 5))
+      openxlsx::conditionalFormatting(
+        wb,
+        sheet = schema$sheet_name,
+        cols = i + 4,
+        rows = 5,
+        rule = cond_format_forumla[i],
+        style = posStyle
+        
+      )
+    }
+  } else if (NROW(sums) > 1) {
+    stop("Unhandled exception in writing column sums to the sheet!")
+  } else {
+    return(NA)
+  }
+  
+  #Filter  out this indicator
+  df_indicator<- df$data_prepared %>% 
+    dplyr::filter(match_code %in% fields) %>%
+    na.omit()
+  
+  if (NROW(df_indicator) > 0){
     #Spread the data, being sure not to drop any levels
     df_indicator<-df_indicator %>% 
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
       tidyr::spread(match_code,value,drop=FALSE)
-    
+    #Dont error even if the table does not exist
+    foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
+                     error = function(err) {},
+                     finally = {} )  
+  
     #Write the main data table
     openxlsx::writeDataTable(
       wb,
@@ -118,7 +137,6 @@ write_site_level_sheet <- function(wb,schema,df) {
         '!$B',formula_cell_numbers,
         ',site_list[siteID],0)+1)=1),"!!","")')
         
-
    # inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
     openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
     openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:5000,"list",value="site_list")
