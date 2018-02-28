@@ -292,7 +292,7 @@ ImportSheet <- function(wb_info, schema) {
         "orgunit" = character(),
         "categoryoptioncombo" = character(),
         "attributeoptioncombo" = character(),
-        "value" = character(de_map)
+        "value" = character()
       )
     }
   
@@ -367,8 +367,8 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
   for (i in 1:length(sheets_to_import)) {
     
     schema<-rlist::list.find(d$schemas$schema,sheet_name==sheets_to_import[i])[[1]]
-    d <- ImportSheet(d$wb_info, schema)
-    df <- dplyr::bind_rows(df, d)
+    df_parsed <- ImportSheet(d$wb_info, schema)
+    df <- dplyr::bind_rows(df, df_parsed)
   }
   
   has_negative_numbers<-as.numeric(df$value) < 0

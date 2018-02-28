@@ -6,25 +6,24 @@
 #'
 
 prepare_export_to_datim <- function(d) {
+  
   if (d$wb_info$wb_type %in% c("HTS", "NORMAL")) {
     file_prefix <- "/psnu_import_"
     d <- distributeCluster(d)
-    
-    export_data <- d$data %>%
-      dplyr::mutate(value = as.character(round_trunc(as.numeric(value)))) %>%
-      dplyr::filter(!(value < 1)) %>%
-      dplyr::select(dataelement,
-                    period,
-                    orgunit,
-                    categoryoptioncombo,
-                    attributeoptioncombo,
-                    value) %>%
-      na.omit
-    
   } else if (d$wb_info$wb_type %in% c("HTS_SITE", "NORMAL_SITE")) {
-    stop("Oops. Not implemented just yet.")
-    
+    file_prefix <- "/site_import_"
   }
+  
+  export_data <- d$data %>%
+    dplyr::mutate(value = as.character(round_trunc(as.numeric(value)))) %>%
+    dplyr::filter(!(value < 1)) %>%
+    dplyr::select(dataelement,
+                  period,
+                  orgunit,
+                  categoryoptioncombo,
+                  attributeoptioncombo,
+                  value) %>%
+    na.omit
   
   output_file_path <- paste0(
     dirname(d$wb_info$wb_path),
