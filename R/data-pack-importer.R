@@ -101,7 +101,7 @@ GetWorkbookInfo<-function(wb_path,distribution_method=NA,support_files_path=NA) 
   } else if (wb_type == "hts") {
     wb_type = "HTS"
     distribution_method <-get_distribution_method(distribution_method)
-  } else
+  } 
 
   ou_uid<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O4"))
   ou_name<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O1"))
