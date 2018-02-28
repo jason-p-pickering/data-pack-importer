@@ -134,6 +134,40 @@ getSiteList <- function(siteType) {
             return(resp)
 }
 
+
+get_full_site_list <- function() {
+  psnu_levels <-
+    paste0(getOption("baseurl"),
+           "api/dataStore/dataSetAssignments/ous") %>%
+    httr::GET() %>%
+    httr::content(., "text") %>%
+    jsonlite::fromJSON(., flatten = TRUE) %>%
+    do.call(rbind.data.frame, .) %>%
+    dplyr::select(name3, prioritization) %>%
+    dplyr::mutate(name3 = as.character(name3)) %>%
+    dplyr::filter(prioritization != 0)
+  
+  ous_list<-read.csv("/home/jason/Downloads/A flat view of OU to level 9.csv",stringsAsFactors = FALSE)
+  ous_list<-ous_list %>% 
+    dplyr::inner_join(psnu_levels,by=c("level3name" = "name3"))
+  
+  for (i in 1:nrow(ous_list)) {
+    if (ous_list$prioritization[i] == 4) {
+      ous_list$psnu_name[i] = ous_list$level4name[i]
+    }
+    if (ous_list$prioritization[i] == 5) {
+      ous_list$psnu_name[i] = ous_list$level5name[i]
+    }
+    if (ous_list$prioritization[i] == 6) {
+      ous_list$psnu_name[i] = ous_list$level6name[i]
+    }
+  }
+  ous_list %>% 
+    dplyr::select(organisationunituid,name,ou_uid=uidlevel3,ou_name=level3name,psnu_name)
+}
+
+
+
 ##Procedural logic to generate the actual schemas
 ##PSNU HTS Template
 sheet_path = "data-raw/MalawiCOP18DisaggTool_HTSv2018.02.10.xlsx"
