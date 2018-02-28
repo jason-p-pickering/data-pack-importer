@@ -201,11 +201,12 @@ export_site_level_tool <- function(d) {
   openxlsx::writeData(
     wb,
     "Home",
-    paste("Distribution method: ",d$wb_info$distribution_method),
+    d$wb_info$wb_type ,
     xy = c(15, 3),
     colNames = F,
     keepNA = F
   )
+
   
   #OU UID
   openxlsx::writeData(
@@ -216,7 +217,15 @@ export_site_level_tool <- function(d) {
     colNames = F,
     keepNA = F
   )
-
+  #Distribution method
+  openxlsx::writeData(
+    wb,
+    "Home",
+    paste("Distribution method: ",d$wb_info$distribution_method),
+    xy = c(15, 5),
+    colNames = F,
+    keepNA = F
+  )
   #Generation timestamp
   openxlsx::writeData(
     wb,
