@@ -68,7 +68,8 @@ distributeCluster <- function(d) {
         dplyr::mutate(avg=num/den) %>%
         dplyr::select(-num,-den)
         
-        #At this point, data may still contain both clustered and nonclustered data within a "Clustered" OU, and likely will contain some _Military data
+        #At this point, data may still contain both clustered and nonclustered data within a
+        # "Clustered" OU, and likely will contain some _Military data
         
         d$data <- d$data %>%
             #Pull _Military units out separately. Will bind back in at end. These need no manipulation
@@ -126,7 +127,9 @@ distributeSite <- function(d) {
   name<-NULL
   
   #Not sure what to do with this. I think we should exlcude them. 
-        militaryUnits<-datapackimporter::militaryUnits
+  mil_data<-d$data %>% 
+    dplyr::filter(orgunit %in% datapackimporter::militaryUnits)
+  
   #Default distribution is 2018 if not otherwise specified
       if (d$wb_info$distribution_method == 2017) {
         file_name = "distrSiteFY17.rda"
@@ -156,7 +159,8 @@ distributeSite <- function(d) {
         dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
        #Do we need to round or what here?
         dplyr::mutate(value = round_trunc(as.numeric(value) * sitePct)) %>%
-      #Don't we have to remap back to the Site level data elements from the PSNU data elements?
+      #Reattach the military data after distribution
+        dplyr::bind_rows(mil_data) %>%
         dplyr::select(dataelement,period,orgunit=orgUnit,categoryoptioncombo,attributeoptioncombo,value) %>%
         dplyr::mutate(pd_2019_P=paste0(`dataelement`,".",`categoryoptioncombo`)) %>%
         dplyr::left_join(de_map,by=c("pd_2019_P")) %>%
