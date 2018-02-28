@@ -156,7 +156,7 @@ ValidateWorkbook <- function(wb_path,distribution_method=NA,support_files_path=N
     stop(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
   }
   sheets<-all_sheets[all_sheets %in% expected]
-  validation_results<-ValidateSheets(schemas,sheets,d$wb_info)
+  validation_results<-ValidateSheets(d$schemas,sheets,d$wb_info)
   if (any(!(validation_results))) {
     invalid_sheets <-
       paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
@@ -380,6 +380,7 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
     
     }
   
+  if ( d$wb_info$wb_type %in% c("HTS","NORMAL") ) {
   #Generate the sums
   sums<-df %>%
     dplyr::mutate(value=as.numeric(value),
@@ -389,18 +390,18 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::select(match_code,value) %>%
     dplyr::group_by(match_code) %>%
-    dplyr::summarise(value=sum(value))
+    dplyr::summarise(value=sum(value)) } else {sums<-NULL}
     
   
   #Import the follow on mechs
-  if (wb_info$wb_type == "NORMAL") {
-  follow_on_mechs<-ImportFollowOnMechs(wb_info)
+  if (d$wb_info$wb_type == "NORMAL") {
+  follow_on_mechs<-ImportFollowOnMechs(d$wb_info)
   } else {
     follow_on_mechs<-NULL
   }
-  
-  return ( list(wb_info = wb_info,
-    follow_on_mechs=follow_on_mechs,
-    sums=sums,
-    data = df) )
+  return ( list(wb_info = d$wb_info,
+                schemas = d$schemas,
+                follow_on_mechs=follow_on_mechs,
+                sums=sums,
+                data = df) )
 }
