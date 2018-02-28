@@ -90,9 +90,7 @@ distributeCluster <- function(d) {
                     #@sjackson - make sure column orders/types conform
                 dplyr::bind_rows(d$data[!d$data$orgunit %in% militaryUnits,])
   } 
-  
-  #Keep only columns needed for DATIM import
-  dplyr::select(d,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
+  return(d)
 }
 
 
