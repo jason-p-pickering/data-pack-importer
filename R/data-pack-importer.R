@@ -55,6 +55,18 @@ ValidateImpattSheet <- function(d, wb_info) {
   }
 }
 
+get_distribution_method<-function(distribution_method=NA){
+  
+  distribution_methods<-c(2017,2018)
+  if (is.na(distribution_method) | !any(distribution_method %in% distribution_methods) ) {
+    #Distribution method
+    promptText<-paste0("Please enter the distribution method (2017 or 2018):")
+    print(promptText)
+    distribution_method<-utils::select.list(distribution_methods,multiple=FALSE) }
+  
+  return(distribution_method)
+}
+
 #' @export
 #' @title GetWorkbookInfo(wb_path,distribution_method,support_files_path)
 #'
@@ -73,12 +85,7 @@ ValidateImpattSheet <- function(d, wb_info) {
 #'
 GetWorkbookInfo<-function(wb_path,distribution_method=NA,support_files_path=NA) { 
   if (!file.exists(wb_path)) {stop("Workbook could not be read!")}
-  distribution_methods<-c(2017,2018)
-  if (is.na(distribution_method) | !any(distribution_method %in% distribution_methods) ) {
-  #Distribution method
-  promptText<-paste0("Please enter the distribution method (2017 or 2018):")
-  print(promptText)
-  distribution_method<-utils::select.list(distribution_methods,multiple=FALSE) }
+
   if (is.na(support_files_path)) {
   #Supporting files directory
   support_files_path<-readline("Please provide the path to DataPack Support Files:") }
@@ -90,12 +97,12 @@ GetWorkbookInfo<-function(wb_path,distribution_method=NA,support_files_path=NA) 
   wb_type<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O3"))
   if ( wb_type == "normal") {
     wb_type = "NORMAL"
+    distribution_method <-get_distribution_method(distribution_method)
   } else if (wb_type == "hts") {
     wb_type = "HTS"
+    distribution_method <-get_distribution_method(distribution_method)
   } else
-  {
-    stop("Unknown workbook type. Must be 'normal' or 'hts'!")
-  }
+
   ou_uid<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O4"))
   ou_name<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O1"))
   return(list(
