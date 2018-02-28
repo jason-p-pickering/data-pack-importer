@@ -4,9 +4,9 @@
 #' @description Validates the layout of all relevant sheets in a data pack workbook
 #' @param wb_path Workbook object
 #' @param schema Schema object for this sheet
-#' @param df Data frame object 
+#' @param d Data frame object 
 
-write_site_level_sheet <- function(wb,schema,df) {
+write_site_level_sheet <- function(wb,schema,d) {
   
   
   #Is this always true??
@@ -15,7 +15,7 @@ write_site_level_sheet <- function(wb,schema,df) {
   s <- openxlsx::createStyle(numFmt = "#,##0;-#,##0;;")
   #Create the OU level summary
   
-  sums <- df$sums %>%
+  sums <- d$sums %>%
     dplyr::filter(match_code %in% fields) %>%
     dplyr::mutate(match_code = factor(match_code, levels = fields)) %>%
     tidyr::spread(match_code, value, drop = FALSE)
@@ -91,7 +91,7 @@ write_site_level_sheet <- function(wb,schema,df) {
   }
   
   #Filter  out this indicator
-  df_indicator<- df$data_prepared %>% 
+  df_indicator<- d$data_prepared %>% 
     dplyr::filter(match_code %in% fields) %>%
     na.omit()
   
@@ -154,6 +154,7 @@ write_site_level_sheet <- function(wb,schema,df) {
 #' @param d Object returned from the site level distribution function
 
 export_site_level_tool <- function(d) {
+  
   if (d$wb_info$wb_type == "NORMAL_SITE") {
     template_name = "SiteLevelReview_TEMPLATE.xlsx"
   } else if (d$wb_info$wb_type == "HTS_SITE") {
@@ -193,7 +194,7 @@ export_site_level_tool <- function(d) {
     wb,
     "Home",
     d$wb_info$ou_name,
-    xy = c(15, 2),
+    xy = c(15, 1),
     colNames = F,
     keepNA = F
   )

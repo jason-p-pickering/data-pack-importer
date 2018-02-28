@@ -4,12 +4,12 @@
 \alias{write_site_level_sheet}
 \title{write_site_level_sheet(wb,schema,df)}
 \usage{
-write_site_level_sheet(wb, schema, df)
+write_site_level_sheet(wb, schema, d)
 }
 \arguments{
 \item{schema}{Schema object for this sheet}
 
-\item{df}{Data frame object}
+\item{d}{Data frame object}
 
 \item{wb_path}{Workbook object}
 }
