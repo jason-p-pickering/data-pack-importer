@@ -170,7 +170,6 @@ distributeSite <- function(d) {
     
     
     file_path = paste0(d$wb_info$support_files_path, "mechanisms_by_ou.csv")
-    
     mechanisms<-utils::read.csv(file_path,stringsAsFactors = FALSE) %>% 
       dplyr::select(mechanism,attributeoptioncombo=uid,ou) %>%
       dplyr::filter( ou == d$wb_info$ou_name) %>% 

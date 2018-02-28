@@ -9,7 +9,8 @@ ProduceSchema <-
            start_col = 3,
            end_col = 1000,
            sheet_name,
-           sheet_path) {
+           sheet_path,
+           method="standard") {
     
     if (sheet_name == "Follow on Mech List") {
       
@@ -55,7 +56,7 @@ ProduceSchema <-
         row = row,
         start_col = start_col,
         end_col = end_col,
-        method = 'standard',
+        method = method ,
         fields = as.list(names(as.list(
           read_excel(
             path = sheet_path,
@@ -87,9 +88,9 @@ produceSiteToolSchemas <- function(sheet_path,mode) {
   
   sheets <- excel_sheets(sheet_path)
   #Exclude these two , as they are custom
-  custom_sheets<-c("SiteList","Mechs")
+  custom_sheets<-c("SiteList","Mechs","Home")
   sheets <-sheets[!(sheets %in% custom_sheets)]
-  foo<-lapply(sheets,function(x) {ProduceSchema(sheet_name=x,sheet_path = sheet_path,start_col = 1)})
+  foo<-lapply(sheets,function(x) {ProduceSchema(sheet_name=x,sheet_path = sheet_path,start_col = 1, method="site_tool")})
   return(list(mode=mode,schema=foo))
 }
 

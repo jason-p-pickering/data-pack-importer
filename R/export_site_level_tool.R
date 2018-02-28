@@ -222,7 +222,7 @@ export_site_level_tool <- function(d) {
   openxlsx::writeData(
     wb,
     "Home",
-    paste("Distribution method: ",d$wb_info$distribution_method),
+    d$wb_info$distribution_method,
     xy = c(15, 5),
     colNames = F,
     keepNA = F
@@ -285,7 +285,7 @@ export_site_level_tool <- function(d) {
     dplyr::left_join(d$mechanisms, by = "attributeoptioncombo") %>%
     dplyr::left_join(d$sites, by = c("orgunit" = "organisationunituid")) %>%
     dplyr::select(name = name_full, mechanism, supportType, match_code, value) %>%
-    dplyr::group_by(name, mechanism, supportType, match_code) %>%
+    dplyr::group_by(Site=name, Mechanism=mechanism, Type=supportType, match_code) %>%
     dplyr::summarise(value = sum(value, na.rm = TRUE))
     #Duplicates were noted here, but I think this should not have to be done
     #At this point. 

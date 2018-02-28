@@ -93,19 +93,29 @@ GetWorkbookInfo<-function(wb_path,distribution_method=NA,support_files_path=NA) 
   if (!dir.exists(support_files_path)) {
     stop("Could not access support files directory!")
   }
-  
+
+
   wb_type<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O3"))
+  
   if ( wb_type == "normal") {
     wb_type = "NORMAL"
     distribution_method <-get_distribution_method(distribution_method)
+    schemas <- datapackimporter::main_schema
   } else if (wb_type == "hts") {
     wb_type = "HTS"
     distribution_method <-get_distribution_method(distribution_method)
-  } 
+    schemas <- datapackimporter::hts_schema
+  } else if ( wb_type == "NORMAL_SITE") {
+    distribution_method<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O5"))
+    schemas <- datapackimporter::main_site_schema
+  } else if ( wb_type == "HTS_SITE") {
+    distribution_method<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O5"))
+    schemas <- datapackimporter::hts_site_schema
+  }
 
   ou_uid<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O4"))
   ou_name<-names(readxl::read_excel(wb_path, sheet = "Home", range = "O1"))
-  return(list(
+  return(list(wb_info=list(
     wb_path = tools::file_path_as_absolute(wb_path),
     timestamp = Sys.time(),
     wb_type=wb_type,
@@ -113,7 +123,8 @@ GetWorkbookInfo<-function(wb_path,distribution_method=NA,support_files_path=NA) 
     ou_uid=ou_uid,
     is_clustered=ou_name %in% datapackimporter::clusters$operatingunit,
     distribution_method = distribution_method,
-    support_files_path = support_files_path))
+    support_files_path = support_files_path),
+    schemas=schemas))
   }
 
 #' @export
@@ -130,37 +141,36 @@ GetWorkbookInfo<-function(wb_path,distribution_method=NA,support_files_path=NA) 
 #'
 #'
 ValidateWorkbook <- function(wb_path,distribution_method=NA,support_files_path=NA) {
-  wb_info <-
+  d<-NULL
+  d<-
     GetWorkbookInfo(wb_path,
                     distribution_method = distribution_method,
                     support_files_path = support_files_path)
-  if (wb_info$wb_type == "HTS") {
-    schemas <- datapackimporter::hts_schema
-  }
-  if (wb_info$wb_type == "NORMAL") {
-    schemas <- datapackimporter::main_schema
-  }
-  all_sheets <- readxl::excel_sheets(path = wb_info$wb_path)
-  expected <- unlist(sapply(schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
+  
+  
+  all_sheets <- readxl::excel_sheets(path = d$wb_info$wb_path)
+  expected <- unlist(sapply(d$schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
   all_there <- expected %in% all_sheets
   #Validate against expected tables
   if ( !all(all_there) ) {
     stop(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
   }
   sheets<-all_sheets[all_sheets %in% expected]
-  validation_results<-ValidateSheets(schemas,sheets,wb_info)
+  validation_results<-ValidateSheets(schemas,sheets,d$wb_info)
   if (any(!(validation_results))) {
     invalid_sheets <-
       paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
     msg <- paste0("The following sheets were invalid:", invalid_sheets)
     stop(msg)
   } else {
-    return(wb_info)
+    return(d)
+           
   }
 }
 
 #' @export
 #' @importFrom stats complete.cases
+#' @importFrom stringr str_extract
 #' @title ImportSheet(wb_path,schema)
 #'
 #' @description Imports a single sheet from a workbook.
@@ -251,14 +261,38 @@ ImportSheet <- function(wb_info, schema) {
                     value = as.character(value) ) %>%
     dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
       
-  } else {
+  } else if ( schema$method =="site_tool" ) {
+    de_map<-datapackimporter::rCOP18deMapT %>%
+      dplyr::select(supportType,pd_2019_S,pd_2019_P,DataPackCode) %>%
+      na.omit() %>%
+      dplyr::distinct()
+    mechs<-datapackimporter::mechs
+    #(?<=\(\s)([A-Za-z][A-Za-z0-9]{10})(?=\s\)\s)
+    d<-readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
+      dplyr::select(-Inactive) %>%
+      dplyr::mutate_all(as.character) %>%
+      tidyr::gather(variable, value, -c(1:3,convert =FALSE)) %>%
+      na.omit() %>% 
+      dplyr::mutate(mech_code=stringi::stri_extract_first_regex(Mechanism,"^[0-9]+"),
+             ou_uid=stringi::stri_extract_first_regex(Site,"\\( [a-zA-Z0-9]+ \\)$"),
+             DataPackCode=paste0(variable,"_",tolower(Type)),
+             period="2018Oct") %>%
+      dplyr::mutate(orgunit=substr(ou_uid,3,13)) %>% 
+      dplyr::left_join(mechs,by=c("mech_code"="code"))%>%
+      dplyr::left_join(de_map,by="DataPackCode") %>%
+      tidyr::separate(.,pd_2019_S,c("dataelement","categoryoptioncombo")) %>%
+      select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo=uid,value)
+    
+    }
+  
+  else {
       d<- tibble::tibble(
         "dataelement" = character(),
         "period" = character(),
         "orgunit" = character(),
         "categoryoptioncombo" = character(),
         "attributeoptioncombo" = character(),
-        "value" = character()
+        "value" = character(de_map)
       )
     }
   
@@ -312,16 +346,11 @@ ImportFollowOnMechs<-function(wb_info) {
 ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA) {
 
   
-  wb_info <-
+  d <-
     ValidateWorkbook(wb_path, distribution_method, support_files_path)
-  if (wb_info$wb_type == "HTS") {
-    schemas <- datapackimporter::hts_schema
-  }
-  if (wb_info$wb_type == "NORMAL") {
-    schemas <- datapackimporter::main_schema
-  }
+  
   sheets <-
-    unlist(sapply(schemas$schema, `[`, c('sheet_name')), use.names = FALSE)
+    unlist(sapply(d$schemas$schema, `[`, c('sheet_name')), use.names = FALSE)
   df <- tibble::tibble(
     "dataelement" = character(),
     "period" = character(),
@@ -330,15 +359,15 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
     "attributeoptioncombo" = character(),
     "value" = character()
   )
-  actual_sheets<-readxl::excel_sheets(wb_info$wb_path)
+  actual_sheets<-readxl::excel_sheets(d$wb_info$wb_path)
   sheets_to_import<-actual_sheets[actual_sheets %in% sheets]
   
   sheet_name<-NULL
   
   for (i in 1:length(sheets_to_import)) {
     
-    schema<-rlist::list.find(schemas$schema,sheet_name==sheets_to_import[i])[[1]]
-    d <- ImportSheet(wb_info, schema)
+    schema<-rlist::list.find(d$schemas$schema,sheet_name==sheets_to_import[i])[[1]]
+    d <- ImportSheet(d$wb_info, schema)
     df <- dplyr::bind_rows(df, d)
   }
   
