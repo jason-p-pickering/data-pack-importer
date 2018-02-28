@@ -136,6 +136,8 @@ getSiteList <- function(siteType) {
 
 
 get_full_site_list <- function() {
+  source_file<-paste0(getOption("datapack_support_files"),"A flat view of OU to level 9.csv")
+
   psnu_levels <-
     paste0(getOption("baseurl"),
            "api/dataStore/dataSetAssignments/ous") %>%
@@ -147,7 +149,7 @@ get_full_site_list <- function() {
     dplyr::mutate(name3 = as.character(name3)) %>%
     dplyr::filter(prioritization != 0)
   
-  ous_list<-read.csv("/home/jason/Downloads/A flat view of OU to level 9.csv",stringsAsFactors = FALSE)
+  ous_list<-read.csv(source_file,stringsAsFactors = FALSE)
   ous_list<-ous_list %>% 
     dplyr::inner_join(psnu_levels,by=c("level3name" = "name3"))
   
