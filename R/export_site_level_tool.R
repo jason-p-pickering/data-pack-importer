@@ -203,6 +203,15 @@ export_site_level_tool <- function(d) {
     colNames = F,
     keepNA = F
   )
+  #OU Name Upper case
+  openxlsx::writeFormula(
+    wb,
+    "Home",
+    x="UPPER(O1)",
+    d$wb_info$ou_name,
+    xy=c(15,2)
+  )
+  
   #Distribution method
   openxlsx::writeData(
     wb,
