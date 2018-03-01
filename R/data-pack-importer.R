@@ -3,12 +3,12 @@
 #'
 #' @description Validates the layout of a single sheet based on its schema definition.
 #' @param schemas Schemas of this workbook.
-#' @param sheet_name Name of the sheet to be validated.
+#' @param sheetName Name of the sheet to be validated.
 #' @param wb_info Info about the workbook.  
 #' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
 #'
-ValidateSheet <- function(schemas,sheet_name,wb_info) {
-  schema<-rlist::list.find(schemas$schema,sheet_name==sheet_name)[[1]]
+ValidateSheet <- function(schemas,sheetName,wb_info) {
+  schema<-rlist::list.find(schemas$schema,sheet_name==sheetName)[[1]]
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(schema$row, schema$end_col))
   all( names(
@@ -28,7 +28,7 @@ ValidateSheet <- function(schemas,sheet_name,wb_info) {
 #'
 ValidateSheets<-function(schemas,sheets,wb_info) {
   
-  vapply(sheets,function(x) { ValidateSheet(schemas = schemas,sheet_name = x,wb_info=wb_info) }, FUN.VALUE=logical(1) ) 
+  vapply(sheets,function(x) { ValidateSheet(schemas = schemas,sheetName = x,wb_info=wb_info) }, FUN.VALUE=logical(1) ) 
 }
 
 
