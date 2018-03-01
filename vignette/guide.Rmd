@@ -1,0 +1,143 @@
+---
+title: "Tier II Data Validation Guide"
+author: "Jason P. Pickering, David Huser"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tier II Data Validation Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Tier II Data Validation Guide
+
+This manual should guide through the Tier II DataPack / DisaggTool process for COP18.
+
+**Status: DRAFT**
+
+### Set up your environment
+
+- Follow the instructions here: [data-pack-importer-vagrant](https://github.com/davidhuser/data-pack-importer-vagrant)
+- Check for updates to the `prod` branch. To update your environment with the latest code changes, run in RStudio:
+
+```{r eval=FALSE}
+devtools::install_github('jason-p-pickering/data-pack-importer', ref='prod')
+```
+
+### Reveive and download the country DisaggTools
+
+They are Excel spreadsheets either attached to the Datim Support Zendesk or links to Sharepoint files. Download those into the repository from above. The country team *needs to indicate* the distribution method that should be used, either it's 2017 (FY17 Results) or 2018 (FY18 Targets).
+
+### DisaggTool validation
+
+Run a first validation. Adjust the following code and paste it into RStudio code (http://localhost:8787) and hit `ENTER`.
+
+```{r eval=FALSE}
+# ADJUST THIS --->
+filename="DisaggTool_filename.xlsx"
+distribution_year=2017
+
+# DO NOT CHANGE
+library(devtools)
+install_github("jason-p-pickering/data-pack-importer", ref="prod")
+library(datapackimporter)
+
+support_files="/vagrant/support_files/"
+disagg_tools="/vagrant/disagg_tools/"
+disagg_tool=paste0(disagg_tools, filename)
+
+#Parse the PNSU data
+DataPackR(disagg_tool, 
+	distribution_method = distribution_year, support_files_path = support_files)
+```
+
+It creates the following files:
+
+- **Site Level Review File** - `SiteLevelReview_*.xlsx` -> send back to the country team via Datim Support. There may be errors, *include that log* into your response so the country team can correct their Disagg Tools and re-submit it. Re-run the DisaggTool validation.
+- **PSNU data:** `*_import_*.csv` -> depending of issues, continue to run _Import File Validation_ or act as below.
+
+
+**TBD**
+
+Issue handling:
+
+- *Hard stop:* Tier II does not proceed with anything else until this is fixed by the country team.
+- *Continue:* Tier II proceeds with validation #2 of the PSNU CSV (`*_import_*.csv`)
+
+Possible issues and their consequences:
+
+- Negative values: *hard stop*
+- Schema not valid: *hard stop*
+- DisAggTool corrupted: *hard stop*
+- Missing PSNUs: *continue*
+
+### Site-Level Review Tool Validation
+
+You receive back the Site Level Review Tool, reviewed by the country. This needs another validation. Adjust the `filename` and re-run.
+
+```{r eval=FALSE}
+# ADJUST THIS --->
+filename="SiteLevelReview.xlsx"
+distribution_year=2017
+
+...
+
+```
+
+### Import File Validation
+
+In above step a PSNU CSV file was generated. This step checks if it is a valid DATIM import file. See these instructions for doing so: https://github.com/jason-p-pickering/datim-validation/blob/master/vignettes/validating_data.Rmd
+
+The gist of it:
+
+- Clear the console in RStudio
+- Create a `~/.secrets/datim.json` file:
+
+**TBD: URL**
+
+```json
+{
+  "dhis": {
+    "baseurl": "http://dev-de.datim.org",
+    "username": "admin",
+    "password": "district"
+  }
+}
+```
+
+Make it only readable by your user:
+
+```bash
+chmod 0600 ~/.secrets/datim.json
+```
+
+- Install `datim-validation` and load secrets:
+
+```{r eval=FALSE}
+devtools::install_github('jason-p-pickering/datim-validation')
+require(datimvalidation)
+secrets<-"/home/youruser/.secrets/datim.json"
+loadSecrets(secrets)
+filename="/vagrant/path_to_psnu.csv"
+```
+
+```{r eval=FALSE}
+d<-d2Parser(file=filename,
+			type = "csv",
+            dataElementIdScheme = "code",
+            orgUnitIdScheme = "id",
+            idScheme = "id",
+            invalidData = TRUE)
+getInvalidMechanisms(d,ISO="2018Oct")
+getInvalidDataElements(d)
+checkValueTypeCompliance(d)
+vr_violations<-validateData(data = d,
+                            return_violations_only = TRUE,
+                            parallel = FALSE)
+View(vr_violations)
+
+```
+
+If the validation passes, reroute file to Tier III.
+
+If it does not pass, respond with the logs to the country team.
