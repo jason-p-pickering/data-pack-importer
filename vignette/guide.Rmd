@@ -34,28 +34,27 @@ Run a first validation. Adjust the following code and paste it into RStudio code
 
 ```{r eval=FALSE}
 # ADJUST THIS --->
-disagg_tool_file="DisaggTool_filename.xlsx"
+filename="DisaggTool_filename.xlsx"
 distribution_year=2017
 
 # DO NOT CHANGE
+library(devtools)
+install_github("jason-p-pickering/data-pack-importer", ref="prod")
+library(datapackimporter)
+
 support_files="/vagrant/support_files/"
 disagg_tools="/vagrant/disagg_tools/"
-library(devtools)
-library(datapackimporter)
-disagg_tool=paste0(disagg_tools, disagg_tool_file)
-wb<-disagg_tool
-wb
-psnu_data<-ImportSheets(wb, distribution_method = distribution_year, support_files_path = support_files)
-prepare_export_to_datim(psnu_data)
-cat(toJSON(psnu_data, auto_unbox = TRUE), file = psnu_json_file)
-site_data<-distributeSite(psnu_data)
-export_site_level_tool(site_data)
+disagg_tool=paste0(disagg_tools, filename)
+
+#Parse the PNSU data
+DataPackR(disagg_tool, 
+	distribution_method = distribution_year, support_files_path = support_files)
 ```
 
 It creates the following files:
 
-- `SiteLevelReview_*.xlsx` -> send back to the country team via Datim Support. There may be errors, *include that log* into your response so the country team can correct their Disagg Tools and re-submit it. Re-run the DisaggTool validation.
-- `*_import_*.csv` -> depending of issues, continue to run _Import File Validation_ or act as below.
+- **Site Level Review File** - `SiteLevelReview_*.xlsx` -> send back to the country team via Datim Support. There may be errors, *include that log* into your response so the country team can correct their Disagg Tools and re-submit it. Re-run the DisaggTool validation.
+- **PSNU data:** `*_import_*.csv` -> depending of issues, continue to run _Import File Validation_ or act as below.
 
 
 **TBD**
@@ -72,6 +71,18 @@ Possible issues and their consequences:
 - DisAggTool corrupted: *hard stop*
 - Missing PSNUs: *continue*
 
+### Site-Level Review Tool Validation
+
+You receive back the Site Level Review Tool, reviewed by the country. This needs another validation. Adjust the `filename` and re-run.
+
+```{r eval=FALSE}
+# ADJUST THIS --->
+filename="SiteLevelReview.xlsx"
+distribution_year=2017
+
+...
+
+```
 
 ### Import File Validation
 
@@ -80,7 +91,7 @@ In above step a PSNU CSV file was generated. This step checks if it is a valid D
 The gist of it:
 
 - Clear the console in RStudio
-- Create a `~/.secrets/datim.json` file
+- Create a `~/.secrets/datim.json` file:
 
 **TBD: URL**
 
@@ -111,17 +122,19 @@ filename="/vagrant/path_to_psnu.csv"
 ```
 
 ```{r eval=FALSE}
-d<-d2Parser(file=filename,type = "csv",
+d<-d2Parser(file=filename,
+			type = "csv",
             dataElementIdScheme = "code",
             orgUnitIdScheme = "id",
             idScheme = "id",
             invalidData = TRUE)
-getInvalidMechanisms(d,ISO="2016Oct")
+getInvalidMechanisms(d,ISO="2018Oct")
 getInvalidDataElements(d)
 checkValueTypeCompliance(d)
 vr_violations<-validateData(data = d,
                             return_violations_only = TRUE,
                             parallel = FALSE)
+View(vr_violations)
 
 ```
 
