@@ -23,3 +23,6 @@ install_github(repo="jason-p-pickering/data-pack-importer", ref="prod")
 install_github(repo="jason-p-pickering/openxlsx", ref="26a6f60")
 ```
 
+## Tier II Manual
+
+Consult the [Tier II Validation guide](./vignette/guide.Rmd)
