@@ -48,14 +48,14 @@ write_site_level_sheet <- function(wb,schema,d) {
           by = 1) + 5
     subtotal_formula_column_letters <-
       openxlsx::int2col(subtotal_formula_columns)
-    subtotal_fomulas <-
+    subtotal_formulas <-
       paste0('=SUBTOTAL(109,INDIRECT($B$1&"["&',
              subtotal_formula_column_letters,
              '6&"]"))')
     
     #Conditional formatting
     #Create the conditional formatting
-    cond_format_forumla <- paste0(
+    cond_format_formula <- paste0(
       'OR(',
       subtotal_formula_column_letters,
       '5<(0.95*',
@@ -72,14 +72,14 @@ write_site_level_sheet <- function(wb,schema,d) {
     posStyle <-
       openxlsx::createStyle(fontColour = "#000000", bgFill = "#ffc000")
     
-    for (i in 1:(length(subtotal_fomulas))) {
-      openxlsx::writeFormula(wb, schema$sheet_name, subtotal_fomulas[i], xy = c(i + 4, 5))
+    for (i in 1:(length(subtotal_formulas))) {
+      openxlsx::writeFormula(wb, schema$sheet_name, subtotal_formulas[i], xy = c(i + 4, 5))
       openxlsx::conditionalFormatting(
         wb,
         sheet = schema$sheet_name,
         cols = i + 4,
         rows = 5,
-        rule = cond_format_forumla[i],
+        rule = cond_format_formula[i],
         style = posStyle
         
       )
@@ -141,12 +141,11 @@ write_site_level_sheet <- function(wb,schema,d) {
         schema$sheet_name,
         '!$B',formula_cell_numbers,
         ',site_table[siteID],0)+1)=1),"!!","")')
-        
-   # inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
+     
     openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:5000,"list",value="SiteList")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:5000,"list",value="MechList")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=7:5000,"list",value="DSDTA")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=(NROW(df_indicator)*2),"list",value="site_list")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=(NROW(df_indicator)*2),"list",value="mech_list")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=(NROW(df_indicator)*2),"list",value="DSDTA")
   }
   
   
