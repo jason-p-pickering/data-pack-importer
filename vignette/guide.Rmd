@@ -17,12 +17,7 @@ This manual should guide through the Tier II DataPack / DisaggTool process for C
 
 ### Set up your environment
 
-- Follow the instructions here: [data-pack-importer-vagrant](https://github.com/davidhuser/data-pack-importer-vagrant)
-- Check for updates to the `prod` branch. To update your environment with the latest code changes, run in RStudio:
-
-```{r eval=FALSE}
-devtools::install_github('jason-p-pickering/data-pack-importer', ref='prod')
-```
+Follow the instructions here: [data-pack-importer-vagrant](https://github.com/davidhuser/data-pack-importer-vagrant)
 
 ### Reveive and download the country DisaggTools
 
