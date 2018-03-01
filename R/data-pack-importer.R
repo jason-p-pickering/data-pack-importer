@@ -385,12 +385,14 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
   sums<-df %>%
     dplyr::mutate(value=as.numeric(value),
            pd_2019_P=paste0(dataelement,".",categoryoptioncombo)) %>%
-    dplyr::left_join(unique(datapackimporter::rCOP18deMapT[,c("pd_2019_P","DataPackCode")]),by=c("pd_2019_P")) %>%
+    dplyr::right_join(unique(datapackimporter::rCOP18deMapT[,c("pd_2019_P","DataPackCode")]),by=c("pd_2019_P")) %>%
     dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::select(match_code,value) %>%
     dplyr::group_by(match_code) %>%
-    dplyr::summarise(value=sum(value)) } else {sums<-NULL}
+    dplyr::summarise(value=sum(value)) %>%
+    dplyr::mutate(value= case_when(is.na(value) ~ 0))
+  }
     
   
   #Import the follow on mechs
