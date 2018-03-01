@@ -43,14 +43,14 @@
 #' @export
 #' @title rCOP18deMap
 #'
-#' @description Object used for further processing and matching of data pack codes
+#' @description Object used for converting FY17/18 data to FY19 structure, including modeling new indicators/disaggs based on previous indicators/disaggs
 #' @return Returns an object with the following columns
 "rCOP18deMap"
 
 #' @export
 #' @title rCOP18deMapT
 #'
-#' @description Object used for further processing and matching of data pack codes
+#' @description Object used for mapping indicators and disaggs across time, including from FY19 PSNU level to FY19 Site level. Does not translate new indicators/disaggs
 #' @return Returns an object with the following columns
 "rCOP18deMapT"
 
