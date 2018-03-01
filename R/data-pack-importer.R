@@ -280,7 +280,7 @@ ImportSheet <- function(wb_info, schema) {
       dplyr::left_join(mechs,by=c("mech_code"="code"))%>%
       dplyr::left_join(de_map,by="DataPackCode") %>%
       tidyr::separate(.,pd_2019_S,c("dataelement","categoryoptioncombo")) %>%
-      select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo=uid,value)
+      dplyr::select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo=uid,value)
     
     }
   
@@ -377,20 +377,41 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
     warning("Negative values were found in the data!")
     print(foo)
     
-    }
+  }
   
+  #Calculate sums
   if ( d$wb_info$wb_type %in% c("HTS","NORMAL") ) {
+    df_codes=unique(datapackimporter::rCOP18deMapT[,c("pd_2019_P","DataPackCode")]) %>%
+      na.omit() %>%
+      dplyr::distinct()
+    
   #Generate the sums
   sums<-df %>%
     dplyr::mutate(value=as.numeric(value),
            pd_2019_P=paste0(dataelement,".",categoryoptioncombo)) %>%
-    dplyr::right_join(unique(datapackimporter::rCOP18deMapT[,c("pd_2019_P","DataPackCode")]),by=c("pd_2019_P")) %>%
+    dplyr::left_join(df_codes,by=c("pd_2019_P")) %>%
     dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::select(match_code,value) %>%
     dplyr::group_by(match_code) %>%
-    dplyr::summarise(value=sum(value)) %>%
-    dplyr::mutate(value= case_when(is.na(value) ~ 0))
+    dplyr::summarise(value=sum(value,na.rm = TRUE)) 
+
+  #Pad with zeros
+  
+  df_zeros<-df_codes %>%     
+    dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
+    dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
+    na.omit %>% 
+    dplyr::distinct() %>%
+    dplyr::select(match_code) %>%
+    dplyr::mutate(value=0) 
+  
+  sums<-sums %>% 
+    dplyr::bind_rows(df_zeros) %>% 
+    dplyr::group_by(match_code) %>%
+    dplyr::summarise(value=sum(value))
+  
+
   } else {sums<-NULL}
     
   

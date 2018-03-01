@@ -137,15 +137,15 @@ write_site_level_sheet <- function(wb,schema,d) {
         'IF(AND(',
         schema$sheet_name,
         '!$B',formula_cell_numbers,
-        '<>"",INDEX(site_list[Inactive],MATCH(',
+        '<>"",INDEX(site_table[Inactive],MATCH(',
         schema$sheet_name,
         '!$B',formula_cell_numbers,
-        ',site_list[siteID],0)+1)=1),"!!","")')
+        ',site_table[siteID],0)+1)=1),"!!","")')
         
    # inactiveFormula<-paste0("IF(AND(",schema$sheet_name,"!$B",7:((NROW(df_indicator)+6)*3),"<>\"\",INDEX(SiteList!$B:$B,MATCH(",schema$sheet_name,"!$B",7:(NROW(df_indicator)+6),",SiteList,0)+1)=1),\"!!\",\"\")")
     openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:5000,"list",value="site_list")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:5000,"list",value="mech_list")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:5000,"list",value="SiteList")
+    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:5000,"list",value="MechList")
     openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=7:5000,"list",value="DSDTA")
   }
   
@@ -270,11 +270,22 @@ export_site_level_tool <- function(d) {
     xy = c(1, 1),
     colNames = T,
     keepNA = F,
-    tableName = "site_list"
+    tableName = "site_table"
   )
-  openxlsx::dataValidation(wb, "SiteList" , col = 2, rows = 1:nrow(site_list), 
-                 type = "whole"
-                 , operator = "between", value = c(0, 2))
+  openxlsx::createNamedRegion(wb = wb,
+                              sheet="SiteList",
+                              name="SiteList",
+                              rows=1:(nrow(site_list)+1),
+                              cols=1)
+  openxlsx::dataValidation(
+    wb,
+    "SiteList" ,
+    col = 2,
+    rows = 1:nrow(site_list),
+    type = "whole",
+    operator = "between",
+    value = c(0, 2)
+  )
   
   openxlsx::writeDataTable(
     wb,
@@ -283,9 +294,13 @@ export_site_level_tool <- function(d) {
     xy = c(1, 2),
     colNames = F,
     keepNA = F,
-    tableName = "mech_list"
+    tableName = "mech_table"
   )
-
+  openxlsx::createNamedRegion(wb = wb,
+                              sheet="Mechs",
+                              name="MechList",
+                              rows=1:(length(d$mechanisms$mechanism)+1),
+                              cols=1)
 
   
   #Munge the data a bit to get it into shape
