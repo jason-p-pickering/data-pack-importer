@@ -170,7 +170,6 @@ ValidateWorkbook <- function(wb_path,distribution_method=NA,support_files_path=N
 
 #' @export
 #' @importFrom stats complete.cases
-#' @importFrom stringr str_extract
 #' @title ImportSheet(wb_path,schema)
 #'
 #' @description Imports a single sheet from a workbook.
@@ -392,7 +391,7 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
     dplyr::group_by(match_code) %>%
     dplyr::summarise(value=sum(value)) %>%
     dplyr::mutate(value= case_when(is.na(value) ~ 0))
-  }
+  } else {sums<-NULL}
     
   
   #Import the follow on mechs

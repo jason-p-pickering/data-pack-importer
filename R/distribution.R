@@ -181,10 +181,19 @@ distributeSite <- function(d) {
       dplyr::filter(!(psnu_name =="" | is.na(psnu_name))) %>%
       dplyr::select(organisationunituid,name,psnu_name)
     
+    schemas<-
+      if ( d$wb_info$wb_type == "NORMAL") {
+        schemas <- datapackimporter::main_site_schema
+      } else if ( d$wb_info$wb_type == "HTS") {
+        schemas <- datapackimporter::hts_site_schema
+      } else{
+        stop("Unknown PSNU worbook type!")
+      }
     #Alter the workbook info
     d$wb_info$wb_type<-ifelse(d$wb_info$wb_type=="NORMAL","NORMAL_SITE","HTS_SITE")
     return(list(wb_info=d$wb_info,
                 mechanisms=mechanisms,
+                schemas=schemas,
                 sites=sites,
                 sums=d$sums,
                 data=ds))

@@ -4,7 +4,7 @@
 \name{rCOP18deMap}
 \alias{rCOP18deMap}
 \title{rCOP18deMap}
-\format{An object of class \code{data.frame} with 5367 rows and 26 columns.}
+\format{An object of class \code{data.frame} with 5335 rows and 27 columns.}
 \usage{
 rCOP18deMap
 }

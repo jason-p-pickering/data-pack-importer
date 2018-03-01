@@ -92,9 +92,14 @@ write_site_level_sheet <- function(wb,schema,d) {
   
   #Filter  out this indicator
   df_indicator<- d$data_prepared %>% 
-    dplyr::filter(match_code %in% fields) %>%
-    na.omit()
-  
+    dplyr::filter(match_code %in% fields)
+  if(NROW(df_indicator) == 0){
+  df_indicator<-data.frame(Site=d$sites$name_full[1],
+  Mechanism=d$mechanisms$mechanism[1],
+  Type="DSD",
+  match_code=fields,
+  value=NA)}
+  # 
   if (NROW(df_indicator) > 0){
     #Spread the data, being sure not to drop any levels
     df_indicator<-df_indicator %>% 
@@ -272,15 +277,11 @@ export_site_level_tool <- function(d) {
     tableName = "mech_list"
   )
 
-  if (d$wb_info$wb_type == "HTS_SITE") {
-    schemas <- datapackimporter::hts_site_schema
-  }
-  if (d$wb_info$wb_type == "NORMAL_SITE") {
-    schemas <- datapackimporter::main_site_schema
-  }
+
   
   #Munge the data a bit to get it into shape
-  d$data_prepared <- d$data %>% dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
+  d$data_prepared <- d$data %>% 
+    dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::left_join(d$mechanisms, by = "attributeoptioncombo") %>%
     dplyr::left_join(d$sites, by = c("orgunit" = "organisationunituid")) %>%
@@ -290,10 +291,10 @@ export_site_level_tool <- function(d) {
     #Duplicates were noted here, but I think this should not have to be done
     #At this point. 
   
-  for (i in 1:length(schemas$schema)) {
-    schema <- schemas$schema[[i]]
+  for (i in 1:length(d$schemas$schema)) {
+    
     write_site_level_sheet(wb = wb,
-                           schema = schema,
+                           schema = d$schemas$schema[[i]],
                            d = d)
   }
   openxlsx::saveWorkbook(wb = wb,
