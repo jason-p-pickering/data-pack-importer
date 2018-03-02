@@ -191,8 +191,7 @@ distributeSite <- function(d) {
                           ,ifelse(stringr::str_detect(d$wb_info$support_files_path,"\\/$"),"","/")
                           ,"ous_list.rda")) %>%
       dplyr::filter(ou_uid == d$wb_info$ou_uid) %>%
-      dplyr::filter(!(psnu_name =="" | is.na(psnu_name))) %>%
-      dplyr::select(organisationunituid,name,psnu_name)
+      dplyr::select(organisationunituid=DataPackSiteUID,name=DataPackSiteID,siteType)
     
     schemas<-
       if ( d$wb_info$wb_type == "NORMAL") {
