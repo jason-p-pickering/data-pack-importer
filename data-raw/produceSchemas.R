@@ -3,6 +3,9 @@ library(rlist)
 library(jsonlite)
 library(datimvalidation)
 library(tidyr)
+library(here)
+
+
 
 ProduceSchema <-
   function(row = 6,
@@ -104,7 +107,7 @@ processMechs<-function() {
 
 
 processDataElements<-function() {
-  read.csv("data-raw/DataPackCodes.csv",stringsAsFactors = FALSE,na="") %>%
+  read.csv(paste0(here(),"/data-raw/DataPackCodes.csv"),stringsAsFactors = FALSE,na="") %>%
   dplyr::select(.,code=DataPackCode,combi=pd_2019_P) %>% 
     dplyr::filter(.,complete.cases(.))
   }
@@ -174,22 +177,22 @@ get_full_site_list <- function() {
 
 ##Procedural logic to generate the actual schemas
 ##PSNU HTS Template
-sheet_path = "data-raw/MalawiCOP18DisaggTool_HTSv2018.02.10.xlsx"
+sheet_path = paste0(here(),"/data-raw/COP18DisaggTool_HTSv2018.02.10.xlsx")
 mode="HTS"
 hts_schema<-produceSchemas(sheet_path,mode)
 
 ##Normal PSNU template
-sheet_path = "data-raw/MalawiCOP18DisaggToolv2018.02.10.xlsx"
+sheet_path = paste0(here(),"/data-raw/COP18DisaggToolv2018.02.10.xlsx")
 mode="NORMAL"
 main_schema<-produceSchemas(sheet_path,mode)
 
 #Normal Site level  tools
-sheet_path="data-raw/SiteLevelReview_TEMPLATE.xlsx"
+sheet_path=paste0(here(),"/data-raw/SiteLevelReview_TEMPLATE.xlsx")
 mode="NORMAL_SITE"
 main_site_schema<-produceSiteToolSchemas(sheet_path,mode)
 
 #Normal HTS Site level  tool
-sheet_path="data-raw/SiteLevelReview_HTS_TEMPLATE.xlsx"
+sheet_path=paste0(here(),"/data-raw/SiteLevelReview_HTS_TEMPLATE.xlsx")
 mode="HTS_SITE"
 hts_site_schema<-produceSiteToolSchemas(sheet_path,mode)
 
@@ -201,26 +204,24 @@ mechs<-processMechs()
 #List of data elements
 des<-processDataElements()
 #IMPATT option set
-impatt<-fromJSON("data-raw/impatt_option_set.json")
+impatt<-fromJSON(paste0(here(),"/data-raw/impatt_option_set.json"))
 
-datimvalidation::loadSecrets("/home/jason/.secrets/datim.json")
+datimvalidation::loadSecrets(getOption("datim_credentials"))
 source("data-raw/transform_code_lists.R")
 rCOP18deMapT<-generateCodeListT()%>% mapDataPackCodes()
 rCOP18deMap<-generateCOP18deMap(rCOP18deMapT)
 
 
-#MilitaryUnits
-militaryUnits<-getSiteList("Military")
-
 clusters <- function() {
-  df<- read.csv("data-raw/COP18Clusters.csv",stringsAsFactors=F,header=T) %>%
+  read.csv(paste0(here(),"/data-raw/COP18Clusters.csv"),stringsAsFactors=F,header=T) %>%
     mutate(operatingUnitUID=case_when(operatingunit=="Botswana"~"l1KFEXKI4Dg"
                                       ,operatingunit=="Cameroon"~"bQQJe0cC1eD"
                                       ,operatingunit=="Haiti"~"JTypsdEUNPw"
                                       ,operatingunit=="Mozambique"~"h11OyvlPxpJ"
                                       ,operatingunit=="Namibia"~"FFVkaV9Zk1S"
+                                      ,operatingunit=="Burundi"~"Qh4XMQJhbk8"
                                       ,TRUE~""))
-  return(df)
+
 }
 
 clusters<-clusters()

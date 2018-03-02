@@ -2,12 +2,11 @@
 #' @title write_site_level_sheet(wb,schema,df)
 #'
 #' @description Validates the layout of all relevant sheets in a data pack workbook
-#' @param wb_path Workbook object
+#' @param wb Workbook object
 #' @param schema Schema object for this sheet
 #' @param d Data frame object 
 
 write_site_level_sheet <- function(wb,schema,d) {
-  
   
   #Is this always true??
   fields <- unlist(schema$fields)[-c(1:4)]
@@ -101,6 +100,7 @@ write_site_level_sheet <- function(wb,schema,d) {
   value=NA)}
   # 
   if (NROW(df_indicator) > 0){
+
 
     #Spread the data, being sure not to drop any levels
     df_indicator<-df_indicator %>%
