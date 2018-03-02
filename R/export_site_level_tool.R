@@ -104,7 +104,11 @@ write_site_level_sheet <- function(wb,schema,d) {
     #Spread the data, being sure not to drop any levels
     df_indicator<-df_indicator %>% 
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
-      tidyr::spread(match_code,value,drop=TRUE)
+      tidyr::spread(match_code,value,drop=FALSE) %>%
+      dplyr::mutate(all_na=rowSums(is.na(.))<14)
+    
+    df_indicator<-df_indicator[rowSums(is.na(df_indicator))<14,]
+    
     #Dont error even if the table does not exist
     foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
                      error = function(err) {},
