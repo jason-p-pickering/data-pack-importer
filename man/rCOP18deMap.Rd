@@ -12,6 +12,6 @@ rCOP18deMap
 Returns an object with the following columns
 }
 \description{
-Object used for further processing and matching of data pack codes
+Object used for converting FY17/18 data to FY19 structure, including modeling new indicators/disaggs based on previous indicators/disaggs
 }
 \keyword{datasets}
