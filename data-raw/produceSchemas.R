@@ -213,14 +213,15 @@ rCOP18deMap<-generateCOP18deMap(rCOP18deMapT)
 
 
 clusters <- function() {
-  df<- read.csv(paste0(here(),"/data-raw/COP18Clusters.csv",stringsAsFactors=F,header=T)) %>%
+  read.csv(paste0(here(),"/data-raw/COP18Clusters.csv"),stringsAsFactors=F,header=T) %>%
     mutate(operatingUnitUID=case_when(operatingunit=="Botswana"~"l1KFEXKI4Dg"
                                       ,operatingunit=="Cameroon"~"bQQJe0cC1eD"
                                       ,operatingunit=="Haiti"~"JTypsdEUNPw"
                                       ,operatingunit=="Mozambique"~"h11OyvlPxpJ"
                                       ,operatingunit=="Namibia"~"FFVkaV9Zk1S"
+                                      ,operatingunit=="Burundi"~"Qh4XMQJhbk8"
                                       ,TRUE~""))
-  return(df)
+
 }
 
 clusters<-clusters()
