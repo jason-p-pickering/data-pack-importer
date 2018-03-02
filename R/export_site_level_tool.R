@@ -101,6 +101,7 @@ write_site_level_sheet <- function(wb,schema,d) {
   value=NA)}
   # 
   if (NROW(df_indicator) > 0){
+
     #Spread the data, being sure not to drop any levels
     df_indicator<-df_indicator %>%
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
@@ -108,6 +109,7 @@ write_site_level_sheet <- function(wb,schema,d) {
 
     df_indicator<-df_indicator[rowSums(is.na(df_indicator[,-c(1:3)]))<length(fields),]
     
+
     #Dont error even if the table does not exist
     foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
                      error = function(err) {},
