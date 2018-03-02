@@ -94,7 +94,7 @@ write_site_level_sheet <- function(wb,schema,d) {
   df_indicator<- d$data_prepared %>% 
     dplyr::filter(match_code %in% fields)
   if(NROW(df_indicator) == 0){
-  df_indicator<-data.frame(Site=d$sites$name_full[1],
+  df_indicator<-data.frame(Site=d$sites$name[1],
   Mechanism=d$mechanisms$mechanism[1],
   Type="DSD",
   match_code=fields,
@@ -165,7 +165,9 @@ export_site_level_tool <- function(d) {
     template_name = "SiteLevelReview_HTS_TEMPLATE.xlsx"
   }
   
-  template_path <- paste0(d$wb_info$support_files_path, template_name)
+  template_path <- paste0(d$wb_info$support_files_path
+                          ,ifelse(stringr::str_detect(d$wb_info$support_files_path,"\\/$"),"","/")
+                          , template_name)
   
   output_file_path <- paste0(
     dirname(d$wb_info$wb_path),
@@ -178,14 +180,14 @@ export_site_level_tool <- function(d) {
     ".xlsx"
   )
   
-  #Create the concatenated PSNU > OU_Name (UID) string
-  d$sites$name_full <-
-    paste0(d$sites$psnu_name,
-           " > ",
-           d$sites$name,
-           " ( ",
-           d$sites$organisationunituid,
-           " )")
+  # #Create the concatenated PSNU > OU_Name (UID) string
+  # d$sites$name_full <-
+  #   paste0(d$sites$psnu_name,
+  #          " > ",
+  #          d$sites$name,
+  #          " ( ",
+  #          d$sites$organisationunituid,
+  #          " )")
   
   wb <- openxlsx::loadWorkbook(file = template_path)
   sheets<-openxlsx::getSheetNames(template_path)
@@ -211,7 +213,7 @@ export_site_level_tool <- function(d) {
     xy=c(15,2)
   )
   
-  #Distribution method
+  #Workbook Type
   openxlsx::writeData(
     wb,
     "Home",
@@ -261,7 +263,7 @@ export_site_level_tool <- function(d) {
   openxlsx::showGridLines(wb,"Home",showGridLines = FALSE)
   
   #SiteList sheet
-  site_list<-data.frame(siteID=d$sites$name_full,Inactive=0)
+  site_list<-data.frame(siteID=d$sites$name,Inactive=0)
   openxlsx::writeDataTable(
     wb,
     "SiteList",
@@ -308,7 +310,7 @@ export_site_level_tool <- function(d) {
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::left_join(d$mechanisms, by = "attributeoptioncombo") %>%
     dplyr::left_join(d$sites, by = c("orgunit" = "organisationunituid")) %>%
-    dplyr::select(name = name_full, mechanism, supportType, match_code, value) %>%
+    dplyr::select(name, mechanism, supportType, match_code, value) %>%
     dplyr::group_by(Site=name, Mechanism=mechanism, Type=supportType, match_code) %>%
     dplyr::summarise(value = sum(value, na.rm = TRUE))
     #Duplicates were noted here, but I think this should not have to be done
