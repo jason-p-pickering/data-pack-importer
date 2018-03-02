@@ -246,7 +246,9 @@ ImportSheet <- function(wb_info, schema) {
            value = as.character(value)) %>%
     dplyr::inner_join(.,des,by="code") %>%
     tidyr::separate(.,combi,c("dataelement","categoryoptioncombo")) %>%
-    dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
+    dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value) %>%
+    #Filter out all dedupe data
+    dplyr::filter(!attributeoptioncombo %in% c("YGT1o7UxfFu","X8hrDf6bLDC"))
   } else if (schema$method == "impatt"){
     from<-c("snu_priotization_fy19","plhiv_fy19")
     #IMPATT.PRIORITY_SNU (SUBNAT), IMPATT.PLHIV (SUBNAT, Age/Sex)
