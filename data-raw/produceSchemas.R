@@ -107,7 +107,7 @@ processMechs<-function() {
 
 
 processDataElements<-function() {
-  read.csv(paste0(getOption("datapack_support_files"),"DataPackCodes.csv"),stringsAsFactors = FALSE,na="") %>%
+  read.csv(paste0(here(),"/data-raw/DataPackCodes.csv"),stringsAsFactors = FALSE,na="") %>%
   dplyr::select(.,code=DataPackCode,combi=pd_2019_P) %>% 
     dplyr::filter(.,complete.cases(.))
   }
