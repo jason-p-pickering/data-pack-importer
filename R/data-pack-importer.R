@@ -51,7 +51,7 @@ ValidateSheets<-function(d) {
 #' @title ValidateImpattSheet(d,wb_info)
 #' @description Validates the impatt sheet for completeness.
 #' @param d A parsed data frame with IMPATT data
-#' @param wb_info Worfbook info for the workbook
+#' @param wb_info Workbook info for the workbook
 #' 
 ValidateImpattSheet <- function(d, wb_info) {
   
