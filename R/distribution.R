@@ -171,6 +171,7 @@ distributeSite <- function(d) {
         dplyr::select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value) %>%
         dplyr::mutate(pd_2019_P=paste0(`dataelement`,".",`categoryoptioncombo`)) %>%
         dplyr::left_join(de_map,by=c("pd_2019_P")) %>%
+        dplyr::filter(!dataelement %in% c("rORzrY9rpQ1","r4zbW3owX9n")) %>%
         dplyr::select(orgunit,attributeoptioncombo,supportType,DataPackCode,value) 
         # dplyr::left_join(mechs,by=c("attributeoptioncombo")) %>%
         # dplyr::left_join(ous_with_psnus,by=c("orgunit"="organisationunituid")) %>%
