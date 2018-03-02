@@ -105,6 +105,8 @@ GetWorkbookInfo<-function(wb_path,distribution_method=NA,support_files_path=NA) 
   #Supporting files directory
   support_files_path<-readline("Please provide the path to DataPack Support Files:") }
   
+  support_files_path<-ifelse(stringr::str_detect(distros_path,"\\/$"),support_files_path,paste0(support_files_path,"/"))
+  
   if (!dir.exists(support_files_path)) {
     stop("Could not access support files directory!")
   }
