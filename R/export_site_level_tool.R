@@ -102,11 +102,11 @@ write_site_level_sheet <- function(wb,schema,d) {
   # 
   if (NROW(df_indicator) > 0){
     #Spread the data, being sure not to drop any levels
-    df_indicator<-df_indicator %>% 
+    df_indicator<-df_indicator %>%
       dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
       tidyr::spread(match_code,value,drop=FALSE)
-    #Below method causes error in output. Need different solution to prevent exporting of many, many empty rows.
-    #df_indicator<-df_indicator[rowSums(is.na(df_indicator))<14,]
+
+    df_indicator<-df_indicator[rowSums(is.na(df_indicator[,-c(1:3)]))<length(fields),]
     
     #Dont error even if the table does not exist
     foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
