@@ -73,24 +73,35 @@ distributeCluster <- function(d) {
         #At this point, data may still contain both clustered and nonclustered data within a
         # "Clustered" OU, and likely will contain some _Military data
         
+        mil_data<-d$data[!d$data$orgunit %in% militaryUnits,] %>%
+          mutate(value=as.character(round_trunc(as.numeric(value)))) %>%
+          dplyr::filter(value != "0")
+        
         d$data <- d$data %>%
             #Pull _Military units out separately. Will bind back in at end. These need no manipulation
-                dplyr::filter(!orgunit %in% militaryUnits)
+                dplyr::filter(!orgunit %in% militaryUnits$orgUnit) %>%
             #Create join key
                 dplyr::mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
             #Join with Percentage distribution file (For non-clustered units, will pull in a series of 100%'s)
                 dplyr::left_join(Pcts[Pcts$uidlevel3==ou_uid,],by=c("whereWhoWhatHuh")) %>%
             #Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
                 dplyr::left_join(clusterAvgs,by=c("orgunit"="cluster_psnuuid")) %>%
-                dplyr::mutate(value=dplyr::case_when(is.na(psnuPct)~value*avg,TRUE~value*psnuPct)) %>%
+                dplyr::mutate(value=dplyr::case_when(is.na(psnuPct)~as.numeric(value)*avg,TRUE~as.numeric(value)*psnuPct)) %>%
                 dplyr::mutate(orgunit=PSNUuid) %>%
             #Round to integer values per MER requirements
-                dplyr::mutate(value = round(value)) %>%
+                dplyr::mutate(value = round_trunc(value)) %>%
             #Remove zero value targets
+                dplyr::mutate(value=as.character(value)) %>%
                 dplyr::filter(value != "0")  %>%
+                dplyr::select(dataelement,
+                        period,
+                        orgunit,
+                        categoryoptioncombo,
+                        attributeoptioncombo,
+                        value)
             #Bind _Military units back in
-                    #@sjackson - make sure column orders/types conform
-                dplyr::bind_rows(d$data[!d$data$orgunit %in% militaryUnits,])
+                dplyr::bind_rows(mil_data) 
+  
   } 
   return(d)
 }
