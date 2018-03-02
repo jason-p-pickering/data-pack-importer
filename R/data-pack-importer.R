@@ -1,8 +1,7 @@
 #' @export
-#' @title ValidateSheet(schemas,sheet_name,wb_info)
+#' @title ValidateSheet(d,this_sheet)
 #'
 #' @description Validates the layout of a single sheet based on its schema definition.
-#' @param schemas Schemas of this workbook.
 #' @param d Info about the workbook.
 #' @param this_sheet A particular sheet to validate. 
 #' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
@@ -25,7 +24,7 @@ ValidateSheet <- function(d,this_sheet) {
   if (!all_good) {
   fields_compare<-data.frame(wanted=fields_want,got=fields_got,stringsAsFactors = FALSE) %>%
     dplyr::mutate(ok=fields_want==fields_got) %>%
-    filter(!ok)
+    dplyr::filter(!ok)
   warning(paste0("Some fields did not match for ",this_sheet)) 
   print(fields_compare)
   return(FALSE)
@@ -39,10 +38,8 @@ ValidateSheet <- function(d,this_sheet) {
 #' @title ValidateSheets(d)
 #'
 #' @description Validates all of the sheets
-#' @param schemas Schemas for this workbook
-#' @param sheets Names of sheets
-#' @param wb_info Workbook info for the worbook.
-#' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
+#' @param d Parsed data pack object with workbook info
+#' @return Returns a boolean named vector of sheets and their validation status.
 #'
 ValidateSheets<-function(d) {
   sheets<-unlist(sapply( d$schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
@@ -54,7 +51,7 @@ ValidateSheets<-function(d) {
 #' @title ValidateImpattSheet(d,wb_info)
 #' @description Validates the impatt sheet for completeness.
 #' @param d A parsed data frame with IMPATT data
-#' @param wb_info Worbook info for the workbook
+#' @param wb_info Worfbook info for the workbook
 #' 
 ValidateImpattSheet <- function(d, wb_info) {
   

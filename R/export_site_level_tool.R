@@ -2,12 +2,11 @@
 #' @title write_site_level_sheet(wb,schema,df)
 #'
 #' @description Validates the layout of all relevant sheets in a data pack workbook
-#' @param wb_path Workbook object
+#' @param wb Workbook object
 #' @param schema Schema object for this sheet
 #' @param d Data frame object 
 
 write_site_level_sheet <- function(wb,schema,d) {
-  
   
   #Is this always true??
   fields <- unlist(schema$fields)[-c(1:4)]
@@ -107,14 +106,14 @@ write_site_level_sheet <- function(wb,schema,d) {
     dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
     tidyr::spread(match_code,value,drop=FALSE)
 
-  #Remove any rows which are completely blank
-  all_empty<-df_indicator %>% group_by(Site, Mechanism, Type) %>%
-      mutate_all(is.na) %>%
-      ungroup() %>%
-      select(-(Site:Type)) %>%
-      as.matrix() %>%
-      rowSums() == length(fields)
-    df_indicator <-df_indicator[!all_empty,]
+  # #Remove any rows which are completely blank
+  # all_empty<-df_indicator %>% group_by(Site, Mechanism, Type) %>%
+  #     mutate_all(is.na) %>%
+  #     ungroup() %>%
+  #     select(-(Site:Type)) %>%
+  #     as.matrix() %>%
+  #     rowSums() == length(fields)
+  #   df_indicator <-df_indicator[!all_empty,]
 
     #Dont error even if the table does not exist
     foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},

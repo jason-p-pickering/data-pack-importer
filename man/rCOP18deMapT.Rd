@@ -12,6 +12,6 @@ rCOP18deMapT
 Returns an object with the following columns
 }
 \description{
-Object used for further processing and matching of data pack codes
+Object used for mapping indicators and disaggs across time, including from FY19 PSNU level to FY19 Site level. Does not translate new indicators/disaggs
 }
 \keyword{datasets}

@@ -4,7 +4,7 @@
 #' @description Process DataPack Disagg and Site tools
 #' @param wb_path Path to the DataPack file to process
 #' @param distribution_method Should be either 2017 or 2018
-#' @param support_file_path Path to the support files
+#' @param support_files_path Path to the support files
 #'
 #'
 DataPackR <- function(wb_path, distribution_method, support_files_path) {
