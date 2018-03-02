@@ -17,16 +17,11 @@ This manual should guide through the Tier II DataPack / DisaggTool process for C
 
 ### Set up your environment
 
-- Follow the instructions here: [data-pack-importer-vagrant](https://github.com/davidhuser/data-pack-importer-vagrant)
-- Check for updates to the `prod` branch. To update your environment with the latest code changes, run in RStudio:
-
-```{r eval=FALSE}
-devtools::install_github('jason-p-pickering/data-pack-importer', ref='prod')
-```
+Follow the instructions here: [data-pack-importer-vagrant](https://github.com/davidhuser/data-pack-importer-vagrant)
 
 ### Reveive and download the country DisaggTools
 
-They are Excel spreadsheets either attached to the Datim Support Zendesk or links to Sharepoint files. Download those into the repository from above. The country team *needs to indicate* the distribution method that should be used, either it's 2017 (FY17 Results) or 2018 (FY18 Targets).
+They are Excel spreadsheets links to Sharepoint files (they must not be attached). Download those into the repository from above. The country team *needs to indicate* the distribution method that should be used, either it's 2017 (FY17 Results) or 2018 (FY18 Targets).
 
 ### DisaggTool validation
 
@@ -59,7 +54,7 @@ It creates the following files:
 
 **TBD**
 
-Issue handling:
+Warnings / error handling:
 
 - *Hard stop:* Tier II does not proceed with anything else until this is fixed by the country team.
 - *Continue:* Tier II proceeds with validation #2 of the PSNU CSV (`*_import_*.csv`)
