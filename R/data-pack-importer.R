@@ -1,34 +1,49 @@
 #' @export
-#' @title ValidateSheet(schemas,sheet_name,wb_info)
+#' @title ValidateSheet(d,this_sheet)
 #'
 #' @description Validates the layout of a single sheet based on its schema definition.
-#' @param schemas Schemas of this workbook.
-#' @param sheet_name Name of the sheet to be validated.
-#' @param wb_info Info about the workbook.  
+#' @param d Info about the workbook.
+#' @param this_sheet A particular sheet to validate. 
 #' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
 #'
-ValidateSheet <- function(schemas,sheet_name,wb_info) {
-  schema<-rlist::list.find(schemas$schema,sheet_name==sheet_name)[[1]]
+ValidateSheet <- function(d,this_sheet) {
+  
+  schema<-rlist::list.find(d$schemas$schema,sheet_name==this_sheet)
+  if(length(schema)!=1) {
+    stop("Could not find the exact schema for this sheet!")
+  } else {
+    schema<-schema[[1]]
+  }
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(schema$row, schema$end_col))
-  all( names(
-    readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range)
-  ) == unlist(schema$fields,use.names = FALSE))
+  
+  fields_got<-names(readxl::read_excel(d$wb_info$wb_path, sheet = this_sheet, range = cell_range))
+  fields_want<-unlist(schema$fields,use.names = FALSE)
+  all_good<-all(fields_want==fields_got)
+  
+  if (!all_good) {
+  fields_compare<-data.frame(wanted=fields_want,got=fields_got,stringsAsFactors = FALSE) %>%
+    dplyr::mutate(ok=fields_want==fields_got) %>%
+    dplyr::filter(!ok)
+  warning(paste0("Some fields did not match for ",this_sheet)) 
+  print(fields_compare)
+  return(FALSE)
+  }
+
+  return(TRUE)
   
 }
 
 #' @export
-#' @title ValidateSheets(schemas,sheets)
+#' @title ValidateSheets(d)
 #'
 #' @description Validates all of the sheets
-#' @param schemas Schemas for this workbook
-#' @param sheets Names of sheets
-#' @param wb_info Workbook info for the worbook.
-#' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
+#' @param d Parsed data pack object with workbook info
+#' @return Returns a boolean named vector of sheets and their validation status.
 #'
-ValidateSheets<-function(schemas,sheets,wb_info) {
-  
-  vapply(sheets,function(x) { ValidateSheet(schemas = schemas,sheet_name = x,wb_info=wb_info) }, FUN.VALUE=logical(1) ) 
+ValidateSheets<-function(d) {
+  sheets<-unlist(sapply( d$schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
+  vapply(sheets,function(x) { ValidateSheet(d,x) }, FUN.VALUE=logical(1) ) 
 }
 
 
@@ -36,7 +51,7 @@ ValidateSheets<-function(schemas,sheets,wb_info) {
 #' @title ValidateImpattSheet(d,wb_info)
 #' @description Validates the impatt sheet for completeness.
 #' @param d A parsed data frame with IMPATT data
-#' @param wb_info Worbook info for the workbook
+#' @param wb_info Workbook info for the workbook
 #' 
 ValidateImpattSheet <- function(d, wb_info) {
   
@@ -149,14 +164,13 @@ ValidateWorkbook <- function(wb_path,distribution_method=NA,support_files_path=N
   
   
   all_sheets <- readxl::excel_sheets(path = d$wb_info$wb_path)
-  expected <- unlist(sapply(d$schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
-  all_there <- expected %in% all_sheets
+  expected_sheets <- unlist(sapply( d$schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
+  all_there <- expected_sheets %in% all_sheets
   #Validate against expected tables
   if ( !all(all_there) ) {
-    stop(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
+    stop(paste0("Some tables appear to be missing!:",paste(expected_sheets[!(all_there)],sep="",collapse=",")))
   }
-  sheets<-all_sheets[all_sheets %in% expected]
-  validation_results<-ValidateSheets(d$schemas,sheets,d$wb_info)
+  validation_results<-ValidateSheets(d)
   if (any(!(validation_results))) {
     invalid_sheets <-
       paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
