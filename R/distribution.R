@@ -72,7 +72,7 @@ distributeCluster <- function(d) {
         # "Clustered" OU, and likely will contain some _Military data
         
         mil_data<-d$data[!d$data$orgunit %in% militaryUnits,] %>%
-          mutate(value=as.character(round_trunc(as.numeric(value)))) %>%
+          dplyr::mutate(value=as.character(round_trunc(as.numeric(value)))) %>%
           dplyr::filter(value != "0")
         
         d$data <- d$data %>%
