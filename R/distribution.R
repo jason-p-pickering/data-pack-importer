@@ -135,10 +135,6 @@ distributeSite <- function(d) {
   organisationunituid<-NULL
   name<-NULL
   
-  #Not sure what to do with this. I think we should exlcude them. 
-  mil_data<-d$data %>% 
-    dplyr::filter(orgunit %in% datapackimporter::militaryUnits)
-  
   #Default distribution is 2018 if not otherwise specified
       if (d$wb_info$distribution_method == 2017) {
         file_name = "distrSiteFY17.rda"
@@ -172,8 +168,6 @@ distributeSite <- function(d) {
                                                #Where no past behavior (sitePct is NA), keep values at PSNU/Cluster level
                                                #for manual distribution in Site tool
                                                ,TRUE~round_trunc(as.numeric(value)))) %>%
-      #Reattach the military data after distribution
-        dplyr::bind_rows(mil_data) %>%
         dplyr::mutate(orgunit=dplyr::case_when(!is.na(orgUnit)~orgUnit,TRUE~orgunit)) %>%
         dplyr::select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value) %>%
         dplyr::mutate(pd_2019_P=paste0(`dataelement`,".",`categoryoptioncombo`)) %>%
