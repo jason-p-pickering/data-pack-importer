@@ -91,7 +91,8 @@ write_site_level_sheet <- function(wb,schema,d) {
       dplyr::filter(match_code %in% fields)
     
     if(NROW(df_indicator) == 0){
-      df_indicator<-data.frame(Site=d$sites$name[1],
+      df_indicator<-data.frame(Inactive="",
+                               Site=d$sites$name[1],
                                Mechanism=d$mechanisms$mechanism[1],
                                Type="DSD",
                                match_code=fields,
@@ -103,7 +104,9 @@ write_site_level_sheet <- function(wb,schema,d) {
       #Spread the data, being sure not to drop any levels
       df_indicator<-df_indicator %>%
         dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
-        tidyr::spread(match_code,value,drop=FALSE)
+        tidyr::spread(match_code,value,drop=FALSE) %>%
+        dplyr::mutate(Inactive="") %>%
+        dplyr::select(Inactive,everything())
       
       df_indicator<-df_indicator[rowSums(is.na(df_indicator[,-c(1:3)]))<length(fields),]
       
@@ -117,7 +120,7 @@ write_site_level_sheet <- function(wb,schema,d) {
         wb,
         sheet = schema$sheet_name,
         df_indicator,
-        xy = c(2, 6),
+        xy = c(1, 6),
         colNames = TRUE,
         keepNA = FALSE,
         tableName = tolower(schema$sheet_name)
@@ -135,13 +138,14 @@ write_site_level_sheet <- function(wb,schema,d) {
       formula_cell_numbers<- ( 1:NROW(df_indicator) ) + 6
       
       inactiveFormula <-
-        paste0(
-          'IF(AND(',
-          tolower(schema$sheet_name),
-          '[@Site]<>"",INDEX(site_list_table[Inactive],MATCH(',
-          tolower(schema$sheet_name),
-          '[@Site],site_list_table[siteID],0))=1),"!!","")')
+               paste0('IF(AND(B'
+                     ,formula_cell_numbers
+                     ,'<>"",INDEX(site_list_table[Inactive],MATCH(B'
+                     ,formula_cell_numbers
+                     ,',site_list_table[siteID],0))=1),"!!","")')
+              
       #Conditional formatting for NOT YET DISTIBUTED
+      
       
       distrStyle <-openxlsx::createStyle(fontColour = "#000000", bgFill = "#FF8080")
       openxlsx::conditionalFormatting(wb, schema$sheet_name, cols = 2, 
