@@ -414,7 +414,7 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::select(match_code,value) %>%
     dplyr::group_by(match_code) %>%
-    dplyr::summarise(value=sum(value,na.rm = TRUE)) 
+    dplyr::summarise(value=sum(value,na.rm = TRUE))
 
   #Pad with zeros
   
@@ -429,7 +429,8 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
   sums<-sums %>% 
     dplyr::bind_rows(df_zeros) %>% 
     dplyr::group_by(match_code) %>%
-    dplyr::summarise(value=sum(value))
+    dplyr::summarise(value=sum(value)) %>%
+    dplyr::mutate(value=round_trunc(value))
   
 
   } else {sums<-NULL}
