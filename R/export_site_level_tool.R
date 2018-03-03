@@ -19,7 +19,9 @@ write_site_level_sheet <- function(wb,schema,d) {
     dplyr::mutate(match_code = factor(match_code, levels = fields)) %>%
     tidyr::spread(match_code, value, drop = FALSE)
   
-  if (NROW(sums) == 1) {
+  all_zeros<-Reduce(`+`,as.matrix(sums)) == 0
+  
+  if (NROW(sums) == 1 & !all_zeros) {
     
     openxlsx::writeData(
       wb,
@@ -83,75 +85,78 @@ write_site_level_sheet <- function(wb,schema,d) {
         
       )
     }
+    
+    #Filter  out this indicator
+    df_indicator<- d$data_prepared %>% 
+      dplyr::filter(match_code %in% fields)
+    
+    if(NROW(df_indicator) == 0){
+      df_indicator<-data.frame(Site=d$sites$name[1],
+                               Mechanism=d$mechanisms$mechanism[1],
+                               Type="DSD",
+                               match_code=fields,
+                               value=NA)}
+    
+    if (NROW(df_indicator) > 0){
+      
+      
+      #Spread the data, being sure not to drop any levels
+      df_indicator<-df_indicator %>%
+        dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
+        tidyr::spread(match_code,value,drop=FALSE)
+      
+      df_indicator<-df_indicator[rowSums(is.na(df_indicator[,-c(1:3)]))<length(fields),]
+      
+      #Dont error even if the table does not exist
+      foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
+                       error = function(err) {},
+                       finally = {} )  
+      
+      #Write the main data table
+      openxlsx::writeDataTable(
+        wb,
+        sheet = schema$sheet_name,
+        df_indicator,
+        xy = c(2, 6),
+        colNames = TRUE,
+        keepNA = FALSE,
+        tableName = schema$sheet_name
+      )
+      #Style the data table
+      openxlsx::addStyle(
+        wb,
+        schema$sheet_name,
+        style = s,
+        rows = 7:(NROW(df_indicator) + 100),
+        cols = 5:(length(fields) + 5),
+        gridExpand = TRUE
+      )
+      
+      formula_cell_numbers<- ( 1:NROW(df_indicator) ) + 6
+      
+      inactiveFormula <-
+        paste0(
+          'IF(AND(',
+          schema$sheet_name,
+          '!$B',formula_cell_numbers,
+          '<>"",INDEX(site_table[Inactive],MATCH(',
+          schema$sheet_name,
+          '!$B',formula_cell_numbers,
+          ',site_table[siteID],0)+1)=1),"!!","")')
+      
+      openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
+      openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=(NROW(df_indicator)*2),"list",value="site_list")
+      openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=(NROW(df_indicator)*2),"list",value="mech_list")
+      openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=(NROW(df_indicator)*2),"list",value="DSDTA")
+    }
+    
   } else if (NROW(sums) > 1) {
     stop("Unhandled exception in writing column sums to the sheet!")
   } else {
     return(NA)
   }
   
-  #Filter  out this indicator
-  df_indicator<- d$data_prepared %>% 
-    dplyr::filter(match_code %in% fields)
-  if(NROW(df_indicator) == 0){
-  df_indicator<-data.frame(Site=d$sites$name[1],
-  Mechanism=d$mechanisms$mechanism[1],
-  Type="DSD",
-  match_code=fields,
-  value=NA)}
-  # 
-  if (NROW(df_indicator) > 0){
-
-
-    #Spread the data, being sure not to drop any levels
-    df_indicator<-df_indicator %>%
-      dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
-      tidyr::spread(match_code,value,drop=FALSE)
-
-    df_indicator<-df_indicator[rowSums(is.na(df_indicator[,-c(1:3)]))<length(fields),]
-    
-    #Dont error even if the table does not exist
-    foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
-                     error = function(err) {},
-                     finally = {} )  
-  
-    #Write the main data table
-    openxlsx::writeDataTable(
-      wb,
-      sheet = schema$sheet_name,
-      df_indicator,
-      xy = c(2, 6),
-      colNames = TRUE,
-      keepNA = FALSE,
-      tableName = schema$sheet_name
-    )
-    #Style the data table
-    openxlsx::addStyle(
-      wb,
-      schema$sheet_name,
-      style = s,
-      rows = 7:(NROW(df_indicator) + 100),
-      cols = 5:(length(fields) + 5),
-      gridExpand = TRUE
-    )
-    
-    formula_cell_numbers<- ( 1:NROW(df_indicator) ) + 6
-    
-    inactiveFormula <-
-      paste0(
-        'IF(AND(',
-        schema$sheet_name,
-        '!$B',formula_cell_numbers,
-        '<>"",INDEX(site_table[Inactive],MATCH(',
-        schema$sheet_name,
-        '!$B',formula_cell_numbers,
-        ',site_table[siteID],0)+1)=1),"!!","")')
-     
-    openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=(NROW(df_indicator)*2),"list",value="site_list")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=(NROW(df_indicator)*2),"list",value="mech_list")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=(NROW(df_indicator)*2),"list",value="DSDTA")
-  }
-  
+ 
   
 }
 
