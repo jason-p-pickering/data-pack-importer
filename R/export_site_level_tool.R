@@ -181,16 +181,7 @@ export_site_level_tool <- function(d) {
     format(Sys.time(), "%Y%m%d%H%M%S"),
     ".xlsx"
   )
-  
-  # #Create the concatenated PSNU > OU_Name (UID) string
-  # d$sites$name_full <-
-  #   paste0(d$sites$psnu_name,
-  #          " > ",
-  #          d$sites$name,
-  #          " ( ",
-  #          d$sites$organisationunituid,
-  #          " )")
-  
+
   wb <- openxlsx::loadWorkbook(file = template_path)
   sheets<-openxlsx::getSheetNames(template_path)
   openxlsx::sheetVisibility(wb)[which(sheets =="Mechs")]<-"veryHidden"
