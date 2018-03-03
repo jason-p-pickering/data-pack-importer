@@ -120,7 +120,7 @@ write_site_level_sheet <- function(wb,schema,d) {
         xy = c(2, 6),
         colNames = TRUE,
         keepNA = FALSE,
-        tableName = schema$sheet_name
+        tableName = tolower(schema$sheet_name)
       )
       #Style the data table
       openxlsx::addStyle(
@@ -137,12 +137,10 @@ write_site_level_sheet <- function(wb,schema,d) {
       inactiveFormula <-
         paste0(
           'IF(AND(',
-          schema$sheet_name,
-          '!$B',formula_cell_numbers,
-          '<>"",INDEX(site_list_table[Inactive],MATCH(',
-          schema$sheet_name,
-          '!$B',formula_cell_numbers,
-          ',site_list_table[siteID],0)+1)=1),"!!","")')
+          tolower(schema$sheet_name),
+          '[@Site]<>"",INDEX(site_list_table[Inactive],MATCH(',
+          tolower(schema$sheet_name),
+          '[@Site],site_list_table[siteID],0))=1),"!!","")')
       #Conditional formatting for NOT YET DISTIBUTED
       
       distrStyle <-openxlsx::createStyle(fontColour = "#000000", bgFill = "#FF8080")
