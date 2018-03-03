@@ -48,9 +48,7 @@ distributeCluster <- function(d) {
         file_name = "distrClusterFY18.rda"
       }
       
-      file_path = paste0(distros_path
-                         ,ifelse(stringr::str_detect(distros_path,"\\/$"),"","/")
-                         , file_name)
+      file_path = paste0(distros_path , file_name)
       
       if (!file.exists(file_path)) {
         stop(paste("Distribution file could not be found. Please check it exists at",file_path))
