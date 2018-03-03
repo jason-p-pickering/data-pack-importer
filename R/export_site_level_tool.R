@@ -55,7 +55,7 @@ write_site_level_sheet <- function(wb,schema,d) {
              '6&"]"))')
     
     #Conditional formatting
-    #Create the conditional formatting
+    #Create the conditional formatting for the subtotals
     cond_format_formula <- paste0(
       'OR(',
       subtotal_formula_column_letters,
@@ -143,6 +143,14 @@ write_site_level_sheet <- function(wb,schema,d) {
           schema$sheet_name,
           '!$B',formula_cell_numbers,
           ',site_table[siteID],0)+1)=1),"!!","")')
+      #Conditional formatting for NOT YET DISTIBUTED
+      
+      distrStyle <-openxlsx::createStyle(fontColour = "#000000", bgFill = "#FF8080")
+      openxlsx::conditionalFormatting(wb, schema$sheet_name, cols = 2, 
+                            rows=(NROW(df_indicator)*2), 
+                            type = "contains", rule = "NOT YET DISTIBUTED",
+                            style=distrStyle)
+      
       
       openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
       openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=(NROW(df_indicator)*2),"list",value="site_list")
