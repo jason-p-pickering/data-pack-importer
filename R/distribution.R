@@ -135,10 +135,6 @@ distributeSite <- function(d) {
   organisationunituid<-NULL
   name<-NULL
   
-  #Not sure what to do with this. I think we should exlcude them. 
-  mil_data<-d$data %>% 
-    dplyr::filter(orgunit %in% datapackimporter::militaryUnits)
-  
   #Default distribution is 2018 if not otherwise specified
       if (d$wb_info$distribution_method == 2017) {
         file_name = "distrSiteFY17.rda"
@@ -166,19 +162,18 @@ distributeSite <- function(d) {
     ds <- d$data %>%
         #Create id to link to percent distributions
         dplyr::mutate(whereWhoWhatHuh=paste(orgunit,attributeoptioncombo,dataelement,categoryoptioncombo,sep=".")) %>%
+        #Remove IMPATT data
+        dplyr::filter(!dataelement %in% c("rORzrY9rpQ1","r4zbW3owX9n")) %>%
         #Pull in distribution percentages, keeping all data
         dplyr::left_join(Pcts,by=c("whereWhoWhatHuh")) %>%
         dplyr::mutate(value = dplyr::case_when(!is.na(sitePct)~round_trunc(as.numeric(value) * sitePct)
                                                #Where no past behavior (sitePct is NA), keep values at PSNU/Cluster level
                                                #for manual distribution in Site tool
                                                ,TRUE~round_trunc(as.numeric(value)))) %>%
-      #Reattach the military data after distribution
-        dplyr::bind_rows(mil_data) %>%
         dplyr::mutate(orgunit=dplyr::case_when(!is.na(orgUnit)~orgUnit,TRUE~orgunit)) %>%
         dplyr::select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value) %>%
         dplyr::mutate(pd_2019_P=paste0(`dataelement`,".",`categoryoptioncombo`)) %>%
         dplyr::left_join(de_map,by=c("pd_2019_P")) %>%
-        dplyr::filter(!dataelement %in% c("rORzrY9rpQ1","r4zbW3owX9n")) %>%
         dplyr::select(orgunit,attributeoptioncombo,supportType,DataPackCode,value) 
         # dplyr::left_join(mechs,by=c("attributeoptioncombo")) %>%
         # dplyr::left_join(ous_with_psnus,by=c("orgunit"="organisationunituid")) %>%
