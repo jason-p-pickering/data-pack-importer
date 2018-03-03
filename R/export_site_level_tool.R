@@ -139,10 +139,10 @@ write_site_level_sheet <- function(wb,schema,d) {
           'IF(AND(',
           schema$sheet_name,
           '!$B',formula_cell_numbers,
-          '<>"",INDEX(site_table[Inactive],MATCH(',
+          '<>"",INDEX(site_list_table[Inactive],MATCH(',
           schema$sheet_name,
           '!$B',formula_cell_numbers,
-          ',site_table[siteID],0)+1)=1),"!!","")')
+          ',site_list_table[siteID],0)+1)=1),"!!","")')
       #Conditional formatting for NOT YET DISTIBUTED
       
       distrStyle <-openxlsx::createStyle(fontColour = "#000000", bgFill = "#FF8080")
