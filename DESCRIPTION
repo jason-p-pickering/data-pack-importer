@@ -1,8 +1,8 @@
 Package: datapackimporter
 Type: Package
 Title: Utilities for importing the ICPI Data pack into DATIM
-Version: 0.2.12
-Date: 2018-03-02
+Version: 0.2.13
+Date: 2018-03-03
 Author: Jason P. Pickering, Scott Jackson, Aaron Chafetz
 Maintainer: Jason P. Pickering <jason.p.pickering@gmail.com>
 Description: Utilities for importing the ICPI Data pack into DATIM

@@ -151,9 +151,7 @@ distributeSite <- function(d) {
         stop("Distribution year must either 2017 or 2018! ")
       }
   
-  file_path = paste0(d$wb_info$support_files_path
-                     ,ifelse(stringr::str_detect(d$wb_info$support_files_path,"\\/$"),"","/")
-                     , file_name)
+  file_path = paste0(d$wb_info$support_files_path,file_name)
   
   if (!file.exists(file_path)) {
     stop(paste("Distribution file could not be found. Please check it exists at",file_path))
@@ -190,18 +188,14 @@ distributeSite <- function(d) {
         # dplyr::select(site,mechanism,type=supportType,dp_code=DataPackCode,value)
     
     
-    mechanisms<-readRDS(paste0(d$wb_info$support_files_path
-                               ,ifelse(stringr::str_detect(d$wb_info$support_files_path,"\\/$"),"","/")
-                               , "mech_list.rda")) %>% 
+    mechanisms<-readRDS(paste0(d$wb_info$support_files_path,"mech_list.rda")) %>% 
       dplyr::select(mechanism,attributeoptioncombo=uid,ou) %>%
       dplyr::filter( ou == d$wb_info$ou_name) %>% 
         #Only allow data entry in Site level tool against Mechanisms already seen in Disagg Tool
       dplyr::filter( attributeoptioncombo %in% unique(ds$attributeoptioncombo)) %>%
       dplyr::arrange(mechanism)
     
-    sites<-readRDS(paste0(d$wb_info$support_files_path
-                          ,ifelse(stringr::str_detect(d$wb_info$support_files_path,"\\/$"),"","/")
-                          ,"ous_list.rda")) %>%
+    sites<-readRDS(paste0(d$wb_info$support_files_path,"ous_list.rda")) %>%
       dplyr::filter(ou_uid == d$wb_info$ou_uid) %>%
       dplyr::select(organisationunituid=DataPackSiteUID,name=DataPackSiteID,siteType)
     

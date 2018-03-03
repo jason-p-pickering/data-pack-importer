@@ -169,9 +169,7 @@ export_site_level_tool <- function(d) {
     template_name = "SiteLevelReview_HTS_TEMPLATE.xlsx"
   }
   
-  template_path <- paste0(d$wb_info$support_files_path
-                          ,ifelse(stringr::str_detect(d$wb_info$support_files_path,"\\/$"),"","/")
-                          , template_name)
+  template_path <- paste0(d$wb_info$support_files_path , template_name)
   
   output_file_path <- paste0(
     dirname(d$wb_info$wb_path),
