@@ -153,8 +153,8 @@ write_site_level_sheet <- function(wb,schema,d) {
       
       
       openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
-      openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=(NROW(df_indicator)*2),"list",value="site_list_region")
-      openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=(NROW(df_indicator)*2),"list",value="mech_list_region")
+      #openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=(NROW(df_indicator)*2),"list",value="SiteList")
+      #openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=(NROW(df_indicator)*2),"list",value="MechList")
       openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=(NROW(df_indicator)*2),"list",value="DSDTA")
     }
     
@@ -275,13 +275,13 @@ export_site_level_tool <- function(d) {
     "SiteList",
     site_list,
     xy = c(1, 1),
-    colNames = F,
+    colNames = TRUE,
     keepNA = F,
     tableName = "site_list_table"
   )
   openxlsx::createNamedRegion(wb = wb,
                               sheet="SiteList",
-                              name="site_list_region",
+                              name="SiteList",
                               rows=1:(nrow(site_list)+1),
                               cols=1)
   openxlsx::dataValidation(
@@ -305,7 +305,7 @@ export_site_level_tool <- function(d) {
   )
   openxlsx::createNamedRegion(wb = wb,
                               sheet="Mechs",
-                              name="mech_list_region",
+                              name="MechList",
                               rows=1:(length(d$mechanisms$mechanism)+1),
                               cols=1)
 
