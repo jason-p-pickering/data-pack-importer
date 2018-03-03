@@ -93,7 +93,7 @@ write_site_level_sheet <- function(wb,schema,d) {
   df_indicator<- d$data_prepared %>% 
     dplyr::filter(match_code %in% fields)
   if(NROW(df_indicator) == 0){
-  df_indicator<-data.frame(Site=d$sites$name_full[1],
+  df_indicator<-data.frame(Site=d$sites$name[1],
   Mechanism=d$mechanisms$mechanism[1],
   Type="DSD",
   match_code=fields,
@@ -101,20 +101,14 @@ write_site_level_sheet <- function(wb,schema,d) {
   # 
   if (NROW(df_indicator) > 0){
 
-  #Spread the data, being sure not to drop any levels
-  df_indicator<-df_indicator %>%
-    dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
-    tidyr::spread(match_code,value,drop=FALSE)
 
-  # #Remove any rows which are completely blank
-  # all_empty<-df_indicator %>% group_by(Site, Mechanism, Type) %>%
-  #     mutate_all(is.na) %>%
-  #     ungroup() %>%
-  #     select(-(Site:Type)) %>%
-  #     as.matrix() %>%
-  #     rowSums() == length(fields)
-  #   df_indicator <-df_indicator[!all_empty,]
+    #Spread the data, being sure not to drop any levels
+    df_indicator<-df_indicator %>%
+      dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
+      tidyr::spread(match_code,value,drop=FALSE)
 
+    df_indicator<-df_indicator[rowSums(is.na(df_indicator[,-c(1:3)]))<length(fields),]
+    
     #Dont error even if the table does not exist
     foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
                      error = function(err) {},
@@ -175,7 +169,7 @@ export_site_level_tool <- function(d) {
     template_name = "SiteLevelReview_HTS_TEMPLATE.xlsx"
   }
   
-  template_path <- paste0(d$wb_info$support_files_path, template_name)
+  template_path <- paste0(d$wb_info$support_files_path , template_name)
   
   output_file_path <- paste0(
     dirname(d$wb_info$wb_path),
@@ -187,16 +181,7 @@ export_site_level_tool <- function(d) {
     format(Sys.time(), "%Y%m%d%H%M%S"),
     ".xlsx"
   )
-  
-  #Create the concatenated PSNU > OU_Name (UID) string
-  d$sites$name_full <-
-    paste0(d$sites$psnu_name,
-           " > ",
-           d$sites$name,
-           " ( ",
-           d$sites$organisationunituid,
-           " )")
-  
+
   wb <- openxlsx::loadWorkbook(file = template_path)
   sheets<-openxlsx::getSheetNames(template_path)
   openxlsx::sheetVisibility(wb)[which(sheets =="Mechs")]<-"veryHidden"
@@ -221,7 +206,7 @@ export_site_level_tool <- function(d) {
     xy=c(15,2)
   )
   
-  #Distribution method
+  #Workbook Type
   openxlsx::writeData(
     wb,
     "Home",
@@ -271,7 +256,7 @@ export_site_level_tool <- function(d) {
   openxlsx::showGridLines(wb,"Home",showGridLines = FALSE)
   
   #SiteList sheet
-  site_list<-data.frame(siteID=d$sites$name_full,Inactive=0)
+  site_list<-data.frame(siteID=d$sites$name,Inactive=0)
   openxlsx::writeDataTable(
     wb,
     "SiteList",
@@ -318,7 +303,7 @@ export_site_level_tool <- function(d) {
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::left_join(d$mechanisms, by = "attributeoptioncombo") %>%
     dplyr::left_join(d$sites, by = c("orgunit" = "organisationunituid")) %>%
-    dplyr::select(name = name_full, mechanism, supportType, match_code, value) %>%
+    dplyr::select(name, mechanism, supportType, match_code, value) %>%
     dplyr::group_by(Site=name, Mechanism=mechanism, Type=supportType, match_code) %>%
     dplyr::summarise(value = sum(value, na.rm = TRUE))
     #Duplicates were noted here, but I think this should not have to be done

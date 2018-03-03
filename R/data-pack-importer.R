@@ -105,6 +105,10 @@ GetWorkbookInfo<-function(wb_path,distribution_method=NA,support_files_path=NA) 
   #Supporting files directory
   support_files_path<-readline("Please provide the path to DataPack Support Files:") }
   
+  if (!stringr::str_detect(support_files_path,"\\/$")) {
+    stop("support_files_path must include a final slash!")
+  }
+  
   if (!dir.exists(support_files_path)) {
     stop("Could not access support files directory!")
   }
@@ -252,7 +256,7 @@ ImportSheet <- function(wb_info, schema) {
   } else if (schema$method == "impatt"){
     from<-c("snu_priotization_fy19","plhiv_fy19")
     #IMPATT.PRIORITY_SNU (SUBNAT), IMPATT.PLHIV (SUBNAT, Age/Sex)
-    to<-c("r4zbW3owX9n","Rom79qVjNVb")
+    to<-c("r4zbW3owX9n","rORzrY9rpQ1")
     #https://www.datim.org/api/optionSets/mvbwbgbJgXr.json?fields=options[code,name]
     d<-readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range)
     msg<-ValidateImpattSheet(d,wb_info)
