@@ -150,8 +150,8 @@ write_site_level_sheet <- function(wb,schema,d) {
       
       distrStyle <-openxlsx::createStyle(fontColour = "#000000", bgFill = "#FF8080")
       openxlsx::conditionalFormatting(wb, schema$sheet_name, cols = 2, 
-                            rows=(NROW(df_indicator)*2), 
-                            type = "contains", rule = "NOT YET DISTIBUTED",
+                            rows=formula_cell_numbers, 
+                            type = "contains", rule = "NOT YET DISTRIBUTED",
                             style=distrStyle)
       
       
