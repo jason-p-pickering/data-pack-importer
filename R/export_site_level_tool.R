@@ -1,4 +1,5 @@
 #' @export
+#' @importFrom dplyr everything
 #' @title write_site_level_sheet(wb,schema,df)
 #'
 #' @description Validates the layout of all relevant sheets in a data pack workbook
