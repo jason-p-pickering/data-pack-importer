@@ -12,6 +12,11 @@ write_site_level_sheet(wb, schema, d)
 \item{schema}{Schema object for this sheet.}
 
 \item{d}{Data frame object.}
+\item{wb}{Workbook object}
+
+\item{schema}{Schema object for this sheet}
+
+\item{d}{Data frame object}
 }
 \description{
 Validates the layout of all relevant sheets in a data pack workbook

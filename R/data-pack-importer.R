@@ -1,34 +1,49 @@
 #' @export
-#' @title ValidateSheet(schemas,sheet_name,wb_info)
+#' @title ValidateSheet(d,this_sheet)
 #'
 #' @description Validates the layout of a single sheet based on its schema definition.
-#' @param schemas Schemas of this workbook.
-#' @param sheet_name Name of the sheet to be validated.
-#' @param wb_info Info about the workbook.  
+#' @param d Info about the workbook.
+#' @param this_sheet A particular sheet to validate. 
 #' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
 #'
-ValidateSheet <- function(schemas,sheet_name,wb_info) {
-  schema<-rlist::list.find(schemas$schema,sheet_name==sheet_name)[[1]]
+ValidateSheet <- function(d,this_sheet) {
+  
+  schema<-rlist::list.find(d$schemas$schema,sheet_name==this_sheet)
+  if(length(schema)!=1) {
+    stop("Could not find the exact schema for this sheet!")
+  } else {
+    schema<-schema[[1]]
+  }
   cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
                                    c(schema$row, schema$end_col))
-  all( names(
-    readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range)
-  ) == unlist(schema$fields,use.names = FALSE))
+  
+  fields_got<-names(readxl::read_excel(d$wb_info$wb_path, sheet = this_sheet, range = cell_range))
+  fields_want<-unlist(schema$fields,use.names = FALSE)
+  all_good<-all(fields_want==fields_got)
+  
+  if (!all_good) {
+  fields_compare<-data.frame(wanted=fields_want,got=fields_got,stringsAsFactors = FALSE) %>%
+    dplyr::mutate(ok=fields_want==fields_got) %>%
+    dplyr::filter(!ok)
+  warning(paste0("Some fields did not match for ",this_sheet)) 
+  print(fields_compare)
+  return(FALSE)
+  }
+
+  return(TRUE)
   
 }
 
 #' @export
-#' @title ValidateSheets(schemas,sheets)
+#' @title ValidateSheets(d)
 #'
 #' @description Validates all of the sheets
-#' @param schemas Schemas for this workbook
-#' @param sheets Names of sheets
-#' @param wb_info Workbook info for the worbook.
-#' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
+#' @param d Parsed data pack object with workbook info
+#' @return Returns a boolean named vector of sheets and their validation status.
 #'
-ValidateSheets<-function(schemas,sheets,wb_info) {
-  
-  vapply(sheets,function(x) { ValidateSheet(schemas = schemas,sheet_name = x,wb_info=wb_info) }, FUN.VALUE=logical(1) ) 
+ValidateSheets<-function(d) {
+  sheets<-unlist(sapply( d$schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
+  vapply(sheets,function(x) { ValidateSheet(d,x) }, FUN.VALUE=logical(1) ) 
 }
 
 
@@ -36,7 +51,7 @@ ValidateSheets<-function(schemas,sheets,wb_info) {
 #' @title ValidateImpattSheet(d,wb_info)
 #' @description Validates the impatt sheet for completeness.
 #' @param d A parsed data frame with IMPATT data
-#' @param wb_info Worbook info for the workbook
+#' @param wb_info Workbook info for the workbook
 #' 
 ValidateImpattSheet <- function(d, wb_info) {
   
@@ -89,6 +104,10 @@ GetWorkbookInfo<-function(wb_path,distribution_method=NA,support_files_path=NA) 
   if (is.na(support_files_path)) {
   #Supporting files directory
   support_files_path<-readline("Please provide the path to DataPack Support Files:") }
+  
+  if (!stringr::str_detect(support_files_path,"\\/$")) {
+    stop("support_files_path must include a final slash!")
+  }
   
   if (!dir.exists(support_files_path)) {
     stop("Could not access support files directory!")
@@ -149,14 +168,13 @@ ValidateWorkbook <- function(wb_path,distribution_method=NA,support_files_path=N
   
   
   all_sheets <- readxl::excel_sheets(path = d$wb_info$wb_path)
-  expected <- unlist(sapply(d$schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
-  all_there <- expected %in% all_sheets
+  expected_sheets <- unlist(sapply( d$schemas$schema, `[`, c('sheet_name')),use.names = FALSE)
+  all_there <- expected_sheets %in% all_sheets
   #Validate against expected tables
   if ( !all(all_there) ) {
-    stop(paste0("Some tables appear to be missing!:",paste(expected[!(all_there)],sep="",collapse=",")))
+    stop(paste0("Some tables appear to be missing!:",paste(expected_sheets[!(all_there)],sep="",collapse=",")))
   }
-  sheets<-all_sheets[all_sheets %in% expected]
-  validation_results<-ValidateSheets(d$schemas,sheets,d$wb_info)
+  validation_results<-ValidateSheets(d)
   if (any(!(validation_results))) {
     invalid_sheets <-
       paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
@@ -205,15 +223,16 @@ ImportSheet <- function(wb_info, schema) {
   snu_priotization_fy19<-NULL
   
 
-  cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
-                                   c(NA, schema$end_col))
-  mechs<-datapackimporter::mechs
-  des<-datapackimporter::rCOP18deMapT %>% 
-    dplyr::select(code=DataPackCode,combi=pd_2019_P) %>%
-    dplyr::filter(.,complete.cases(.)) %>%
-    dplyr::distinct()
+
   
   if ( schema$method == "standard") {
+    cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
+                                     c(NA, schema$end_col))
+    mechs<-datapackimporter::mechs
+    des<-datapackimporter::rCOP18deMapT %>% 
+      dplyr::select(code=DataPackCode,combi=pd_2019_P) %>%
+      dplyr::filter(.,complete.cases(.)) %>%
+      dplyr::distinct()
   d <-
     readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
     dplyr::mutate_all(as.character) %>%
@@ -232,11 +251,13 @@ ImportSheet <- function(wb_info, schema) {
            value = as.character(value)) %>%
     dplyr::inner_join(.,des,by="code") %>%
     tidyr::separate(.,combi,c("dataelement","categoryoptioncombo")) %>%
-    dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
+    dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value) %>%
+    #Filter out all dedupe data
+    dplyr::filter(!attributeoptioncombo %in% c("YGT1o7UxfFu","X8hrDf6bLDC"))
   } else if (schema$method == "impatt"){
     from<-c("snu_priotization_fy19","plhiv_fy19")
     #IMPATT.PRIORITY_SNU (SUBNAT), IMPATT.PLHIV (SUBNAT, Age/Sex)
-    to<-c("r4zbW3owX9n","Rom79qVjNVb")
+    to<-c("r4zbW3owX9n","rORzrY9rpQ1")
     #https://www.datim.org/api/optionSets/mvbwbgbJgXr.json?fields=options[code,name]
     d<-readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range)
     msg<-ValidateImpattSheet(d,wb_info)
@@ -261,18 +282,48 @@ ImportSheet <- function(wb_info, schema) {
     dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
       
   } else if ( schema$method =="site_tool" ) {
+    
+    cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
+                                     c(NA, schema$end_col))
+    
     de_map<-datapackimporter::rCOP18deMapT %>%
       dplyr::select(supportType,pd_2019_S,pd_2019_P,DataPackCode) %>%
       na.omit() %>%
       dplyr::distinct()
+    
     mechs<-datapackimporter::mechs
+    
     #(?<=\(\s)([A-Za-z][A-Za-z0-9]{10})(?=\s\)\s)
     d<-readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
       dplyr::select(-Inactive) %>%
-      dplyr::mutate_all(as.character) %>%
       tidyr::gather(variable, value, -c(1:3,convert =FALSE)) %>%
-      na.omit() %>% 
-      dplyr::mutate(mech_code=stringi::stri_extract_first_regex(Mechanism,"^[0-9]+"),
+      dplyr::mutate_all(as.character) %>%
+      dplyr::filter(!(value=="NA"))
+    
+    unallocated<- dplyr::filter(d, grepl("NOT YET DISTRIBUTED",Site)) %>%
+      dplyr::pull(Site) %>%
+      unique() %>%
+      stringr::str_replace(.," > NOT YET DISTRIBUTED","")
+     
+    if (length(unallocated) > 0) {
+      msg <-
+        paste0(
+          "There are unallocated values in sheet ",
+          schema$sheet_name,
+          ":",
+          paste(unallocated, sep = "", collapse = ",")
+        )
+      warning(msg)
+    }
+    
+    negative_values<- d %>% dplyr::filter(as.numeric(value)<0)
+    
+    if (NROW(negative_values) > 0 ) {
+      msg<-paste0("Negative values were found in ",schema$sheet_name,"! Aborting!")
+      stop(msg)
+    }
+    
+     d<- d %>% dplyr::mutate(mech_code=stringi::stri_extract_first_regex(Mechanism,"^[0-9]+"),
              ou_uid=stringi::stri_extract_first_regex(Site,"\\( [a-zA-Z0-9]+ \\)$"),
              DataPackCode=paste0(variable,"_",tolower(Type)),
              period="2018Oct") %>%
@@ -394,7 +445,7 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::select(match_code,value) %>%
     dplyr::group_by(match_code) %>%
-    dplyr::summarise(value=sum(value,na.rm = TRUE)) 
+    dplyr::summarise(value=sum(value,na.rm = TRUE))
 
   #Pad with zeros
   
@@ -409,7 +460,8 @@ ImportSheets <- function(wb_path=NA,distribution_method=NA,support_files_path=NA
   sums<-sums %>% 
     dplyr::bind_rows(df_zeros) %>% 
     dplyr::group_by(match_code) %>%
-    dplyr::summarise(value=sum(value))
+    dplyr::summarise(value=sum(value)) %>%
+    dplyr::mutate(value=round_trunc(value))
   
 
   } else {sums<-NULL}
