@@ -129,7 +129,7 @@ write_site_level_sheet <- function(wb,schema,d) {
       
       
       #Set the number of rows which we should expand styling and formulas to
-      max_row_buffer<-5000
+      max_row_buffer<-1000
       formula_cell_numbers<- seq(1,NROW(df_indicator) + max_row_buffer ) + 6
       
       #Style the data table
