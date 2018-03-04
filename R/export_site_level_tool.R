@@ -3,9 +3,10 @@
 #' @title write_site_level_sheet(wb,schema,df)
 #'
 #' @description Validates the layout of all relevant sheets in a data pack workbook
-#' @param wb Workbook object
-#' @param schema Schema object for this sheet
-#' @param d Data frame object 
+#' @param wb Workbook to be written to. 
+#' @param schema Schema object for this sheet.
+#' @param d Data frame object.
+
 
 write_site_level_sheet <- function(wb,schema,d) {
   
@@ -168,12 +169,10 @@ write_site_level_sheet <- function(wb,schema,d) {
   } else {
     return(NA)
   }
-  
- 
-  
 }
 
 #' @export
+#' @importFrom utils packageVersion
 #' @title export_site_level_tool(d)
 #'
 #' @description Validates the layout of all relevant sheets in a data pack workbook
