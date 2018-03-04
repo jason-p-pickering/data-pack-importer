@@ -11,7 +11,7 @@ DataPackR(wb_path, distribution_method, support_files_path)
 
 \item{distribution_method}{Should be either 2017 or 2018}
 
-\item{support_file_path}{Path to the support files}
+\item{support_files_path}{Path to the support files}
 }
 \description{
 Process DataPack Disagg and Site tools

@@ -2,9 +2,9 @@
 #' @title write_site_level_sheet(wb,schema,df)
 #'
 #' @description Validates the layout of all relevant sheets in a data pack workbook
-#' @param wb_path Workbook object
-#' @param schema Schema object for this sheet
-#' @param d Data frame object 
+#' @param wb Workbook to be written to. 
+#' @param schema Schema object for this sheet.
+#' @param d Data frame object.
 
 write_site_level_sheet <- function(wb,schema,d) {
   
@@ -108,10 +108,11 @@ write_site_level_sheet <- function(wb,schema,d) {
     tidyr::spread(match_code,value,drop=FALSE)
 
   #Remove any rows which are completely blank
-  all_empty<-df_indicator %>% group_by(Site, Mechanism, Type) %>%
-      mutate_all(is.na) %>%
-      ungroup() %>%
-      select(-(Site:Type)) %>%
+  all_empty<-df_indicator %>% 
+    dplyr::group_by(Site, Mechanism, Type) %>%
+      dplyr::mutate_all(is.na) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(-(Site:Type)) %>%
       as.matrix() %>%
       rowSums() == length(fields)
     df_indicator <-df_indicator[!all_empty,]
@@ -163,6 +164,7 @@ write_site_level_sheet <- function(wb,schema,d) {
 }
 
 #' @export
+#' @importFrom utils packageVersion
 #' @title export_site_level_tool(d)
 #'
 #' @description Validates the layout of all relevant sheets in a data pack workbook
