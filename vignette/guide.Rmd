@@ -42,8 +42,7 @@ disagg_tools="/vagrant/disagg_tools/"
 disagg_tool=paste0(disagg_tools, filename)
 
 #Parse the PNSU data
-DataPackR(disagg_tool, 
-	distribution_method = distribution_year, support_files_path = support_files)
+DataPackR(disagg_tool, distribution_method = distribution_year, support_files_path = support_files)
 ```
 
 It creates the following files:
@@ -118,7 +117,7 @@ filename="/vagrant/path_to_psnu.csv"
 
 ```{r eval=FALSE}
 d<-d2Parser(file=filename,
-			type = "csv",
+            type = "csv",
             dataElementIdScheme = "code",
             orgUnitIdScheme = "id",
             idScheme = "id",
