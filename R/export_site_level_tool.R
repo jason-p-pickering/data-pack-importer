@@ -144,11 +144,11 @@ write_site_level_sheet <- function(wb,schema,d) {
       
       #Inactive / NOT YET DISTRIBUTED formula in column A
       inactiveFormula <-
-               paste0('IFNA(IF(AND(B'
+               paste0('IF(AND(B'
                      ,formula_cell_numbers
                      ,'<>"",INDEX(site_list_table[Inactive],MATCH(B'
                      ,formula_cell_numbers
-                     ,',site_list_table[siteID],0))=1),"!!",""),"")')
+                     ,',site_list_table[siteID],0))=1),"!!","")')
       openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))        
       
       #Conditional formatting for NOT YET DISTIBUTED in Column B
