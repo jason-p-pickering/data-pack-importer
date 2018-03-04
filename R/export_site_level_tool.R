@@ -1,4 +1,5 @@
 #' @export
+#' @importFrom dplyr everything
 #' @title write_site_level_sheet(wb,schema,df)
 #'
 #' @description Validates the layout of all relevant sheets in a data pack workbook
@@ -6,8 +7,8 @@
 #' @param schema Schema object for this sheet.
 #' @param d Data frame object.
 
+
 write_site_level_sheet <- function(wb,schema,d) {
-  
   
   #Is this always true??
   fields <- unlist(schema$fields)[-c(1:4)]
@@ -20,7 +21,9 @@ write_site_level_sheet <- function(wb,schema,d) {
     dplyr::mutate(match_code = factor(match_code, levels = fields)) %>%
     tidyr::spread(match_code, value, drop = FALSE)
   
-  if (NROW(sums) == 1) {
+  all_zeros<-Reduce(`+`,as.matrix(sums)) == 0
+  
+  if (NROW(sums) == 1 & !all_zeros) {
     
     openxlsx::writeData(
       wb,
@@ -54,7 +57,7 @@ write_site_level_sheet <- function(wb,schema,d) {
              '6&"]"))')
     
     #Conditional formatting
-    #Create the conditional formatting
+    #Create the conditional formatting for the subtotals
     cond_format_formula <- paste0(
       'OR(',
       subtotal_formula_column_letters,
@@ -84,83 +87,88 @@ write_site_level_sheet <- function(wb,schema,d) {
         
       )
     }
+    
+    #Filter  out this indicator
+    df_indicator<- d$data_prepared %>% 
+      dplyr::filter(match_code %in% fields)
+    
+    if(NROW(df_indicator) == 0){
+      df_indicator<-data.frame(Inactive="",
+                               Site=d$sites$name[1],
+                               Mechanism=d$mechanisms$mechanism[1],
+                               Type="DSD",
+                               match_code=fields,
+                               value=NA)}
+    
+    if (NROW(df_indicator) > 0){
+      
+      
+      #Spread the data, being sure not to drop any levels
+      df_indicator<-df_indicator %>%
+        dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
+        tidyr::spread(match_code,value,drop=FALSE) %>%
+        dplyr::mutate(Inactive="") %>%
+        dplyr::select(Inactive,everything())
+      
+      df_indicator<-df_indicator[rowSums(is.na(df_indicator[,-c(1:3)]))<length(fields),]
+      
+      #Dont error even if the table does not exist
+      foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
+                       error = function(err) {},
+                       finally = {} )  
+      
+      #Write the main data table
+      openxlsx::writeDataTable(
+        wb,
+        sheet = schema$sheet_name,
+        df_indicator,
+        xy = c(1, 6),
+        colNames = TRUE,
+        keepNA = FALSE,
+        tableName = tolower(schema$sheet_name)
+      )
+      
+      
+      #Set the number of rows which we should expand styling and formulas to
+      max_row_buffer<-1000
+      formula_cell_numbers<- seq(1,NROW(df_indicator) + max_row_buffer ) + 6
+      
+      #Style the data table
+      openxlsx::addStyle(
+        wb,
+        schema$sheet_name,
+        style = s,
+        rows = formula_cell_numbers,
+        cols = 5:(length(fields) + 4),
+        gridExpand = TRUE
+      )
+      
+      #Inactive / NOT YET DISTRIBUTED formula in column A
+      inactiveFormula <-
+               paste0('IF(AND(B'
+                     ,formula_cell_numbers
+                     ,'<>"",INDEX(site_list_table[Inactive],MATCH(B'
+                     ,formula_cell_numbers
+                     ,',site_list_table[siteID],0))=1),"!!","")')
+      openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))        
+      
+      #Conditional formatting for NOT YET DISTIBUTED in Column B
+      distrStyle <-openxlsx::createStyle(fontColour = "#000000", bgFill = "#FF8080")
+      openxlsx::conditionalFormatting(wb, schema$sheet_name, cols = 2, 
+                            rows=formula_cell_numbers, 
+                            type = "contains", rule = "NOT YET DISTRIBUTED",
+                            style=distrStyle)
+      
+      openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=formula_cell_numbers,"list",value='INDIRECT("site_list_table[siteID]")')
+      openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=formula_cell_numbers,"list",value='INDIRECT("mech_list[mechID]")')
+      openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=formula_cell_numbers,"list",value='INDIRECT("dsdta[type]")')
+    }
+    
   } else if (NROW(sums) > 1) {
     stop("Unhandled exception in writing column sums to the sheet!")
   } else {
     return(NA)
   }
-  
-  #Filter  out this indicator
-  df_indicator<- d$data_prepared %>% 
-    dplyr::filter(match_code %in% fields)
-  if(NROW(df_indicator) == 0){
-  df_indicator<-data.frame(Site=d$sites$name_full[1],
-  Mechanism=d$mechanisms$mechanism[1],
-  Type="DSD",
-  match_code=fields,
-  value=NA)}
-  # 
-  if (NROW(df_indicator) > 0){
-
-  #Spread the data, being sure not to drop any levels
-  df_indicator<-df_indicator %>%
-    dplyr::mutate(match_code=factor(match_code,levels = fields)) %>%
-    tidyr::spread(match_code,value,drop=FALSE)
-
-  #Remove any rows which are completely blank
-  all_empty<-df_indicator %>% 
-    dplyr::group_by(Site, Mechanism, Type) %>%
-      dplyr::mutate_all(is.na) %>%
-      dplyr::ungroup() %>%
-      dplyr::select(-(Site:Type)) %>%
-      as.matrix() %>%
-      rowSums() == length(fields)
-    df_indicator <-df_indicator[!all_empty,]
-
-    #Dont error even if the table does not exist
-    foo <- tryCatch( {openxlsx::removeTable(wb,schema$sheet_name,schema$sheet_name)},
-                     error = function(err) {},
-                     finally = {} )  
-  
-    #Write the main data table
-    openxlsx::writeDataTable(
-      wb,
-      sheet = schema$sheet_name,
-      df_indicator,
-      xy = c(2, 6),
-      colNames = TRUE,
-      keepNA = FALSE,
-      tableName = schema$sheet_name
-    )
-    #Style the data table
-    openxlsx::addStyle(
-      wb,
-      schema$sheet_name,
-      style = s,
-      rows = 7:(NROW(df_indicator) + 100),
-      cols = 5:(length(fields) + 5),
-      gridExpand = TRUE
-    )
-    
-    formula_cell_numbers<- ( 1:NROW(df_indicator) ) + 6
-    
-    inactiveFormula <-
-      paste0(
-        'IF(AND(',
-        schema$sheet_name,
-        '!$B',formula_cell_numbers,
-        '<>"",INDEX(site_table[Inactive],MATCH(',
-        schema$sheet_name,
-        '!$B',formula_cell_numbers,
-        ',site_table[siteID],0)+1)=1),"!!","")')
-     
-    openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=(NROW(df_indicator)*2),"list",value="site_list")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=(NROW(df_indicator)*2),"list",value="mech_list")
-    openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=(NROW(df_indicator)*2),"list",value="DSDTA")
-  }
-  
-  
 }
 
 #' @export
@@ -178,7 +186,7 @@ export_site_level_tool <- function(d) {
     template_name = "SiteLevelReview_HTS_TEMPLATE.xlsx"
   }
   
-  template_path <- paste0(d$wb_info$support_files_path, template_name)
+  template_path <- paste0(d$wb_info$support_files_path , template_name)
   
   output_file_path <- paste0(
     dirname(d$wb_info$wb_path),
@@ -190,16 +198,7 @@ export_site_level_tool <- function(d) {
     format(Sys.time(), "%Y%m%d%H%M%S"),
     ".xlsx"
   )
-  
-  #Create the concatenated PSNU > OU_Name (UID) string
-  d$sites$name_full <-
-    paste0(d$sites$psnu_name,
-           " > ",
-           d$sites$name,
-           " ( ",
-           d$sites$organisationunituid,
-           " )")
-  
+
   wb <- openxlsx::loadWorkbook(file = template_path)
   sheets<-openxlsx::getSheetNames(template_path)
   openxlsx::sheetVisibility(wb)[which(sheets =="Mechs")]<-"veryHidden"
@@ -224,7 +223,7 @@ export_site_level_tool <- function(d) {
     xy=c(15,2)
   )
   
-  #Distribution method
+  #Workbook Type
   openxlsx::writeData(
     wb,
     "Home",
@@ -262,6 +261,29 @@ export_site_level_tool <- function(d) {
     colNames = F,
     keepNA = F
   )
+  
+  #DSD, TA options for validation
+  openxlsx::writeDataTable(
+      wb,
+      "Home",
+      data.frame(type=c("DSD","TA")),
+      xy=c(100,1),
+      colNames=T,
+      keepNA=F,
+      tableName="dsdta"
+      )
+  
+  #Inactive options for validation
+  openxlsx::writeDataTable(
+      wb,
+      "Home",
+      data.frame(choices=c(0,1)),
+      xy=c(101,1),
+      colNames=T,
+      keepNA=F,
+      tableName="inactive_options"
+  )
+  
   #Package version
   openxlsx::writeData(
     wb,
@@ -274,45 +296,47 @@ export_site_level_tool <- function(d) {
   openxlsx::showGridLines(wb,"Home",showGridLines = FALSE)
   
   #SiteList sheet
-  site_list<-data.frame(siteID=d$sites$name_full,Inactive=0)
+  site_list<-data.frame(siteID=d$sites$name,Inactive=0) %>%
+      dplyr::mutate(Inactive=dplyr::case_when(stringr::str_detect(siteID,"> NOT YET DISTRIBUTED$")~1
+                                              ,TRUE~Inactive)) %>%
+      dplyr::arrange(siteID)
   openxlsx::writeDataTable(
     wb,
     "SiteList",
     site_list,
     xy = c(1, 1),
-    colNames = T,
+    colNames = TRUE,
     keepNA = F,
-    tableName = "site_table"
+    tableName = "site_list_table"
   )
-  openxlsx::createNamedRegion(wb = wb,
-                              sheet="SiteList",
-                              name="SiteList",
-                              rows=1:(nrow(site_list)+1),
-                              cols=1)
+  # openxlsx::createNamedRegion(wb = wb,
+  #                             sheet="SiteList",
+  #                             name="SiteList",
+  #                             rows=1:(nrow(site_list)+1),
+  #                             cols=1)
   openxlsx::dataValidation(
     wb,
     "SiteList" ,
     col = 2,
-    rows = 1:nrow(site_list),
-    type = "whole",
-    operator = "between",
-    value = c(0, 2)
+    rows = 2,
+    type = "list",
+    value = 'INDIRECT("inactive_options[choices]")'
   )
   
   openxlsx::writeDataTable(
     wb,
     "Mechs",
     data.frame(mechID=d$mechanisms$mechanism),
-    xy = c(1, 2),
-    colNames = F,
+    xy = c(1, 1),
+    colNames = T,
     keepNA = F,
-    tableName = "mech_table"
+    tableName = "mech_list"
   )
-  openxlsx::createNamedRegion(wb = wb,
-                              sheet="Mechs",
-                              name="MechList",
-                              rows=1:(length(d$mechanisms$mechanism)+1),
-                              cols=1)
+  # openxlsx::createNamedRegion(wb = wb,
+  #                             sheet="Mechs",
+  #                             name="MechList",
+  #                             rows=1:(length(d$mechanisms$mechanism)+1),
+  #                             cols=1)
 
   
   #Munge the data a bit to get it into shape
@@ -321,7 +345,7 @@ export_site_level_tool <- function(d) {
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::left_join(d$mechanisms, by = "attributeoptioncombo") %>%
     dplyr::left_join(d$sites, by = c("orgunit" = "organisationunituid")) %>%
-    dplyr::select(name = name_full, mechanism, supportType, match_code, value) %>%
+    dplyr::select(name, mechanism, supportType, match_code, value) %>%
     dplyr::group_by(Site=name, Mechanism=mechanism, Type=supportType, match_code) %>%
     dplyr::summarise(value = sum(value, na.rm = TRUE))
     #Duplicates were noted here, but I think this should not have to be done
