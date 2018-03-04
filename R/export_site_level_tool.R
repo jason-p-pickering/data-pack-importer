@@ -1,4 +1,5 @@
 #' @export
+#' @importFrom dplyr everything
 #' @title write_site_level_sheet(wb,schema,df)
 #'
 #' @description Validates the layout of all relevant sheets in a data pack workbook
@@ -125,39 +126,41 @@ write_site_level_sheet <- function(wb,schema,d) {
         keepNA = FALSE,
         tableName = tolower(schema$sheet_name)
       )
+      
+      
+      #Set the number of rows which we should expand styling and formulas to
+      max_row_buffer<-1000
+      formula_cell_numbers<- seq(1,NROW(df_indicator) + max_row_buffer ) + 6
+      
       #Style the data table
       openxlsx::addStyle(
         wb,
         schema$sheet_name,
         style = s,
-        rows = 7:(NROW(df_indicator) + 6),
+        rows = formula_cell_numbers,
         cols = 5:(length(fields) + 4),
         gridExpand = TRUE
       )
       
-      formula_cell_numbers<- ( 1:NROW(df_indicator) ) + 6
-      
+      #Inactive / NOT YET DISTRIBUTED formula in column A
       inactiveFormula <-
                paste0('IF(AND(B'
                      ,formula_cell_numbers
                      ,'<>"",INDEX(site_list_table[Inactive],MATCH(B'
                      ,formula_cell_numbers
                      ,',site_list_table[siteID],0))=1),"!!","")')
-              
-      #Conditional formatting for NOT YET DISTIBUTED
+      openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))        
       
-      
+      #Conditional formatting for NOT YET DISTIBUTED in Column B
       distrStyle <-openxlsx::createStyle(fontColour = "#000000", bgFill = "#FF8080")
       openxlsx::conditionalFormatting(wb, schema$sheet_name, cols = 2, 
-                            rows=(NROW(df_indicator)*2), 
-                            type = "contains", rule = "NOT YET DISTIBUTED",
+                            rows=formula_cell_numbers, 
+                            type = "contains", rule = "NOT YET DISTRIBUTED",
                             style=distrStyle)
       
-      
-      openxlsx::writeFormula(wb,schema$sheet_name,inactiveFormula,xy=c(1,7))
-      openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=7:(NROW(df_indicator)+6),"list",value='INDIRECT("site_list_table[siteID]")')
-      openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=7:(NROW(df_indicator)+6),"list",value='INDIRECT("mech_list[mechID]")')
-      openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=7:(NROW(df_indicator)+6),"list",value='INDIRECT("dsdta[type]")')
+      openxlsx::dataValidation(wb,schema$sheet_name,cols=2,rows=formula_cell_numbers,"list",value='INDIRECT("site_list_table[siteID]")')
+      openxlsx::dataValidation(wb,schema$sheet_name,cols=3,rows=formula_cell_numbers,"list",value='INDIRECT("mech_list[mechID]")')
+      openxlsx::dataValidation(wb,schema$sheet_name,cols=4,rows=formula_cell_numbers,"list",value='INDIRECT("dsdta[type]")')
     }
     
   } else if (NROW(sums) > 1) {

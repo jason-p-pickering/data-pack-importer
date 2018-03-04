@@ -223,15 +223,16 @@ ImportSheet <- function(wb_info, schema) {
   snu_priotization_fy19<-NULL
   
 
-  cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
-                                   c(NA, schema$end_col))
-  mechs<-datapackimporter::mechs
-  des<-datapackimporter::rCOP18deMapT %>% 
-    dplyr::select(code=DataPackCode,combi=pd_2019_P) %>%
-    dplyr::filter(.,complete.cases(.)) %>%
-    dplyr::distinct()
+
   
   if ( schema$method == "standard") {
+    cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
+                                     c(NA, schema$end_col))
+    mechs<-datapackimporter::mechs
+    des<-datapackimporter::rCOP18deMapT %>% 
+      dplyr::select(code=DataPackCode,combi=pd_2019_P) %>%
+      dplyr::filter(.,complete.cases(.)) %>%
+      dplyr::distinct()
   d <-
     readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
     dplyr::mutate_all(as.character) %>%
@@ -281,18 +282,48 @@ ImportSheet <- function(wb_info, schema) {
     dplyr::select(.,dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
       
   } else if ( schema$method =="site_tool" ) {
+    
+    cell_range = readxl::cell_limits(c(schema$row, schema$start_col),
+                                     c(NA, schema$end_col))
+    
     de_map<-datapackimporter::rCOP18deMapT %>%
       dplyr::select(supportType,pd_2019_S,pd_2019_P,DataPackCode) %>%
       na.omit() %>%
       dplyr::distinct()
+    
     mechs<-datapackimporter::mechs
+    
     #(?<=\(\s)([A-Za-z][A-Za-z0-9]{10})(?=\s\)\s)
     d<-readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
       dplyr::select(-Inactive) %>%
-      dplyr::mutate_all(as.character) %>%
       tidyr::gather(variable, value, -c(1:3,convert =FALSE)) %>%
-      na.omit() %>% 
-      dplyr::mutate(mech_code=stringi::stri_extract_first_regex(Mechanism,"^[0-9]+"),
+      dplyr::mutate_all(as.character) %>%
+      dplyr::filter(!(value=="NA"))
+    
+    unallocated<- dplyr::filter(d, grepl("NOT YET DISTRIBUTED",Site)) %>%
+      dplyr::pull(Site) %>%
+      unique() %>%
+      stringr::str_replace(.," > NOT YET DISTRIBUTED","")
+     
+    if (length(unallocated) > 0) {
+      msg <-
+        paste0(
+          "There are unallocated values in sheet ",
+          schema$sheet_name,
+          ":",
+          paste(unallocated, sep = "", collapse = ",")
+        )
+      warning(msg)
+    }
+    
+    negative_values<- d %>% dplyr::filter(as.numeric(value)<0)
+    
+    if (NROW(negative_values) > 0 ) {
+      msg<-paste0("Negative values were found in ",schema$sheet_name,"! Aborting!")
+      stop(msg)
+    }
+    
+     d<- d %>% dplyr::mutate(mech_code=stringi::stri_extract_first_regex(Mechanism,"^[0-9]+"),
              ou_uid=stringi::stri_extract_first_regex(Site,"\\( [a-zA-Z0-9]+ \\)$"),
              DataPackCode=paste0(variable,"_",tolower(Type)),
              period="2018Oct") %>%
