@@ -15,7 +15,7 @@ ImportSheets(wb_path = NA, distribution_method = NA,
 \item{support_files_path}{Path to the support files directory.}
 }
 \value{
-Returns a list of data frames: 
+Returns a list of data frames:
 #'  \itemize{
            \item wb_info: Workbook Info
            \item data: Standard d2importer data frame
