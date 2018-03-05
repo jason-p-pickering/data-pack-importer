@@ -173,10 +173,9 @@ distributeSite <- function(d) {
       !is.na(sitePct)~round_trunc(as.numeric(value) * sitePct)
       # Where no past behavior (sitePct is NA), keep values at PSNU/Cluster level
       # for manual distribution in Site tool
-      , TRUE~round_trunc(as.numeric(value),
+      , TRUE~round_trunc(as.numeric(value))),
         #Denote where data was not distributed with a 0
-                    distributed=dplyr::case_when(is.na(sitePct)~0,TRUE~1))
-    )) %>%
+                    distributed=dplyr::case_when(is.na(sitePct)~0,TRUE~1)) %>%
     dplyr::mutate(orgunit = dplyr::case_when(!is.na(orgUnit)~orgUnit, TRUE~orgunit)) %>%
     dplyr::select(distributed, dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, value) %>%
     dplyr::mutate(pd_2019_P = paste0(`dataelement`, ".", `categoryoptioncombo`)) %>%
