@@ -310,7 +310,7 @@ export_site_level_tool <- function(d) {
   # SiteList sheet
   site_list <- data.frame(siteID = d$sites$name, Inactive = 0) %>%
     dplyr::mutate(Inactive = dplyr::case_when(
-      stringr::str_detect(siteID, "> NOT YET DISTRIBUTED$")~1
+      stringr::str_detect(siteID, "> NOT YET DISTRIBUTED")~1
       , TRUE~Inactive
     )) %>%
     dplyr::arrange(siteID)
@@ -329,7 +329,7 @@ export_site_level_tool <- function(d) {
     wb,
     "SiteList",
     col = 2,
-    rows = 2,
+    rows = 2:(NROW(site_list)+1),
     type = "list",
     value = 'INDIRECT("inactive_options[choices]")'
   )
@@ -349,7 +349,7 @@ export_site_level_tool <- function(d) {
     dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::left_join(d$mechanisms, by = "attributeoptioncombo") %>%
-    dplyr::left_join(d$sites, by = c("orgunit" = "organisationunituid")) %>%
+    dplyr::left_join(d$sites, by = c("orgunit" = "organisationunituid", "distributed" = "distributed")) %>%
     dplyr::select(name, mechanism, supportType, match_code, value) %>%
     dplyr::group_by(Site = name, Mechanism = mechanism, Type = supportType, match_code) %>%
     dplyr::summarise(value = sum(value, na.rm = TRUE))
