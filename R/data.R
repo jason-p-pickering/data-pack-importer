@@ -4,7 +4,7 @@
 #' @description Returns the HTS Schema
 #' @return Returns a list which defines the schema for the HTS Disagg tool
 #'
-#'HTS Schemas of the Data Pack Excel sheets
+#' HTS Schemas of the Data Pack Excel sheets
 "hts_schema"
 
 #' @export
@@ -19,7 +19,7 @@
 #' @title mechs
 #'
 #' @description List of mechanisms and codes
-#' @return Returns a two column data frame with mechanisms and codes 
+#' @return Returns a two column data frame with mechanisms and codes
 #'
 "mechs"
 
@@ -72,14 +72,14 @@
 #' @export
 #' @title psnus
 #'
-#' @description PSNU UIDs and names 
+#' @description PSNU UIDs and names
 #' @return Returns a list of data frames
 "psnus"
 
 #' @export
 #' @title militaryUnits
 #'
-#' @description PSNU UIDs and names 
+#' @description PSNU UIDs and names
 #' @return Returns a data frame of military units which shold be exlcuded
 "militaryUnits"
 
@@ -96,4 +96,3 @@
 #' @description Schema of the Normal site level tool
 #' @return  A list of column and row positions
 "main_site_schema"
-

@@ -6,25 +6,26 @@
 #'
 
 prepare_export_to_datim <- function(d) {
-  
   if (d$wb_info$wb_type %in% c("HTS", "NORMAL")) {
     file_prefix <- "/psnu_import_"
     d <- distributeCluster(d)
   } else if (d$wb_info$wb_type %in% c("HTS_SITE", "NORMAL_SITE")) {
     file_prefix <- "/site_import_"
   }
-  
+
   export_data <- d$data %>%
     dplyr::mutate(value = as.character(round_trunc(as.numeric(value)))) %>%
     dplyr::filter(!(value < 1)) %>%
-    dplyr::select(dataelement,
-                  period,
-                  orgunit,
-                  categoryoptioncombo,
-                  attributeoptioncombo,
-                  value) %>%
-    na.omit
-  
+    dplyr::select(
+      dataelement,
+      period,
+      orgunit,
+      categoryoptioncombo,
+      attributeoptioncombo,
+      value
+    ) %>%
+    na.omit()
+
   output_file_path <- paste0(
     dirname(d$wb_info$wb_path),
     file_prefix,
@@ -35,7 +36,7 @@ prepare_export_to_datim <- function(d) {
     format(Sys.time(), "%Y%m%d%H%M%S"),
     ".csv"
   )
-  
+
   utils::write.table(
     export_data,
     file = output_file_path,

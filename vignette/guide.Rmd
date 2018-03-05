@@ -19,7 +19,7 @@ This manual should guide through the Tier II DataPack / DisaggTool process for C
 
 Follow the instructions here: [data-pack-importer-vagrant](https://github.com/davidhuser/data-pack-importer-vagrant)
 
-### Reveive and download the country DisaggTools
+### Download the support files
 
 They are Excel spreadsheets links to Sharepoint files (they must not be attached). Download those into the repository from above. The country team *needs to indicate* the distribution method that should be used, either it's 2017 (FY17 Results) or 2018 (FY18 Targets).
 
@@ -38,6 +38,7 @@ install_github("jason-p-pickering/data-pack-importer", ref="prod")
 library(datapackimporter)
 
 support_files="/vagrant/support_files/"
+checkSupportFiles(support_files)
 disagg_tools="/vagrant/disagg_tools/"
 disagg_tool=paste0(disagg_tools, filename)
 
