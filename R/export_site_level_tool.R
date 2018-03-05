@@ -153,11 +153,11 @@ write_site_level_sheet <- function(wb, schema, d) {
       # Inactive / NOT YET DISTRIBUTED formula in column A
       inactiveFormula <-
         paste0(
-          "IF(AND(B"
+          "IF(B"
           , formula_cell_numbers
-          , '<>"",INDEX(site_list_table[Inactive],MATCH(B'
+          , '<>"",IF(INDEX(site_list_table[Inactive],MATCH(B'
           , formula_cell_numbers
-          , ',site_list_table[siteID],0))=1),"!!","")'
+          , ',site_list_table[siteID],0))=1,"!!",""),"")'
         )
       openxlsx::writeFormula(wb, schema$sheet_name, inactiveFormula, xy = c(1, 7))
 
