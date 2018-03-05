@@ -12,7 +12,7 @@ ImportSheet(wb_info, schema)
 \item{schema}{Schema of the sheet}
 }
 \value{
-Returns a data frame with the following columns. 
+Returns a data frame with the following columns.
 Will return an empty data frame if the the sheet is blank.
 
  \itemize{

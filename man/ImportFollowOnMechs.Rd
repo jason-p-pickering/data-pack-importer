@@ -10,7 +10,7 @@ ImportFollowOnMechs(wb_info)
 \item{wb_info}{Workbook info object.}
 }
 \value{
-A data  frame with three columns Closing Out, Follow On, Notes. 
+A data  frame with three columns Closing Out, Follow On, Notes.
 If this sheet is blank, returns NULL.
 }
 \description{

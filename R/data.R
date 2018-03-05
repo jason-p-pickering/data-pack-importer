@@ -32,15 +32,6 @@
 "impatt"
 
 #' @export
-#' @title des
-#'
-#' @description List of DataPack codes and DATIM DE.COC combinations
-#' @return Returns a two column data frame with codes and combis
-#'
-"des"
-
-
-#' @export
 #' @title rCOP18deMap
 #'
 #' @description Object used for converting FY17/18 data to FY19 structure, including modeling new indicators/disaggs based on previous indicators/disaggs

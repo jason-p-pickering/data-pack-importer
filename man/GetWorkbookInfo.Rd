@@ -16,7 +16,7 @@ GetWorkbookInfo(wb_path, distribution_method = NA, support_files_path = NA)
 \value{
 Returns a list consiting of :
  \itemize{
-   \item wb_path: Full path to the disagg tool 
+   \item wb_path: Full path to the disagg tool
    \item timestamp: Timestamp of when this script was run
    \item wb_type: Should either be HTS or NORMAL
    \item ou_name: Name of the operating unit
