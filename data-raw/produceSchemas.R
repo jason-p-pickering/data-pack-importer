@@ -107,7 +107,7 @@ processMechs<-function() {
 
 
 processDataElements<-function() {
-  read.csv(paste0(here(),"/data-raw/DataPackCodes.csv"),stringsAsFactors = FALSE,na="") %>%
+  read.csv(paste0(here(),"./data-raw/DataPackCodes.csv"),stringsAsFactors = FALSE,na="") %>%
   dplyr::select(.,code=DataPackCode,combi=pd_2019_P) %>% 
     dplyr::filter(.,complete.cases(.))
   }
@@ -139,60 +139,24 @@ getSiteList <- function(siteType) {
 }
 
 
-get_full_site_list <- function() {
-  #Change this to grab the CSV file from the API
-  source_file<-paste0(getOption("datapack_support_files"),"A flat view of OU to level 9.csv")
-
-  psnu_levels <-
-    paste0(getOption("baseurl"),
-           "api/dataStore/dataSetAssignments/ous") %>%
-    httr::GET() %>%
-    httr::content(., "text") %>%
-    jsonlite::fromJSON(., flatten = TRUE) %>%
-    do.call(rbind.data.frame, .) %>%
-    dplyr::select(name3, prioritization) %>%
-    dplyr::mutate(name3 = as.character(name3)) %>%
-    dplyr::filter(prioritization != 0)
-  
-  ous_list<-read.csv(source_file,stringsAsFactors = FALSE)
-  ous_list<-ous_list %>% 
-    dplyr::inner_join(psnu_levels,by=c("level3name" = "name3"))
-  
-  for (i in 1:nrow(ous_list)) {
-    if (ous_list$prioritization[i] == 4) {
-      ous_list$psnu_name[i] = ous_list$level4name[i]
-    }
-    if (ous_list$prioritization[i] == 5) {
-      ous_list$psnu_name[i] = ous_list$level5name[i]
-    }
-    if (ous_list$prioritization[i] == 6) {
-      ous_list$psnu_name[i] = ous_list$level6name[i]
-    }
-  }
-  ous_list %>% 
-    dplyr::select(organisationunituid,name,ou_uid=uidlevel3,ou_name=level3name,psnu_name)
-}
-
-
-
 ##Procedural logic to generate the actual schemas
 ##PSNU HTS Template
-sheet_path = paste0(here(),"/data-raw/COP18DisaggTool_HTSv2018.02.10.xlsx")
+sheet_path = "./data-raw/COP18DisaggTool_HTSv2018.02.10.xlsx"
 mode="HTS"
 hts_schema<-produceSchemas(sheet_path,mode)
 
 ##Normal PSNU template
-sheet_path = paste0(here(),"/data-raw/COP18DisaggToolv2018.02.10.xlsx")
+sheet_path = "./data-raw/COP18DisaggToolv2018.02.10.xlsx"
 mode="NORMAL"
 main_schema<-produceSchemas(sheet_path,mode)
 
 #Normal Site level  tools
-sheet_path=paste0(here(),"/data-raw/SiteLevelReview_TEMPLATE.xlsx")
+sheet_path="./data-raw/SiteLevelReview_TEMPLATE.xlsx"
 mode="NORMAL_SITE"
 main_site_schema<-produceSiteToolSchemas(sheet_path,mode)
 
 #Normal HTS Site level  tool
-sheet_path=paste0(here(),"/data-raw/SiteLevelReview_HTS_TEMPLATE.xlsx")
+sheet_path="./data-raw/SiteLevelReview_HTS_TEMPLATE.xlsx"
 mode="HTS_SITE"
 hts_site_schema<-produceSiteToolSchemas(sheet_path,mode)
 
@@ -202,9 +166,9 @@ names(schemas)<-c("hts","normal")
 #List of mechanisms
 mechs<-processMechs()
 #List of data elements
-des<-processDataElements()
+#des<-processDataElements()
 #IMPATT option set
-impatt<-fromJSON(paste0(here(),"/data-raw/impatt_option_set.json"))
+impatt<-fromJSON("./data-raw/impatt_option_set.json")
 
 datimvalidation::loadSecrets(getOption("datim_credentials"))
 source("data-raw/transform_code_lists.R")
@@ -256,4 +220,4 @@ psnus<-mapply(getOrgunitsAtLevel,ou_prioritization_levels$id,ou_prioritization_l
 militaryUnits<-getSiteList("Military")
 
 #Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
-devtools::use_data(hts_schema,main_schema,main_site_schema,hts_site_schema,mechs,des,impatt,rCOP18deMap,rCOP18deMapT,clusters, sites_exclude,psnus,militaryUnits,internal = TRUE,overwrite = TRUE)
+devtools::use_data(hts_schema,main_schema,main_site_schema,hts_site_schema,mechs,impatt,rCOP18deMap,rCOP18deMapT,clusters, sites_exclude,psnus,militaryUnits,internal = TRUE,overwrite = TRUE)
