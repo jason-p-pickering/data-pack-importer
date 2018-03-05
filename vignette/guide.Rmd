@@ -17,7 +17,8 @@ This manual should guide through the Tier II DataPack / DisaggTool process for C
 
 ### Set up your environment
 
-Follow the instructions here: [data-pack-importer-vagrant](https://github.com/davidhuser/data-pack-importer-vagrant)
+- Follow the instructions here: [data-pack-importer-vagrant](https://github.com/davidhuser/data-pack-importer-vagrant)
+- Update your [support files](https://www.pepfar.net/Project-Pages/collab-38/Shared%20Documents/Forms/AllItems.aspx?RootFolder=%2FProject-Pages%2Fcollab-38%2FShared%20Documents%2FCOP18%20Target%20Setting%20Process%20Improvement%2FImport%20Team&FolderCTID=0x012000C4AC9B35DC4AB84FAEEF47AE703A28CE00C799CA85D140EF45960B9C47CE99E19F&View=%7BA8BAC8D0-846B-4EFE-8763-758855081F5D%7D&InitialTabId=Ribbon%2EDocument&VisibilityContext=WSSTabPersistence#InplviewHasha8bac8d0-846b-4efe-8763-758855081f5d=RootFolder%3D%252FProject%252DPages%252Fcollab%252D38%252FShared%2520Documents%252FCOP18%2520Target%2520Setting%2520Process%2520Improvement%252FImport%2520Team) and download them to the `support_files` folder
 
 ### Download the support files
 
