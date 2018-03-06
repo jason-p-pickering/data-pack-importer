@@ -14,7 +14,7 @@ check_support_files <- function(support_files_path) {
     "distrSiteFY17.rda" = "1901a2988c1154ffbf1abe448b53e195",
     "distrSiteFY18.rda" = "2571cce803e13c0a32541a3543c12f7b",
     "mech_list.rda" = "9d897b6f91090e5306bf757e8b3c581a",
-    "ous_list.rda" = "4c599f153db1f690164b9f1be6193acb",
+    "ous_list.rda" = "2a783488c2ec2f2839cfdd96a71f03c2",
     "siteExport.rda" = "6cce458fb120fa8f4a69edc3e89800e1",
     "SiteLevelReview_HTS_TEMPLATE.xlsx" = "4c346d0d600343197b882c2efa4b6587",
     "SiteLevelReview_TEMPLATE.xlsx" = "314fcd7af68e5db03320ff55ad663552"
