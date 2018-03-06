@@ -12,6 +12,50 @@ round_trunc <- function(x) {
 
 
 
+get_percentage_distribution <- function(d) {
+  
+  # Default distribution is 2018 if not otherwise specified
+  if (d$wb_info$distribution_method == 2017) {
+    file_name <- "distrSiteFY17.rda"
+  } else if (d$wb_info$distribution_method == 2018) {
+    file_name <- "distrSiteFY18.rda"
+  } else {
+    stop("Distribution year must either 2017 or 2018! ")
+  }
+  
+  file_path <- paste0(d$wb_info$support_files_path, file_name)
+  
+  if (!file.exists(file_path)) {
+    stop(paste("Distribution file could not be found. Please check it exists at", file_path))
+  }
+  
+  if (!is.null(d$follow_on_mechs)) {
+    followOns <- d$follow_on_mechs %>%
+      dplyr::mutate(closingCode = as.character(`Closing Out`), followOnCode = as.character(`Follow on`)) %>%
+      dplyr::left_join(mechs, by = c("closingCode" = "code")) %>%
+      dplyr::select(closingCode, closingUID = uid, followOnCode) %>%
+      dplyr::left_join(mechs, by = c("followOnCode" = "code")) %>%
+      dplyr::select(closingCode, closingUID, followOnCode, followOnUID = uid)
+    
+    Pcts <- readRDS(file = file_path) %>%
+      dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
+      # Map follow-on mechs
+      dplyr::mutate(attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")) %>%
+      dplyr::left_join(select(followOns, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
+      dplyr::mutate(whereWhoWhatHuh = dplyr::case_when(
+        !is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
+        TRUE~whereWhoWhatHuh
+      )) %>% 
+      dplyr::select(-attributeoptioncombo, -followOnUID)
+  } else {
+    Pcts <- readRDS(file = file_path) %>%
+      dplyr::filter(uidlevel3 == d$wb_info$ou_uid)
+  }
+  
+  return(Pcts)
+  
+}
+
 #' @export
 #' @title distributeCluster(data)
 #'
@@ -21,6 +65,7 @@ round_trunc <- function(x) {
 #'
 
 distributeCluster <- function(d) {
+  
   if (d$wb_info$is_clustered) {
 
     # Note: All of these null assignments are for
@@ -55,26 +100,8 @@ distributeCluster <- function(d) {
       stop(paste("Distribution file could not be found. Please check it exists at", file_path))
     }
 
-    followOns <- d$follow_on_mechs %>%
-      dplyr::mutate(closingCode = as.character(`Closing Out`), followOnCode = as.character(`Follow on`)) %>%
-      dplyr::left_join(mechs, by = c("closingCode" = "code")) %>%
-      dplyr::select(closingCode, closingUID = uid, followOnCode) %>%
-      dplyr::left_join(mechs, by = c("followOnCode" = "code")) %>%
-      dplyr::select(closingCode, closingUID, followOnCode, followOnUID = uid)
-
-    Pcts <- readRDS(file = file_path) %>%
-      dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
-      # Map follow-on mechs
-      dplyr::mutate(attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")) %>%
-      dplyr::left_join(select(followOns, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
-      dplyr::mutate(whereWhoWhatHuh = dplyr::case_when(
-        !is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
-        TRUE~whereWhoWhatHuh
-      )) %>%
-      dplyr::select(-attributeoptioncombo, -followOnUID)
-
-
-
+    
+    Pcts<-get_percentage_distribution(d)
     clusterMap <- datapackimporter::clusters
     militaryUnits <- datapackimporter::militaryUnits
     ou_uid <- d$wb_info$ou_uid
@@ -158,44 +185,7 @@ distributeSite <- function(d) {
   organisationunituid <- NULL
   name <- NULL
 
-  # Default distribution is 2018 if not otherwise specified
-  if (d$wb_info$distribution_method == 2017) {
-    file_name <- "distrSiteFY17.rda"
-  } else if (d$wb_info$distribution_method == 2018) {
-    file_name <- "distrSiteFY18.rda"
-  } else {
-    stop("Distribution year must either 2017 or 2018! ")
-  }
-
-  file_path <- paste0(d$wb_info$support_files_path, file_name)
-
-  if (!file.exists(file_path)) {
-    stop(paste("Distribution file could not be found. Please check it exists at", file_path))
-  }
-
-  if (!is.null(d$follow_on_mechs)) {
-    followOns <- d$follow_on_mechs %>%
-      dplyr::mutate(closingCode = as.character(`Closing Out`), followOnCode = as.character(`Follow on`)) %>%
-      dplyr::left_join(mechs, by = c("closingCode" = "code")) %>%
-      dplyr::select(closingCode, closingUID = uid, followOnCode) %>%
-      dplyr::left_join(mechs, by = c("followOnCode" = "code")) %>%
-      dplyr::select(closingCode, closingUID, followOnCode, followOnUID = uid)
-
-    Pcts <- readRDS(file = file_path) %>%
-      dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
-      # Map follow-on mechs
-      dplyr::mutate(attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")) %>%
-      dplyr::left_join(select(followOns, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
-      dplyr::mutate(whereWhoWhatHuh = dplyr::case_when(
-        !is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
-        TRUE~whereWhoWhatHuh
-      )) %>% 
-      dplyr::select(-attributeoptioncombo, -followOnUID)
-  } else {
-    Pcts <- readRDS(file = file_path) %>%
-      dplyr::filter(uidlevel3 == d$wb_info$ou_uid)
-  }
-
+  Pcts<-get_percentage_distribution(d)
   de_map <- datapackimporter::rCOP18deMapT %>%
     dplyr::select(supportType, pd_2019_S, pd_2019_P, DataPackCode) %>%
     na.omit() %>%
