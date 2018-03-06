@@ -13,8 +13,8 @@ check_support_files <- function(support_files_path) {
     "distrClusterFY18.rda" = "452f33618ae607f9dc4f1ffe034fddd7",
     "distrSiteFY17.rda" = "1901a2988c1154ffbf1abe448b53e195",
     "distrSiteFY18.rda" = "2571cce803e13c0a32541a3543c12f7b",
-    "mech_list.rda" = "fd6f7ad8f8fc9b9bdfd6a280778ef64f",
-    "ous_list.rda" = "13c3a6970f8bdabad7bf482219a2ad0a",
+    "mech_list.rda" = "9d897b6f91090e5306bf757e8b3c581a",
+    "ous_list.rda" = "4c599f153db1f690164b9f1be6193acb",
     "siteExport.rda" = "6cce458fb120fa8f4a69edc3e89800e1",
     "SiteLevelReview_HTS_TEMPLATE.xlsx" = "4c346d0d600343197b882c2efa4b6587",
     "SiteLevelReview_TEMPLATE.xlsx" = "314fcd7af68e5db03320ff55ad663552"
