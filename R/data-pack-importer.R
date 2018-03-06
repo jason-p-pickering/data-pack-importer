@@ -279,6 +279,7 @@ ImportSheet <- function(wb_info, schema) {
     }
     d <- d %>%
       dplyr::mutate_all(as.character) %>%
+      dplyr::filter(snu_priotization_fy19 != "Mil") %>%
       dplyr::mutate(
         .,
         snu_priotization_fy19 = plyr::mapvalues(
