@@ -229,18 +229,6 @@ check_invalid_mechs_by_code <- function(d, sheet_name) {
 
 
 ImportSheet <- function(wb_info, schema) {
-  variable <- NULL
-  value <- NULL
-  psnuuid <- NULL
-  mechid <- NULL
-  type <- NULL
-  combi <- NULL
-  dataelement <- NULL
-  period <- NULL
-  orgunit <- NULL
-  categoryoptioncombo <- NULL
-  attributeoptioncombo <- NULL
-  snu_priotization_fy19 <- NULL
 
   if (schema$method == "standard") {
     cell_range <- readxl::cell_limits(
@@ -332,7 +320,6 @@ ImportSheet <- function(wb_info, schema) {
 
     mechs <- datapackimporter::mechs
 
-    # (?<=\(\s)([A-Za-z][A-Za-z0-9]{10})(?=\s\)\s)
     d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range,col_types = "text") %>%
       dplyr::select(-Inactive) %>%
       tidyr::gather(variable, value, -c(1:3, convert = FALSE)) %>%
@@ -368,7 +355,7 @@ ImportSheet <- function(wb_info, schema) {
     d <- d %>%
       dplyr::mutate(
         mech_code = stringi::stri_extract_first_regex(Mechanism, "^[0-9]+"),
-        ou_uid = stringi::stri_extract_first_regex(Site, "\\( [a-zA-Z0-9]+ \\)$"),
+        orgunit = stringi::stri_extract_first_regex(Site, "(?<=\\()([A-Za-z][A-Za-z0-9]{10})(?=\\))"),
         DataPackCode = paste0(variable, "_", tolower(Type)),
         period = "2018Oct"
       ) 
@@ -376,7 +363,6 @@ ImportSheet <- function(wb_info, schema) {
       mechs_are_valid<-check_invalid_mechs_by_code(d=d,sheet_name = schema$sheet_name) 
       
       d<-d %>%
-      dplyr::mutate(orgunit = substr(ou_uid, 3, 13)) %>%
       dplyr::left_join(mechs, by = c("mech_code" = "code")) %>%
       dplyr::left_join(de_map, by = "DataPackCode") %>%
       tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
