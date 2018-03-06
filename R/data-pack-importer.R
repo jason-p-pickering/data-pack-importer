@@ -193,6 +193,20 @@ ValidateWorkbook <- function(wb_path, distribution_method=NA, support_files_path
   }
 }
 
+
+check_invalid_mechs_by_code <- function(d, sheet_name) {
+  mechs_wanted <- datapackimporter::mechs$code
+  #Check for invalid mechanisms
+  invalid_mechs<-unique(d$mech_code)[!(unique(d$mech_code) %in% mechs_wanted)] 
+  if (length(invalid_mechs) >0 ) {
+    msg<-paste0("The following mechanisms in sheet ", sheet_name, " were invalid:", 
+                paste(invalid_mechs,sep="",collapse=";"))
+    warning(msg)
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
 #' @export
 #' @importFrom stats complete.cases
 #' @title ImportSheet(wb_path,schema)
@@ -234,22 +248,27 @@ ImportSheet <- function(wb_info, schema) {
       c(NA, schema$end_col)
     )
     mechs <- datapackimporter::mechs
+    
     des <- datapackimporter::rCOP18deMapT %>%
       dplyr::select(code = DataPackCode, combi = pd_2019_P) %>%
       dplyr::filter(., complete.cases(.)) %>%
       dplyr::distinct()
+    
     d <-
       readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
       dplyr::mutate_all(as.character) %>%
       tidyr::gather(variable, value, -c(1:7), convert = FALSE) %>%
       dplyr::filter(., value != "0") %>%
       dplyr::filter(!is.na(value)) %>%
-      dplyr::select(., orgunit = psnuuid, mechid, type, variable, value) %>%
-      dplyr::mutate(
+      dplyr::select(., orgunit = psnuuid, mech_code=mechid, type, variable, value)
+    
+      check_invalid_mechs_by_code( d = d, sheet_name=schema$sheet_name )
+      
+      d<-d %>% dplyr::mutate(
         .,
         attributeoptioncombo =
           plyr::mapvalues(
-            mechid,
+            .$mech_code,
             mechs$code,
             mechs$uid,
             warn_missing = FALSE
@@ -347,13 +366,18 @@ ImportSheet <- function(wb_info, schema) {
         ou_uid = stringi::stri_extract_first_regex(Site, "\\( [a-zA-Z0-9]+ \\)$"),
         DataPackCode = paste0(variable, "_", tolower(Type)),
         period = "2018Oct"
-      ) %>%
+      ) 
+    
+      mechs_are_valid<-check_invalid_mechs_by_code(d=d,sheet_name = schema$sheet_name) 
+      
+      d<-d %>%
       dplyr::mutate(orgunit = substr(ou_uid, 3, 13)) %>%
       dplyr::left_join(mechs, by = c("mech_code" = "code")) %>%
       dplyr::left_join(de_map, by = "DataPackCode") %>%
       tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
       dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo = uid, value)
-  }
+  
+      }
 
   else {
     d <- tibble::tibble(
