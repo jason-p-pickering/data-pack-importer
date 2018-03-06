@@ -8,6 +8,7 @@
 #'
 #'
 DataPackR <- function(wb_path, distribution_method, support_files_path) {
+  check_support_files(support_files_path)
   parsed_data <-
     ImportSheets(
       wb_path,
