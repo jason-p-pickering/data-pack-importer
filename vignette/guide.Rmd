@@ -39,7 +39,7 @@ install_github("jason-p-pickering/data-pack-importer", ref="prod")
 library(datapackimporter)
 
 support_files="/vagrant/support_files/"
-checkSupportFiles(support_files)
+check_support_files(support_files)
 disagg_tools="/vagrant/disagg_tools/"
 disagg_tool=paste0(disagg_tools, filename)
 
