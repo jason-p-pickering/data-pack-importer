@@ -11,4 +11,49 @@
 NULL
 
 ## quiets concerns of R CMD check re: the .'s that appear in pipelines
-if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+if (getRversion() >= "2.15.1")
+  utils::globalVariables(
+    c( ".",
+      "attributeoptioncombo",
+      "categoryoptioncombo",
+      "closingCode",
+      "Closing Out",
+      "closingUID",
+      "cluster_psnuuid",
+      "dataelement",
+      "DataPackCode",
+      "DataPackSiteID",
+      "DataPackSiteUID",
+      "den",
+      "distributed",
+      "Follow on",
+      "followOnCode",
+      "followOnUID",
+      "Inactive",
+      "match_code",
+      "mechanism",
+      "Mechanism",
+      "name",
+      "num",
+      "ok",
+      "orgunit",
+      "ou",
+      "ou_uid",
+      "pd_2019_P",
+      "pd_2019_S",
+      "period,",
+      "psnuuid",
+      "PSNUuid",
+      "sheet_name",
+      "Site",
+      "siteID",
+      "siteType",
+      "supportType",
+      "Type",
+      "uid",
+      "uidlevel3",
+      "value",
+      "whereWhoWhatHuh",
+      "period"
+    )
+  )

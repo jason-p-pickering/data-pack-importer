@@ -41,7 +41,7 @@ get_percentage_distribution <- function(d) {
       dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
       # Map follow-on mechs
       dplyr::mutate(attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")) %>%
-      dplyr::left_join(select(followOns, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
+      dplyr::left_join(dplyr::select(followOns, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
       dplyr::mutate(whereWhoWhatHuh = dplyr::case_when(
         !is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
         TRUE~whereWhoWhatHuh
@@ -57,6 +57,7 @@ get_percentage_distribution <- function(d) {
 }
 
 #' @export
+#' @importFrom dplyr n
 #' @title distributeCluster(data)
 #'
 #' @description Distributes clustered Data Pack data to PSNU level for DATIM import
@@ -67,24 +68,6 @@ get_percentage_distribution <- function(d) {
 distributeCluster <- function(d) {
   
   if (d$wb_info$is_clustered) {
-
-    # Note: All of these null assignments are for
-    # package checks, which provide warnings if these
-    # impiled variables used in dplyr are not initialized.
-    cluster_psnuuid <- NULL
-    psnuuid <- NULL
-    n <- NULL
-    num <- NULL
-    den <- NULL
-    orgUnit <- NULL
-    attributeoptioncombo <- NULL
-    dataelement <- NULL
-    categoryoptioncombo <- NULL
-    orgunit <- NULL
-    value <- NULL
-    PSNUuid <- NULL
-    period <- NULL
-    n <- NULL
 
     distros_path <- d$wb_info$support_files_path
     # Default distribution is 2018 if not otherwise specified
@@ -164,26 +147,6 @@ distributeCluster <- function(d) {
 #'
 
 distributeSite <- function(d) {
-
-  # Note: All of these null assignments are for
-  # package checks, which provide warnings if these
-  # impiled variables used in dplyr are not initialized.
-  supportType <- NULL
-  pd_2019_S <- NULL
-  pd_2019_P <- NULL
-  DataPackCode <- NULL
-  dataelement <- NULL
-  categoryoptioncombo <- NULL
-  orgunit <- NULL
-  value <- NULL
-  period <- NULL
-  sitePct <- NULL
-  orgUnit <- NULL
-  wb_info <- NULL
-  ou_name <- NULL
-  psnu_name <- NULL
-  organisationunituid <- NULL
-  name <- NULL
 
   Pcts<-get_percentage_distribution(d)
   de_map <- datapackimporter::rCOP18deMapT %>%
