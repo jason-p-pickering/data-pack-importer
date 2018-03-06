@@ -54,25 +54,27 @@ distributeCluster <- function(d) {
     if (!file.exists(file_path)) {
       stop(paste("Distribution file could not be found. Please check it exists at", file_path))
     }
-    
+
     followOns <- d$follow_on_mechs %>%
-        dplyr::mutate(closingCode=as.character(`Closing Out`),followOnCode=as.character(`Follow on`)) %>%
-        dplyr::left_join(mechs,by=c("closingCode"="code")) %>%
-        dplyr::select(closingCode,closingUID=uid,followOnCode) %>%
-        dplyr::left_join(mechs,by=c("followOnCode"="code")) %>%
-        dplyr::select(closingCode,closingUID,followOnCode,followOnUID=uid)
-    
+      dplyr::mutate(closingCode = as.character(`Closing Out`), followOnCode = as.character(`Follow on`)) %>%
+      dplyr::left_join(mechs, by = c("closingCode" = "code")) %>%
+      dplyr::select(closingCode, closingUID = uid, followOnCode) %>%
+      dplyr::left_join(mechs, by = c("followOnCode" = "code")) %>%
+      dplyr::select(closingCode, closingUID, followOnCode, followOnUID = uid)
+
     Pcts <- readRDS(file = file_path) %>%
-        dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
-        #Map follow-on mechs
-        dplyr::mutate(attributeoptioncombo=stringr::str_extract(whereWhoWhatHuh,"(?<=(^\\w{11}\\.))\\w{11}")) %>%
-        dplyr::left_join(select(followOns,closingUID,followOnUID),by=c("attributeoptioncombo"="closingUID")) %>%
-        dplyr::mutate(whereWhoWhatHuh=dplyr::case_when(!is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh,attributeoptioncombo,followOnUID),
-                                                       TRUE~whereWhoWhatHuh)) %>%
-        dplyr::select(-attributeoptioncombo,-followOnUID)
-    
-    
-    
+      dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
+      # Map follow-on mechs
+      dplyr::mutate(attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")) %>%
+      dplyr::left_join(select(followOns, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
+      dplyr::mutate(whereWhoWhatHuh = dplyr::case_when(
+        !is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
+        TRUE~whereWhoWhatHuh
+      )) %>%
+      dplyr::select(-attributeoptioncombo, -followOnUID)
+
+
+
     clusterMap <- datapackimporter::clusters
     militaryUnits <- datapackimporter::militaryUnits
     ou_uid <- d$wb_info$ou_uid
@@ -171,22 +173,28 @@ distributeSite <- function(d) {
     stop(paste("Distribution file could not be found. Please check it exists at", file_path))
   }
 
-  followOns <- d$follow_on_mechs %>%
-      dplyr::mutate(closingCode=as.character(`Closing Out`),followOnCode=as.character(`Follow on`)) %>%
-      dplyr::left_join(mechs,by=c("closingCode"="code")) %>%
-      dplyr::select(closingCode,closingUID=uid,followOnCode) %>%
-      dplyr::left_join(mechs,by=c("followOnCode"="code")) %>%
-      dplyr::select(closingCode,closingUID,followOnCode,followOnUID=uid)
-  
-  Pcts <- readRDS(file = file_path) %>%
-    dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
-    #Map follow-on mechs
-        dplyr::mutate(attributeoptioncombo=stringr::str_extract(whereWhoWhatHuh,"(?<=(^\\w{11}\\.))\\w{11}")) %>%
-        dplyr::left_join(select(followOns,closingUID,followOnUID),by=c("attributeoptioncombo"="closingUID")) %>%
-        dplyr::mutate(whereWhoWhatHuh=dplyr::case_when(!is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh,attributeoptioncombo,followOnUID),
-                                                       TRUE~whereWhoWhatHuh)) %>%
-        dplyr::select(-attributeoptioncombo,-followOnUID)
-    
+  if (!is.null(d$follow_on_mechs)) {
+    followOns <- d$follow_on_mechs %>%
+      dplyr::mutate(closingCode = as.character(`Closing Out`), followOnCode = as.character(`Follow on`)) %>%
+      dplyr::left_join(mechs, by = c("closingCode" = "code")) %>%
+      dplyr::select(closingCode, closingUID = uid, followOnCode) %>%
+      dplyr::left_join(mechs, by = c("followOnCode" = "code")) %>%
+      dplyr::select(closingCode, closingUID, followOnCode, followOnUID = uid)
+
+    Pcts <- readRDS(file = file_path) %>%
+      dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
+      # Map follow-on mechs
+      dplyr::mutate(attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")) %>%
+      dplyr::left_join(select(followOns, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
+      dplyr::mutate(whereWhoWhatHuh = dplyr::case_when(
+        !is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
+        TRUE~whereWhoWhatHuh
+      )) %>% 
+      dplyr::select(-attributeoptioncombo, -followOnUID)
+  } else {
+    Pcts <- readRDS(file = file_path) %>%
+      dplyr::filter(uidlevel3 == d$wb_info$ou_uid)
+  }
 
   de_map <- datapackimporter::rCOP18deMapT %>%
     dplyr::select(supportType, pd_2019_S, pd_2019_P, DataPackCode) %>%
@@ -200,13 +208,16 @@ distributeSite <- function(d) {
     dplyr::filter(!dataelement %in% c("rORzrY9rpQ1", "r4zbW3owX9n")) %>%
     # Pull in distribution percentages, keeping all data
     dplyr::left_join(Pcts, by = c("whereWhoWhatHuh")) %>%
-    dplyr::mutate(value = dplyr::case_when(
-      !is.na(sitePct)~round_trunc(as.numeric(value) * sitePct)
-      # Where no past behavior (sitePct is NA), keep values at PSNU/Cluster level
-      # for manual distribution in Site tool
-      , TRUE~round_trunc(as.numeric(value))),
-        #Denote where data was not distributed with a 0
-                    distributed=dplyr::case_when(is.na(sitePct)~0,TRUE~1)) %>%
+    dplyr::mutate(
+      value = dplyr::case_when(
+        !is.na(sitePct)~round_trunc(as.numeric(value) * sitePct)
+        # Where no past behavior (sitePct is NA), keep values at PSNU/Cluster level
+        # for manual distribution in Site tool
+        , TRUE~round_trunc(as.numeric(value))
+      ),
+      # Denote where data was not distributed with a 0
+      distributed = dplyr::case_when(is.na(sitePct)~0, TRUE~1)
+    ) %>%
     dplyr::mutate(orgunit = dplyr::case_when(!is.na(orgUnit)~orgUnit, TRUE~orgunit)) %>%
     dplyr::select(distributed, dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, value) %>%
     dplyr::mutate(pd_2019_P = paste0(`dataelement`, ".", `categoryoptioncombo`)) %>%

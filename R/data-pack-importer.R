@@ -18,7 +18,7 @@ ValidateSheet <- function(d, this_sheet) {
     c(schema$row, schema$end_col)
   )
 
-  fields_got <- names(readxl::read_excel(d$wb_info$wb_path, sheet = this_sheet, range = cell_range))
+  fields_got <- names(readxl::read_excel(d$wb_info$wb_path, sheet = this_sheet, range = cell_range,col_types = "text"))
   fields_want <- unlist(schema$fields, use.names = FALSE)
   all_good <- all(fields_want == fields_got)
 
@@ -255,12 +255,14 @@ ImportSheet <- function(wb_info, schema) {
       dplyr::distinct()
     
     d <-
-      readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
+      readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range,col_types = "text") %>%
       dplyr::mutate_all(as.character) %>%
       tidyr::gather(variable, value, -c(1:7), convert = FALSE) %>%
       dplyr::filter(., value != "0") %>%
       dplyr::filter(!is.na(value)) %>%
-      dplyr::select(., orgunit = psnuuid, mech_code=mechid, type, variable, value)
+      #Special handling for dedupe which is coerced to 0 and 1
+      dplyr::filter( . ,!(mechid %in% c("0","00000","1","00001"))) %>%
+      dplyr::select( . , orgunit = psnuuid, mech_code=mechid, type, variable, value)
     
       check_invalid_mechs_by_code( d = d, sheet_name=schema$sheet_name )
       
@@ -291,13 +293,12 @@ ImportSheet <- function(wb_info, schema) {
     # IMPATT.PRIORITY_SNU (SUBNAT), IMPATT.PLHIV (SUBNAT, Age/Sex)
     to <- c("r4zbW3owX9n", "rORzrY9rpQ1")
     # https://www.datim.org/api/optionSets/mvbwbgbJgXr.json?fields=options[code,name]
-    d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range)
+    d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range, col_types = "text")
     msg <- ValidateImpattSheet(d, wb_info)
     if (!is.null(msg)) {
       warning(msg)
     }
     d <- d %>%
-      dplyr::mutate_all(as.character) %>%
       dplyr::filter(snu_priotization_fy19 != "Mil") %>%
       dplyr::mutate(
         .,
@@ -332,11 +333,14 @@ ImportSheet <- function(wb_info, schema) {
     mechs <- datapackimporter::mechs
 
     # (?<=\(\s)([A-Za-z][A-Za-z0-9]{10})(?=\s\)\s)
-    d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range) %>%
+    d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range,col_types = "text") %>%
       dplyr::select(-Inactive) %>%
       tidyr::gather(variable, value, -c(1:3, convert = FALSE)) %>%
       dplyr::mutate_all(as.character) %>%
-      dplyr::filter(!(value == "NA"))
+      dplyr::filter(!(value == "NA")) %>%
+      #Special handling for dedupe which is coerced to 0 and 1
+      #Dedupe should always be dropped. 
+      dplyr::filter( . ,!(Mechanism %in% c("0","00000","1","00001"))) 
 
     unallocated <- dplyr::filter(d, grepl("NOT YET DISTRIBUTED", Site)) %>%
       dplyr::pull(Site) %>%
@@ -415,7 +419,7 @@ ImportFollowOnMechs <- function(wb_info) {
     c(schema$row, schema$start_col),
     c(NA, schema$end_col)
   )
-  d <- readxl::read_excel(wb_info$wb_path, sheet = sheet_to_import, range = cell_range)
+  d <- readxl::read_excel(wb_info$wb_path, sheet = sheet_to_import, range = cell_range,col_types = "text")
   if (!is.null(d) & nrow(d) > 0) {
     return(d)
   } else {
