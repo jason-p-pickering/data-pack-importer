@@ -247,7 +247,7 @@ ImportSheet <- function(wb_info, schema) {
       dplyr::mutate_all(as.character) %>%
       tidyr::gather(variable, value, -c(1:7), convert = FALSE) %>%
       dplyr::filter(., value != "0") %>%
-      dplyr::filter(!is.na(value)) %>%
+      dplyr::filter(!is.na(suppressWarnings(as.numeric(value)))) %>%
       #Special handling for dedupe which is coerced to 0 and 1
       dplyr::filter( . ,!(mechid %in% c("0","00000","1","00001"))) %>%
       dplyr::select( . , orgunit = psnuuid, mech_code=mechid, type, variable, value)
@@ -324,6 +324,7 @@ ImportSheet <- function(wb_info, schema) {
       dplyr::select(-Inactive) %>%
       tidyr::gather(variable, value, -c(1:3, convert = FALSE)) %>%
       dplyr::mutate_all(as.character) %>%
+      dplyr::filter(!is.na(as.numeric(value))) %>%
       dplyr::filter(!(value == "NA")) %>%
       #Special handling for dedupe which is coerced to 0 and 1
       #Dedupe should always be dropped. 
