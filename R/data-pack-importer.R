@@ -242,12 +242,19 @@ ImportSheet <- function(wb_info, schema) {
       dplyr::filter(., complete.cases(.)) %>%
       dplyr::distinct()
     
-    d <-
-      readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range,col_types = "text") %>%
-      dplyr::mutate_all(as.character) %>%
+    d <- readxl::read_excel(
+        wb_info$wb_path,
+        sheet = schema$sheet_name,
+        range = cell_range,
+        col_types = "text"
+      ) %>%
+      dplyr::mutate_all(as.character) %>% 
       tidyr::gather(variable, value, -c(1:7), convert = FALSE) %>%
-      dplyr::filter(., value != "0") %>%
-      dplyr::filter(!is.na(value)) %>%
+      dplyr::select(-psnu_type) %>%
+      #Remove anyting which is not-numeric
+      dplyr::filter(!is.na(suppressWarnings(as.numeric(value)))) %>%
+      #Remove anything which is close to zero
+      dplyr::filter(., round_trunc(as.numeric(value)) != "0") %>%
       #Special handling for dedupe which is coerced to 0 and 1
       dplyr::filter( . ,!(mechid %in% c("0","00000","1","00001"))) %>%
       dplyr::select( . , orgunit = psnuuid, mech_code=mechid, type, variable, value)
@@ -453,8 +460,8 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
     df_parsed <- ImportSheet(d$wb_info, schema)
     df <- dplyr::bind_rows(df, df_parsed)
   }
-
-  has_negative_numbers <- as.numeric(df$value) < 0
+  
+  has_negative_numbers <- suppressWarnings(as.numeric(df$value)) < 0
   if (any(has_negative_numbers)) {
     foo <- df[has_negative_numbers, ]
     warning("Negative values were found in the data!")
