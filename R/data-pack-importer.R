@@ -18,12 +18,23 @@ ValidateSheet <- function(d, this_sheet) {
     c(schema$row, schema$end_col)
   )
 
-  fields_got <- names(readxl::read_excel(d$wb_info$wb_path, sheet = this_sheet, range = cell_range, col_types = "text"))
+  fields_got <-
+    names(
+      readxl::read_excel(
+        d$wb_info$wb_path,
+        sheet = this_sheet,
+        range = cell_range,
+        col_types = "text"
+      )
+    )
   fields_want <- unlist(schema$fields, use.names = FALSE)
   all_good <- all(fields_want == fields_got)
 
   if (!all_good) {
-    fields_compare <- data.frame(wanted = fields_want, got = fields_got, stringsAsFactors = FALSE) %>%
+    fields_compare <-
+      data.frame(wanted = fields_want,
+                 got = fields_got,
+                 stringsAsFactors = FALSE) %>%
       dplyr::mutate(ok = fields_want == fields_got) %>%
       dplyr::filter(!ok)
     warning(paste0("Some fields did not match for ", this_sheet))
@@ -42,11 +53,10 @@ ValidateSheet <- function(d, this_sheet) {
 #' @return Returns a boolean named vector of sheets and their validation status.
 #'
 ValidateSheets <- function(d) {
-  sheets <- unlist(sapply(d$schemas$schema, `[`, c("sheet_name")), use.names = FALSE)
-  vapply(sheets, function(x) {
-    ValidateSheet(d, x)
-  }, FUN.VALUE = logical(1))
-}
+  sheets <-
+    unlist(sapply(d$schemas$schema, `[`, c("sheet_name")), use.names = FALSE)
+  vapply(sheets, function(x) ValidateSheet(d, x), FUN.VALUE = logical(1))
+  }
 
 
 #' @export
@@ -70,13 +80,14 @@ ValidateImpattSheet <- function(d, wb_info) {
   }
 }
 
-get_distribution_method <- function(distribution_method=NA) {
+get_distribution_method <- function(distribution_method = NA) {
   distribution_methods <- c(2017, 2018)
-  if (is.na(distribution_method) | !any(distribution_method %in% distribution_methods)) {
+  if (is.na(distribution_method) |
+      !any(distribution_method %in% distribution_methods)) {
     # Distribution method
-    promptText <- paste0("Please enter the distribution method (2017 or 2018):")
-    print(promptText)
-    distribution_method <- utils::select.list(distribution_methods, multiple = FALSE)
+    print("Please enter the distribution method (2017 or 2018):")
+    distribution_method <-
+      utils::select.list(distribution_methods, multiple = FALSE)
   }
 
   return(distribution_method)
@@ -98,7 +109,10 @@ get_distribution_method <- function(distribution_method=NA) {
 #'    \item ou_uid: UID of the operating unit }
 #'
 #'
-GetWorkbookInfo <- function(wb_path, distribution_method=NA, support_files_path=NA) {
+GetWorkbookInfo <-
+  function(wb_path,
+           distribution_method = NA,
+           support_files_path = NA) {
   if (!file.exists(wb_path)) {
     stop("Workbook could not be read!")
   }
@@ -128,10 +142,12 @@ GetWorkbookInfo <- function(wb_path, distribution_method=NA, support_files_path=
     distribution_method <- get_distribution_method(distribution_method)
     schemas <- datapackimporter::hts_schema
   } else if (wb_type == "NORMAL_SITE") {
-    distribution_method <- names(readxl::read_excel(wb_path, sheet = "Home", range = "O5"))
+    distribution_method <-
+      names(readxl::read_excel(wb_path, sheet = "Home", range = "O5"))
     schemas <- datapackimporter::main_site_schema
   } else if (wb_type == "HTS_SITE") {
-    distribution_method <- names(readxl::read_excel(wb_path, sheet = "Home", range = "O5"))
+    distribution_method <-
+      names(readxl::read_excel(wb_path, sheet = "Home", range = "O5"))
     schemas <- datapackimporter::hts_site_schema
   }
 
@@ -330,11 +346,16 @@ ImportSheet <- function(wb_info, schema) {
         categoryoptioncombo = "HllvX50cXC0",
         value = as.character(value)
       ) %>%
-      dplyr::select(., dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, value)
+      dplyr::select(.,
+                    dataelement,
+                    period,
+                    orgunit,
+                    categoryoptioncombo,
+                    attributeoptioncombo,
+                    value)
   } else if (schema$method == "site_tool") {
-    cell_range <- readxl::cell_limits(
-      c(schema$row, schema$start_col),
-      c(NA, schema$end_col)
+    cell_range <- readxl::cell_limits(c(schema$row, schema$start_col),
+                                      c(NA, schema$end_col)
     )
     de_map <- datapackimporter::rCOP18deMapT %>%
       dplyr::select(supportType, pd_2019_S, pd_2019_P, DataPackCode) %>%

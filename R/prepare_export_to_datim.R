@@ -7,10 +7,10 @@
 
 prepare_export_to_datim <- function(d) {
   if (d$wb_info$wb_type %in% c("HTS", "NORMAL")) {
-    file_prefix <- "/psnu_import_"
+    file_prefix <- paste0("/", "psnu_import_")
     d <- distributeCluster(d)
   } else if (d$wb_info$wb_type %in% c("HTS_SITE", "NORMAL_SITE")) {
-    file_prefix <- "/site_import_"
+    file_prefix <- paste0("/","site_import_")
   }
 
   export_data <- d$data %>%
