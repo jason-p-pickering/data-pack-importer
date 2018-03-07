@@ -18,7 +18,7 @@ ValidateSheet <- function(d, this_sheet) {
     c(schema$row, schema$end_col)
   )
 
-  fields_got <- names(readxl::read_excel(d$wb_info$wb_path, sheet = this_sheet, range = cell_range,col_types = "text"))
+  fields_got <- names(readxl::read_excel(d$wb_info$wb_path, sheet = this_sheet, range = cell_range, col_types = "text"))
   fields_want <- unlist(schema$fields, use.names = FALSE)
   all_good <- all(fields_want == fields_got)
 
@@ -196,24 +196,25 @@ ValidateWorkbook <- function(wb_path, distribution_method=NA, support_files_path
 
 check_invalid_mechs_by_code <- function(d, sheet_name) {
   mechs_wanted <- datapackimporter::mechs$code
-  #Check for invalid mechanisms
-  invalid_mechs<-unique(d$mech_code)[!(unique(d$mech_code) %in% mechs_wanted)] 
-  if (length(invalid_mechs) >0 ) {
-    msg<-paste0("The following mechanisms in sheet ", sheet_name, " were invalid:", 
-                paste(invalid_mechs,sep="",collapse=";"))
+  # Check for invalid mechanisms
+  invalid_mechs <- unique(d$mech_code)[!(unique(d$mech_code) %in% mechs_wanted)]
+  if (length(invalid_mechs) > 0) {
+    msg <- paste0(
+      "The following mechanisms in sheet ", sheet_name, " were invalid:",
+      paste(invalid_mechs, sep = "", collapse = ";")
+    )
     warning(msg)
     return(FALSE)
   }
   return(TRUE)
 }
 
-check_negative_numbers<-function(d,sheet_name) {
-  
+check_negative_numbers <- function(d, sheet_name) {
   has_negative_numbers <- as.numeric(d$value) < 0
-  
+
   if (any(has_negative_numbers)) {
-    warning("Negative values were found in the data in sheet ",sheet_name,"!")
-    warning(paste0(capture.output(d[which(has_negative_numbers),]), collapse = "\n"))
+    warning("Negative values were found in the data in sheet ", sheet_name, "!")
+    warning(paste0(capture.output(d[which(has_negative_numbers), ]), collapse = "\n"))
   } else {
     return(NULL)
   }
@@ -241,42 +242,42 @@ check_negative_numbers<-function(d,sheet_name) {
 
 
 ImportSheet <- function(wb_info, schema) {
-
   if (schema$method == "standard") {
     cell_range <- readxl::cell_limits(
       c(schema$row, schema$start_col),
       c(NA, schema$end_col)
     )
     mechs <- datapackimporter::mechs
-    
+
     des <- datapackimporter::rCOP18deMapT %>%
       dplyr::select(code = DataPackCode, combi = pd_2019_P) %>%
       dplyr::filter(., complete.cases(.)) %>%
       dplyr::distinct()
-    
+
     d <- readxl::read_excel(
-        wb_info$wb_path,
-        sheet = schema$sheet_name,
-        range = cell_range,
-        col_types = "text"
-      ) %>%
-      dplyr::mutate_all(as.character) %>% 
+      wb_info$wb_path,
+      sheet = schema$sheet_name,
+      range = cell_range,
+      col_types = "text"
+    ) %>%
+      dplyr::mutate_all(as.character) %>%
       tidyr::gather(variable, value, -c(1:7), convert = FALSE) %>%
       dplyr::select(-psnu_type) %>%
-      #Remove anyting which is not-numeric
+      # Remove anyting which is not-numeric
       dplyr::filter(!is.na(suppressWarnings(as.numeric(value)))) %>%
-      #Remove anything which is close to zero
+      # Remove anything which is close to zero
       dplyr::filter(round_trunc(as.numeric(value)) != "0") %>%
       dplyr::filter(!(value == "NA")) %>%
-      #Special handling for dedupe which is coerced to 0 and 1
-      #Dedupe should always be dropped. 
-      dplyr::filter( . ,!(mechid %in% c("0","00000","1","00001"))) %>%
-      dplyr::select( . , orgunit = psnuuid, mech_code=mechid, type, variable, value)
-    
-      check_invalid_mechs_by_code( d = d, sheet_name=schema$sheet_name )
-      check_negative_numbers (d,schema$sheet_name)
-      
-      d<-d %>% dplyr::mutate(
+      # Special handling for dedupe which is coerced to 0 and 1
+      # Dedupe should always be dropped.
+      dplyr::filter(!(mechid %in% c("0", "00000", "1", "00001"))) %>%
+      dplyr::select(orgunit = psnuuid, mech_code = mechid, type, variable, value)
+
+    check_invalid_mechs_by_code(d = d, sheet_name = schema$sheet_name)
+    check_negative_numbers(d, schema$sheet_name)
+
+    d <- d %>%
+      dplyr::mutate(
         .,
         attributeoptioncombo =
           plyr::mapvalues(
@@ -289,9 +290,9 @@ ImportSheet <- function(wb_info, schema) {
         period = "2018Oct",
         value = as.character(value)
       ) %>%
-      dplyr::inner_join(., des, by = "code") %>%
-      tidyr::separate(., combi, c("dataelement", "categoryoptioncombo")) %>%
-      dplyr::select(., dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, value) %>%
+      dplyr::inner_join(des, by = "code") %>%
+      tidyr::separate(col = combi, into = c("dataelement", "categoryoptioncombo")) %>%
+      dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, value) %>%
       # Filter out all dedupe data
       dplyr::filter(!attributeoptioncombo %in% c("YGT1o7UxfFu", "X8hrDf6bLDC"))
   } else if (schema$method == "impatt") {
@@ -342,17 +343,17 @@ ImportSheet <- function(wb_info, schema) {
 
     mechs <- datapackimporter::mechs
 
-    d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range,col_types = "text") %>%
+    d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range, col_types = "text") %>%
       dplyr::select(-Inactive) %>%
       tidyr::gather(variable, value, -c(1:3, convert = FALSE)) %>%
-      #Remove anyting which is not-numeric
+      # Remove anyting which is not-numeric
       dplyr::filter(!is.na(suppressWarnings(as.numeric(value)))) %>%
-      #Remove anything which is close to zero
+      # Remove anything which is close to zero
       dplyr::filter(round_trunc(as.numeric(value)) != "0") %>%
       dplyr::filter(!(value == "NA")) %>%
-      #Special handling for dedupe which is coerced to 0 and 1
-      #Dedupe should always be dropped. 
-      dplyr::filter( . ,!(Mechanism %in% c("0","00000","1","00001"))) 
+      # Special handling for dedupe which is coerced to 0 and 1
+      # Dedupe should always be dropped.
+      dplyr::filter(., !(Mechanism %in% c("0", "00000", "1", "00001")))
 
     unallocated <- dplyr::filter(d, grepl("NOT YET DISTRIBUTED", Site)) %>%
       dplyr::pull(Site) %>%
@@ -370,7 +371,7 @@ ImportSheet <- function(wb_info, schema) {
       warning(msg)
     }
 
-    check_negative_numbers (d,sheet_name)
+    check_negative_numbers(d, sheet_name)
 
     d <- d %>%
       dplyr::mutate(
@@ -378,17 +379,16 @@ ImportSheet <- function(wb_info, schema) {
         orgunit = stringi::stri_extract_first_regex(Site, "(?<=\\()([A-Za-z][A-Za-z0-9]{10})(?=\\))"),
         DataPackCode = paste0(variable, "_", tolower(Type)),
         period = "2018Oct"
-      ) 
-    
-      mechs_are_valid<-check_invalid_mechs_by_code(d=d,sheet_name = schema$sheet_name) 
-      
-      d<-d %>%
+      )
+
+    mechs_are_valid <- check_invalid_mechs_by_code(d = d, sheet_name = schema$sheet_name)
+
+    d <- d %>%
       dplyr::left_join(mechs, by = c("mech_code" = "code")) %>%
       dplyr::left_join(de_map, by = "DataPackCode") %>%
       tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
       dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo = uid, value)
-  
-      }
+  }
 
   else {
     d <- tibble::tibble(
@@ -425,7 +425,7 @@ ImportFollowOnMechs <- function(wb_info) {
     c(schema$row, schema$start_col),
     c(NA, schema$end_col)
   )
-  d <- readxl::read_excel(wb_info$wb_path, sheet = sheet_to_import, range = cell_range,col_types = "text")
+  d <- readxl::read_excel(wb_info$wb_path, sheet = sheet_to_import, range = cell_range, col_types = "text")
   if (!is.null(d) & nrow(d) > 0) {
     return(d)
   } else {
@@ -473,7 +473,7 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
     df_parsed <- ImportSheet(d$wb_info, schema)
     df <- dplyr::bind_rows(df, df_parsed)
   }
-  
+
   # Calculate sums
   if (d$wb_info$wb_type %in% c("HTS", "NORMAL")) {
     df_codes <- unique(datapackimporter::rCOP18deMapT[, c("pd_2019_P", "DataPackCode")]) %>%
