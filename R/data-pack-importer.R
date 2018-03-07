@@ -207,6 +207,18 @@ check_invalid_mechs_by_code <- function(d, sheet_name) {
   return(TRUE)
 }
 
+check_negative_numbers<-function(d,sheet_name) {
+  
+  has_negative_numbers <- as.numeric(d$value) < 0
+  
+  if (any(has_negative_numbers)) {
+    warning("Negative values were found in the data in sheet ",sheet_name,"!")
+    warning(paste0(capture.output(d[which(has_negative_numbers),]), collapse = "\n"))
+  } else {
+    return(NULL)
+  }
+}
+
 #' @export
 #' @importFrom stats complete.cases
 #' @title ImportSheet(wb_path,schema)
@@ -254,12 +266,15 @@ ImportSheet <- function(wb_info, schema) {
       #Remove anyting which is not-numeric
       dplyr::filter(!is.na(suppressWarnings(as.numeric(value)))) %>%
       #Remove anything which is close to zero
-      dplyr::filter(., round_trunc(as.numeric(value)) != "0") %>%
+      dplyr::filter(round_trunc(as.numeric(value)) != "0") %>%
+      dplyr::filter(!(value == "NA")) %>%
       #Special handling for dedupe which is coerced to 0 and 1
+      #Dedupe should always be dropped. 
       dplyr::filter( . ,!(mechid %in% c("0","00000","1","00001"))) %>%
       dplyr::select( . , orgunit = psnuuid, mech_code=mechid, type, variable, value)
     
       check_invalid_mechs_by_code( d = d, sheet_name=schema$sheet_name )
+      check_negative_numbers (d,schema$sheet_name)
       
       d<-d %>% dplyr::mutate(
         .,
@@ -330,7 +345,10 @@ ImportSheet <- function(wb_info, schema) {
     d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range,col_types = "text") %>%
       dplyr::select(-Inactive) %>%
       tidyr::gather(variable, value, -c(1:3, convert = FALSE)) %>%
-      dplyr::mutate_all(as.character) %>%
+      #Remove anyting which is not-numeric
+      dplyr::filter(!is.na(suppressWarnings(as.numeric(value)))) %>%
+      #Remove anything which is close to zero
+      dplyr::filter(round_trunc(as.numeric(value)) != "0") %>%
       dplyr::filter(!(value == "NA")) %>%
       #Special handling for dedupe which is coerced to 0 and 1
       #Dedupe should always be dropped. 
@@ -352,12 +370,7 @@ ImportSheet <- function(wb_info, schema) {
       warning(msg)
     }
 
-    negative_values <- d %>% dplyr::filter(as.numeric(value) < 0)
-
-    if (NROW(negative_values) > 0) {
-      msg <- paste0("Negative values were found in ", schema$sheet_name, "! Aborting!")
-      stop(msg)
-    }
+    check_negative_numbers (d,sheet_name)
 
     d <- d %>%
       dplyr::mutate(
@@ -461,13 +474,6 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
     df <- dplyr::bind_rows(df, df_parsed)
   }
   
-  has_negative_numbers <- suppressWarnings(as.numeric(df$value)) < 0
-  if (any(has_negative_numbers)) {
-    foo <- df[has_negative_numbers, ]
-    warning("Negative values were found in the data!")
-    print(foo)
-  }
-
   # Calculate sums
   if (d$wb_info$wb_type %in% c("HTS", "NORMAL")) {
     df_codes <- unique(datapackimporter::rCOP18deMapT[, c("pd_2019_P", "DataPackCode")]) %>%
