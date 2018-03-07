@@ -244,12 +244,11 @@ ImportSheet <- function(wb_info, schema) {
     
     d <-
       readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range,col_types = "text") %>%
-      dplyr::mutate_all(as.character) %>%
       tidyr::gather(variable, value, -c(1:7), convert = FALSE) %>%
-      dplyr::filter(., value != "0") %>%
-      dplyr::filter(!is.na(value)) %>%
-      #Special handling for dedupe which is coerced to 0 and 1
+      dplyr::mutate_all(as.character) %>%
       dplyr::filter( . ,!(mechid %in% c("0","00000","1","00001"))) %>%
+      dplyr::filter(!(value == "NA")) %>%
+      dplyr::filter(., round_trunc(as.numeric(value)) != "0") %>%
       dplyr::select( . , orgunit = psnuuid, mech_code=mechid, type, variable, value)
     
       check_invalid_mechs_by_code( d = d, sheet_name=schema$sheet_name )
@@ -320,14 +319,22 @@ ImportSheet <- function(wb_info, schema) {
 
     mechs <- datapackimporter::mechs
 
-    d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range,col_types = "text") %>%
+    d <-
+      readxl::read_excel(
+        wb_info$wb_path,
+        sheet = schema$sheet_name,
+        range = cell_range,
+        col_types = "text"
+      ) %>%
       dplyr::select(-Inactive) %>%
-      tidyr::gather(variable, value, -c(1:3, convert = FALSE)) %>%
+      tidyr::gather(variable, value,-c(1:3, convert = FALSE)) %>%
       dplyr::mutate_all(as.character) %>%
       dplyr::filter(!(value == "NA")) %>%
       #Special handling for dedupe which is coerced to 0 and 1
-      #Dedupe should always be dropped. 
-      dplyr::filter( . ,!(Mechanism %in% c("0","00000","1","00001"))) 
+      dplyr::filter(. , !(Mechanism %in% c("0", "00000", "1", "00001"))) %>%
+      dplyr::muate(value = as.numeric(value)) %>%
+      #Completely ignore very small values between -0.4<x<0.4
+      dplyr::filter(., round_trunc(value) != "0")
 
     unallocated <- dplyr::filter(d, grepl("NOT YET DISTRIBUTED", Site)) %>%
       dplyr::pull(Site) %>%
@@ -345,7 +352,7 @@ ImportSheet <- function(wb_info, schema) {
       warning(msg)
     }
 
-    negative_values <- d %>% dplyr::filter(as.numeric(value) < 0)
+    negative_values <- d %>% dplyr::filter(value < 0)
 
     if (NROW(negative_values) > 0) {
       msg <- paste0("Negative values were found in ", schema$sheet_name, "! Aborting!")
@@ -362,12 +369,19 @@ ImportSheet <- function(wb_info, schema) {
     
       mechs_are_valid<-check_invalid_mechs_by_code(d=d,sheet_name = schema$sheet_name) 
       
-      d<-d %>%
-      dplyr::left_join(mechs, by = c("mech_code" = "code")) %>%
-      dplyr::left_join(de_map, by = "DataPackCode") %>%
-      tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
-      dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo = uid, value)
-  
+      d <- d %>%
+        dplyr::left_join(mechs, by = c("mech_code" = "code")) %>%
+        dplyr::left_join(de_map, by = "DataPackCode") %>%
+        tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
+        dplyr::select(
+          dataelement,
+          period,
+          orgunit,
+          categoryoptioncombo,
+          attributeoptioncombo = uid,
+          value = as.character(value)
+        )
+      
       }
 
   else {
