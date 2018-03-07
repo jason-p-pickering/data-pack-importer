@@ -3,9 +3,6 @@ library(rlist)
 library(jsonlite)
 library(datimvalidation)
 library(tidyr)
-library(here)
-
-
 
 ProduceSchema <-
   function(row = 6,
@@ -81,7 +78,7 @@ produceSchemas <- function(sheet_path,mode) {
   
   sheets <- excel_sheets(sheet_path)
   #Exclude these two , as they are custom
-  custom_sheets<-c("Home")
+  custom_sheets<-c("Home","POPrun","POPSubset","POPSubsetAlt","POPref","template","POPsubset","ESRI_MAPINFO_SHEET")
   sheets <-sheets[!(sheets %in% custom_sheets)]
   foo<-lapply(sheets,function(x) {ProduceSchema(sheet_name=x,sheet_path = sheet_path)})
   return(list(mode=mode,schema=foo))
@@ -141,12 +138,12 @@ getSiteList <- function(siteType) {
 
 ##Procedural logic to generate the actual schemas
 ##PSNU HTS Template
-sheet_path = "./data-raw/COP18DisaggTool_HTSv2018.02.10.xlsx"
+sheet_path = "./data-raw/COP18DisaggToolTemplate_HTS_5304cdb.xlsx"
 mode="HTS"
 hts_schema<-produceSchemas(sheet_path,mode)
 
 ##Normal PSNU template
-sheet_path = "./data-raw/COP18DisaggToolv2018.02.10.xlsx"
+sheet_path = "./data-raw/COP18DisaggToolTemplate_5304cdb.xlsx"
 mode="NORMAL"
 main_schema<-produceSchemas(sheet_path,mode)
 
@@ -164,14 +161,15 @@ schemas<-list(hts=hts_schema,normal=main_schema)
 names(schemas)<-c("hts","normal")
 
 #List of mechanisms
+datimvalidation::loadSecrets(getOption("datim_credentials"))
 mechs<-processMechs()
 #List of data elements
 #des<-processDataElements()
 #IMPATT option set
 impatt<-fromJSON("./data-raw/impatt_option_set.json")
 
-datimvalidation::loadSecrets(getOption("datim_credentials"))
-source("data-raw/transform_code_lists.R")
+
+source("./data-raw/transform_code_lists.R")
 rCOP18deMapT<-generateCodeListT()%>% mapDataPackCodes()
 rCOP18deMap<-generateCOP18deMap(rCOP18deMapT)
 
@@ -215,5 +213,23 @@ psnus<-mapply(getOrgunitsAtLevel,ou_prioritization_levels$id,ou_prioritization_l
 
 militaryUnits<-getSiteList("Military")
 
+generate_support_files_md5s<- function(support_files_path) { 
+  want <- c(
+    "distrClusterFY17.rda",
+    "distrClusterFY18.rda",
+    "distrSiteFY17.rda" ,
+    "distrSiteFY18.rda" ,
+    "mech_list.rda",
+    "ous_list.rda" ,
+    "SiteLevelReview_HTS_TEMPLATE.xlsx" ,
+    "SiteLevelReview_TEMPLATE.xlsx"
+  )
+  support_files <- paste0(support_files_path, names(want))
+ foo<-as.list(tools::md5sum(support_files))
+ names(foo) <- basename(names(foo))
+ return(foo)
+ }
+
+support_files_md5<-generate_support_files_md5s(getOption("support_files_path"))
 #Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
-devtools::use_data(hts_schema,main_schema,main_site_schema,hts_site_schema,mechs,impatt,rCOP18deMap,rCOP18deMapT,clusters, sites_exclude,psnus,militaryUnits,internal = TRUE,overwrite = TRUE)
+devtools::use_data(hts_schema,main_schema,main_site_schema,hts_site_schema,mechs,impatt,rCOP18deMapT,clusters, sites_exclude,psnus,militaryUnits,support_files_md5,internal = TRUE,overwrite = TRUE)

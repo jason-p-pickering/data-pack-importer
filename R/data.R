@@ -32,11 +32,11 @@
 "impatt"
 
 #' @export
-#' @title rCOP18deMap
+#' @title support_files_md5
 #'
-#' @description Object used for converting FY17/18 data to FY19 structure, including modeling new indicators/disaggs based on previous indicators/disaggs
+#' @description Object used for validation of support files
 #' @return Returns an object with the following columns
-"rCOP18deMap"
+"support_files_md5"
 
 #' @export
 #' @title rCOP18deMapT
