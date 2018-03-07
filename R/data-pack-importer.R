@@ -246,9 +246,8 @@ ImportSheet <- function(wb_info, schema) {
       readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range,col_types = "text") %>%
       tidyr::gather(variable, value, -c(1:7), convert = FALSE) %>%
       dplyr::mutate_all(as.character) %>%
-      dplyr::filter(!(value == "NA")) %>%
       dplyr::filter( . ,!(mechid %in% c("0","00000","1","00001"))) %>%
-      dplyr::filter(!is.na(value)) %>%
+      dplyr::filter(!(value == "NA")) %>%
       dplyr::filter(., round_trunc(as.numeric(value)) != "0") %>%
       dplyr::select( . , orgunit = psnuuid, mech_code=mechid, type, variable, value)
     
