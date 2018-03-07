@@ -78,7 +78,7 @@ produceSchemas <- function(sheet_path,mode) {
   
   sheets <- excel_sheets(sheet_path)
   #Exclude these two , as they are custom
-  custom_sheets<-c("Home","POPrun","POPSubset","POPSubsetAlt","POPref","template","POPsubset","ESRI_MAPINFO_SHEET")
+  custom_sheets<-c("Home","POPrun","POPSubset","POPSubsetAlt","POPsubsetAlt","POPref","template","POPsubset","ESRI_MAPINFO_SHEET")
   sheets <-sheets[!(sheets %in% custom_sheets)]
   foo<-lapply(sheets,function(x) {ProduceSchema(sheet_name=x,sheet_path = sheet_path)})
   return(list(mode=mode,schema=foo))
