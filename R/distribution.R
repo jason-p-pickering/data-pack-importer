@@ -11,15 +11,18 @@ round_trunc <- function(x) {
 }
 
 
-
-get_percentage_distribution <- function(d) {
-  
+get_percentage_distribution <- function(d,type) {
   # Default distribution is 2018 if not otherwise specified
-  if (d$wb_info$distribution_method == 2017) {
+  if (d$wb_info$distribution_method == 2017 & type=="site") {
     file_name <- "distrSiteFY17.rda"
-  } else if (d$wb_info$distribution_method == 2018) {
+  } else if (d$wb_info$distribution_method == 2018 & type=="site") {
     file_name <- "distrSiteFY18.rda"
-  } else {
+  } else if (d$wb_info$distribution_method == 2017 & type=="cluster") {
+    file_name <- "distrClusterFY17.rda"
+  } else if (d$wb_info$distribution_method == 2018 & type=="cluster") {
+    file_name <- "distrClusterFY18.rda"
+  }
+  else {
     stop("Distribution year must either 2017 or 2018! ")
   }
   
@@ -30,6 +33,7 @@ get_percentage_distribution <- function(d) {
   }
   
   if (!is.null(d$follow_on_mechs)) {
+    
     followOns <- d$follow_on_mechs %>%
       dplyr::mutate(closingCode = as.character(`Closing Out`), followOnCode = as.character(`Follow on`)) %>%
       dplyr::left_join(mechs, by = c("closingCode" = "code")) %>%
@@ -47,6 +51,7 @@ get_percentage_distribution <- function(d) {
         TRUE~whereWhoWhatHuh
       )) %>% 
       dplyr::select(-attributeoptioncombo, -followOnUID)
+    
   } else {
     Pcts <- readRDS(file = file_path) %>%
       dplyr::filter(uidlevel3 == d$wb_info$ou_uid)
@@ -68,23 +73,8 @@ get_percentage_distribution <- function(d) {
 distributeCluster <- function(d) {
   
   if (d$wb_info$is_clustered) {
-
-    distros_path <- d$wb_info$support_files_path
-    # Default distribution is 2018 if not otherwise specified
-    if (d$wb_info$distribution_method == 2017) {
-      file_name <- "distrClusterFY17.rda"
-    } else {
-      file_name <- "distrClusterFY18.rda"
-    }
-
-    file_path <- paste0(distros_path, file_name)
-
-    if (!file.exists(file_path)) {
-      stop(paste("Distribution file could not be found. Please check it exists at", file_path))
-    }
-
     
-    Pcts<-get_percentage_distribution(d)
+    Pcts<-get_percentage_distribution(d,"cluster")
     clusterMap <- datapackimporter::clusters
     militaryUnits <- datapackimporter::militaryUnits
     ou_uid <- d$wb_info$ou_uid
@@ -93,12 +83,7 @@ distributeCluster <- function(d) {
     clusterAvgs <- clusterMap %>%
       dplyr::select(cluster_psnuuid, psnuuid) %>%
       dplyr::group_by(cluster_psnuuid) %>%
-      dplyr::mutate(
-        num = 1,
-        den = n()
-      ) %>%
-      dplyr::mutate(avg = num / den) %>%
-      dplyr::select(-num, -den)
+      dplyr::mutate(avg = 1 / n() ) 
 
     # At this point, data may still contain both clustered and nonclustered data within a
     # "Clustered" OU, and likely will contain some _Military data
@@ -113,10 +98,11 @@ distributeCluster <- function(d) {
       # Create join key
       dplyr::mutate(whereWhoWhatHuh = paste(orgunit, attributeoptioncombo, dataelement, categoryoptioncombo, sep = ".")) %>%
       # Join with Percentage distribution file (For non-clustered units, will pull in a series of 100%'s)
-      dplyr::left_join(Pcts[Pcts$uidlevel3 == ou_uid, ], by = c("whereWhoWhatHuh")) %>%
+      dplyr::left_join(Pcts, by = c("whereWhoWhatHuh")) %>%
       # Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
       dplyr::left_join(clusterAvgs, by = c("orgunit" = "cluster_psnuuid")) %>%
-      dplyr::mutate(value = dplyr::case_when(is.na(psnuPct)~as.numeric(value) * avg, TRUE~as.numeric(value) * psnuPct)) %>%
+      dplyr::mutate(value = dplyr::case_when(is.na(psnuPct)~as.numeric(value) * avg,
+                                             TRUE~as.numeric(value) * psnuPct)) %>%
       dplyr::mutate(orgunit = PSNUuid) %>%
       # Round to integer values per MER requirements
       dplyr::mutate(value = round_trunc(value)) %>%
@@ -148,7 +134,7 @@ distributeCluster <- function(d) {
 
 distributeSite <- function(d) {
 
-  Pcts<-get_percentage_distribution(d)
+  Pcts<-get_percentage_distribution(d,"site")
   de_map <- datapackimporter::rCOP18deMapT %>%
     dplyr::select(supportType, pd_2019_S, pd_2019_P, DataPackCode) %>%
     na.omit() %>%

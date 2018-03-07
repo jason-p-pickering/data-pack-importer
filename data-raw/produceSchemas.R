@@ -214,7 +214,7 @@ psnus<-mapply(getOrgunitsAtLevel,ou_prioritization_levels$id,ou_prioritization_l
 militaryUnits<-getSiteList("Military")
 
 generate_support_files_md5s<- function(support_files_path) { 
-  want <- c(
+  file_names <- c(
     "distrClusterFY17.rda",
     "distrClusterFY18.rda",
     "distrSiteFY17.rda" ,
@@ -224,7 +224,7 @@ generate_support_files_md5s<- function(support_files_path) {
     "SiteLevelReview_HTS_TEMPLATE.xlsx" ,
     "SiteLevelReview_TEMPLATE.xlsx"
   )
-  support_files <- paste0(support_files_path, names(want))
+  support_files <- paste0(support_files_path, file_names)
  foo<-as.list(tools::md5sum(support_files))
  names(foo) <- basename(names(foo))
  return(foo)
