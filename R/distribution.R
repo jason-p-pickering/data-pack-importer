@@ -11,15 +11,15 @@ round_trunc <- function(x) {
 }
 
 
-get_percentage_distribution <- function(d,type) {
+get_percentage_distribution <- function(d, type) {
   # Default distribution is 2018 if not otherwise specified
-  if (d$wb_info$distribution_method == 2017 & type=="site") {
+  if (d$wb_info$distribution_method == 2017 & type == "site") {
     file_name <- "distrSiteFY17.rda"
-  } else if (d$wb_info$distribution_method == 2018 & type=="site") {
+  } else if (d$wb_info$distribution_method == 2018 & type == "site") {
     file_name <- "distrSiteFY18.rda"
-  } else if (d$wb_info$distribution_method == 2017 & type=="cluster") {
+  } else if (d$wb_info$distribution_method == 2017 & type == "cluster") {
     file_name <- "distrClusterFY17.rda"
-  } else if (d$wb_info$distribution_method == 2018 & type=="cluster") {
+  } else if (d$wb_info$distribution_method == 2018 & type == "cluster") {
     file_name <- "distrClusterFY18.rda"
   }
   else {
@@ -29,12 +29,15 @@ get_percentage_distribution <- function(d,type) {
   file_path <- paste0(d$wb_info$support_files_path, file_name)
   
   if (!file.exists(file_path)) {
-    stop(paste("Distribution file could not be found. Please check it exists at", file_path))
+    stop(paste(
+      "Distribution file could not be found. Please check it exists at",
+      file_path
+    ))
   }
   
   if (!is.null(d$follow_on_mechs)) {
     
-    followOns <- d$follow_on_mechs %>%
+    follow_ons <- d$follow_on_mechs %>%
       dplyr::mutate(closingCode = as.character(`Closing Out`), followOnCode = as.character(`Follow on`)) %>%
       dplyr::left_join(mechs, by = c("closingCode" = "code")) %>%
       dplyr::select(closingCode, closingUID = uid, followOnCode) %>%
@@ -45,7 +48,7 @@ get_percentage_distribution <- function(d,type) {
       dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
       # Map follow-on mechs
       dplyr::mutate(attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")) %>%
-      dplyr::left_join(dplyr::select(followOns, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
+      dplyr::left_join(dplyr::select(follow_ons, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
       dplyr::mutate(whereWhoWhatHuh = dplyr::case_when(
         !is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
         TRUE~whereWhoWhatHuh

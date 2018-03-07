@@ -58,31 +58,32 @@ write_site_level_sheet <- function(wb, schema, d) {
     #Conditional formatting
     #Create the conditional formatting for the subtotals
     cond_format_formula <- paste0(
-      'OR(',
+      "OR(",
       subtotal_formula_column_letters,
-      '5<(0.95*',
+      "5<(0.95*",
       subtotal_formula_column_letters,
-      '4),',
+      "4),",
       subtotal_formula_column_letters,
-      '5>(1.05*',
+      "5>(1.05*",
       subtotal_formula_column_letters,
-      '4))'
+      "4))"
     )
-    
-    negStyle <-
+
+    neg_style <-
       openxlsx::createStyle(fontColour = "#000000", bgFill = "#FFFFFF")
-    posStyle <-
+    pos_style <-
       openxlsx::createStyle(fontColour = "#000000", bgFill = "#ffc000")
     
     for (i in 1:(length(subtotal_formulas))) {
-      openxlsx::writeFormula(wb, schema$sheet_name, subtotal_formulas[i], xy = c(i + 4, 5))
+      openxlsx::writeFormula(wb, schema$sheet_name, 
+                             subtotal_formulas[i], xy = c(i + 4, 5))
       openxlsx::conditionalFormatting(
         wb,
         sheet = schema$sheet_name,
         cols = i + 4,
         rows = 5,
         rule = cond_format_formula[i],
-        style = posStyle
+        style = pos_style
         
       )
     }
@@ -114,15 +115,20 @@ write_site_level_sheet <- function(wb, schema, d) {
         dplyr::select(Inactive, everything())
       
       #Drop any rows which are completely NA after the spread
-      df_indicator <- df_indicator[rowSums(is.na(df_indicator[, -c(1:3)])) < length(fields), ]
-
+      df_indicator <-
+        df_indicator[rowSums(is.na(df_indicator[,-c(1:3)])) < length(fields),]
+      
       # Dont error even if the table does not exist
-      foo <- tryCatch(
-        {
+      foo <- tryCatch({
+        
           openxlsx::removeTable(wb, schema$sheet_name, schema$sheet_name)
         },
-        error = function(err) {},
-        finally = {}
+        error = function(err) {
+          
+        },
+        finally = {
+          
+        }
       )
 
       # Write the main data table
@@ -151,7 +157,7 @@ write_site_level_sheet <- function(wb, schema, d) {
       )
 
       # Inactive / NOT YET DISTRIBUTED formula in column A
-      inactiveFormula <-
+      inactive_formula <-
         paste0(
           "IF(B"
           , formula_cell_numbers
@@ -159,7 +165,7 @@ write_site_level_sheet <- function(wb, schema, d) {
           , formula_cell_numbers
           , ',site_list_table[siteID],0))=1,"!!",""),"")'
         )
-      openxlsx::writeFormula(wb, schema$sheet_name, inactiveFormula, xy = c(1, 7))
+      openxlsx::writeFormula(wb, schema$sheet_name, inactive_formula, xy = c(1, 7))
 
       # Conditional formatting for NOT YET DISTIBUTED in Column B
       distrStyle <- openxlsx::createStyle(fontColour = "#000000", bgFill = "#FF8080")
@@ -349,14 +355,18 @@ export_site_level_tool <- function(d) {
     dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
     dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
     dplyr::left_join(d$mechanisms, by = "attributeoptioncombo") %>%
-    dplyr::left_join(d$sites, by = c("orgunit" = "organisationunituid", "distributed" = "distributed")) %>%
+    dplyr::left_join(d$sites,
+                     by = c("orgunit" = "organisationunituid", "distributed" = "distributed")) %>%
     dplyr::select(name, mechanism, supportType, match_code, value) %>%
-    dplyr::group_by(Site = name, Mechanism = mechanism, Type = supportType, match_code) %>%
+    dplyr::group_by(Site = name,
+                    Mechanism = mechanism,
+                    Type = supportType,
+                    match_code) %>%
     dplyr::summarise(value = sum(value, na.rm = TRUE))
   # Duplicates were noted here, but I think this should not have to be done.
 
-  write_all_sheets<-function(x) {write_site_level_sheet(wb=wb,schema = x, d = d)}
-  sapply(d$schemas$schema,write_all_sheets)
+  write_all_sheets <- function(x) write_site_level_sheet(wb = wb, schema = x, d = d)
+  sapply(d$schemas$schema, write_all_sheets)
 
   openxlsx::saveWorkbook(
     wb = wb,
