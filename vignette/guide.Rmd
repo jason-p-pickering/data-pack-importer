@@ -87,14 +87,13 @@ In above step a PSNU CSV file was generated. This step checks if it is a valid D
 The gist of it:
 
 - Clear the console in RStudio
-- Create a `~/.secrets/datim.json` file:
+- Create a `~/.secrets/datim.json` file, or use the `/vagrant/datim.json`
 
-**TBD: URL**
 
 ```json
 {
   "dhis": {
-    "baseurl": "http://dev-de.datim.org",
+    "baseurl": "http://dev-de.datim.org/",
     "username": "admin",
     "password": "district"
   }
@@ -107,12 +106,17 @@ Make it only readable by your user:
 chmod 0600 ~/.secrets/datim.json
 ```
 
+or
+```bash
+chmod 0600 /path/to/vagrant/datim.json
+```
+
 - Install `datim-validation` and load secrets:
 
 ```{r eval=FALSE}
 devtools::install_github('jason-p-pickering/datim-validation')
 require(datimvalidation)
-secrets<-"/home/youruser/.secrets/datim.json"
+secrets<-"/vagrant/datim.json"
 loadSecrets(secrets)
 filename="/vagrant/path_to_psnu.csv"
 ```
