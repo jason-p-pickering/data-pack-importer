@@ -220,7 +220,6 @@ check_negative_numbers <- function(d, sheet_name) {
   }
 }
 
-
 #' @export
 #' @importFrom stats complete.cases
 #' @title ImportSheet(wb_path,schema)
@@ -253,38 +252,49 @@ ImportSheet <- function(wb_info, schema) {
     des <- datapackimporter::rCOP18deMapT %>%
       dplyr::select(code = DataPackCode, combi = pd_2019_P) %>%
       dplyr::filter(., complete.cases(.)) %>%
-      dplyr::distinct()
-
+      dplyr::distinct() %>%
+      tidyr::separate(col = combi,
+                      into = c("dataelement", "categoryoptioncombo"))
+    
     d <- readxl::read_excel(
       wb_info$wb_path,
       sheet = schema$sheet_name,
       range = cell_range,
       col_types = "text"
     ) %>%
-      dplyr::mutate_all(as.character) 
+      dplyr::mutate_all(as.character) %>%
+      tidyr::gather(variable, value,-c(1:7), convert = FALSE) %>%
+      dplyr::select(-psnu_type) %>%
+      # Special handling for dedupe which is coerced to 0 and 1
+      # Dedupe should always be dropped.
+      dplyr::filter(!(mechid %in% c("0", "00000", "1", "00001"))) %>%
+      dplyr::filter(!(value == "NA")) %>%
+      # Remove anyting which is not-numeric
+      dplyr::filter(!is.na(suppressWarnings(as.numeric(value)))) %>%
+      # Remove anything which is close to zero
+      dplyr::filter(round_trunc(as.numeric(value)) != "0") %>%
+      dplyr::mutate(code = paste0(variable, "_", tolower(type)),
+                    period = "2018Oct") %>%
+      #Filter out data elements we are not interested in
+      dplyr::inner_join(des, by = "code") %>%
+      dplyr::select(
+        orgunit = psnuuid,
+        mech_code = mechid,
+        period,
+        dataelement,
+        categoryoptioncombo,
+        value
+      )
     
-    na_orgunits<-is.na(d$psnuuid)
+    mech_check <-
+      check_invalid_mechs_by_code(d = d, sheet_name = schema$sheet_name)
+    
+    na_orgunits<-is.na(d$orgunit)
     
     if (any(na_orgunits)) {
       na_rows<-paste( (which(na_orgunits) + schema$row), sep="",collapse=",")
       warning(paste("Organisation units with NULL UIDs were found in sheet",schema$sheet_name, "in rows ",na_rows))
     }
-    
-    d <- d %>%
-      tidyr::gather(variable, value, -c(1:7), convert = FALSE) %>%
-      dplyr::select(-psnu_type) %>%
-      # Remove anyting which is not-numeric
-      dplyr::filter(!is.na(suppressWarnings(as.numeric(value)))) %>%
-      # Remove anything which is close to zero
-      dplyr::filter(round_trunc(as.numeric(value)) != "0") %>%
-      dplyr::filter(!(value == "NA")) %>%
-      # Special handling for dedupe which is coerced to 0 and 1
-      # Dedupe should always be dropped.
-      dplyr::filter(!(mechid %in% c("0", "00000", "1", "00001"))) %>%
-      dplyr::select(orgunit = psnuuid, mech_code = mechid, type, variable, value)
-
-    check_invalid_mechs_by_code(d = d, sheet_name = schema$sheet_name)
-    check_negative_numbers(d, schema$sheet_name)
     
     d <- d %>%
       dplyr::mutate(
@@ -295,16 +305,20 @@ ImportSheet <- function(wb_info, schema) {
             mechs$code,
             mechs$uid,
             warn_missing = FALSE
-          ),
-        code = paste0(variable, "_", tolower(type)),
-        period = "2018Oct",
-        value = as.character(value)
+          )
       ) %>%
-      dplyr::inner_join(des, by = "code") %>%
-      tidyr::separate(col = combi, into = c("dataelement", "categoryoptioncombo")) %>%
-      dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, value) %>%
-      # Filter out all dedupe data
-      dplyr::filter(!attributeoptioncombo %in% c("YGT1o7UxfFu", "X8hrDf6bLDC"))
+      # Filter out all dedupe data once again
+      dplyr::filter(!attributeoptioncombo %in% c("YGT1o7UxfFu", "X8hrDf6bLDC")) %>%
+      dplyr::select(dataelement,
+                    period,
+                    orgunit,
+                    categoryoptioncombo,
+                    attributeoptioncombo,
+                    value)
+    #At this point, there should be no significant negative numbers
+    neg_check <- check_negative_numbers(d, schema$sheet_name)
+    
+    
   } else if (schema$method == "impatt") {
     cell_range <- readxl::cell_limits(
       c(schema$row, schema$start_col),
@@ -341,6 +355,7 @@ ImportSheet <- function(wb_info, schema) {
         value = as.character(value)
       ) %>%
       dplyr::select(., dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, value)
+    
   } else if (schema$method == "site_tool") {
     cell_range <- readxl::cell_limits(
       c(schema$row, schema$start_col),
