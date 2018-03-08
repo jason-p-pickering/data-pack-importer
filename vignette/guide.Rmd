@@ -136,7 +136,12 @@ getInvalidMechanisms(d,ISO="2018Oct")
 ```{r eval=FALSE}
 getInvalidDataElements(d)
 ```
-You should get a long list of options (over 100) and should choose 82 and 100: type `82 100` in the console then press return.
+You should get a long list of options (over 100) and should choose the following numbers:
+
+- 82: `MER Target Setting: PSNU (Facility and Community Combined)`
+- 100: `Planning Attributes: COP Prioritization SNU`
+
+So type in: `82 100` and hit `ENTER`.
 
 Then run remaining code (one by one or together should work):
 ```
