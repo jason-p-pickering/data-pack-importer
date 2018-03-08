@@ -93,7 +93,7 @@ The gist of it:
 ```json
 {
   "dhis": {
-    "baseurl": "http://dev-de.datim.org/",
+    "baseurl": "https://dev-de.datim.org/",
     "username": "admin",
     "password": "district"
   }
@@ -119,24 +119,40 @@ require(datimvalidation)
 secrets<-"/vagrant/datim.json"
 loadSecrets(secrets)
 filename="/vagrant/path_to_psnu.csv"
-```
-
-```{r eval=FALSE}
 d<-d2Parser(file=filename,
             type = "csv",
-            dataElementIdScheme = "code",
+            dataElementIdScheme = "id",
             orgUnitIdScheme = "id",
             idScheme = "id",
             invalidData = TRUE)
+```
+
+then run these one by one:
+
+```{r eval=FALSE}
 getInvalidMechanisms(d,ISO="2018Oct")
+```
+
+```{r eval=FALSE}
 getInvalidDataElements(d)
+```
+You should get a long list of options (over 100) and should choose the following numbers:
+
+- 82: `MER Target Setting: PSNU (Facility and Community Combined)`
+- 100: `Planning Attributes: COP Prioritization SNU`
+
+So type in: `82 100` and hit `ENTER`.
+
+Then run remaining code (one by one or together should work):
+```
 checkValueTypeCompliance(d)
 vr_violations<-validateData(data = d,
                             return_violations_only = TRUE,
                             parallel = FALSE)
 View(vr_violations)
-
+write.csv(vr_violations,file="validation_violations.csv")
 ```
+You can download the resulting file by checking the checkbox next to the appropriate file in the file panel, then by clicking More and selecting Export.
 
 If the validation passes, reroute file to Tier III.
 
