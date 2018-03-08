@@ -124,10 +124,13 @@ filename="/vagrant/path_to_psnu.csv"
 ```{r eval=FALSE}
 d<-d2Parser(file=filename,
             type = "csv",
-            dataElementIdScheme = "code",
+            dataElementIdScheme = "id",
             orgUnitIdScheme = "id",
             idScheme = "id",
             invalidData = TRUE)
+```
+then run those one by one:
+```{r eval=FALSE}
 getInvalidMechanisms(d,ISO="2018Oct")
 getInvalidDataElements(d)
 checkValueTypeCompliance(d)
@@ -135,7 +138,6 @@ vr_violations<-validateData(data = d,
                             return_violations_only = TRUE,
                             parallel = FALSE)
 View(vr_violations)
-
 ```
 
 If the validation passes, reroute file to Tier III.
