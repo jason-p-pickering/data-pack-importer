@@ -220,7 +220,6 @@ check_negative_numbers <- function(d, sheet_name) {
   }
 }
 
-
 #' @export
 #' @importFrom stats complete.cases
 #' @title ImportSheet(wb_path,schema)
