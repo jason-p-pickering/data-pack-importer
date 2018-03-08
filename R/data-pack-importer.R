@@ -220,6 +220,7 @@ check_negative_numbers <- function(d, sheet_name) {
   }
 }
 
+
 #' @export
 #' @importFrom stats complete.cases
 #' @title ImportSheet(wb_path,schema)
@@ -260,7 +261,16 @@ ImportSheet <- function(wb_info, schema) {
       range = cell_range,
       col_types = "text"
     ) %>%
-      dplyr::mutate_all(as.character) %>%
+      dplyr::mutate_all(as.character) 
+    
+    na_orgunits<-is.na(d$psnuuid)
+    
+    if (any(na_orgunits)) {
+      na_rows<-paste( (which(na_orgunits) + schema$row), sep="",collapse=",")
+      warning(paste("Organisation units with NULL UIDs were found in sheet",schema$sheet_name, "in rows ",na_rows))
+    }
+    
+    d <- d %>%
       tidyr::gather(variable, value, -c(1:7), convert = FALSE) %>%
       dplyr::select(-psnu_type) %>%
       # Remove anyting which is not-numeric
@@ -275,7 +285,7 @@ ImportSheet <- function(wb_info, schema) {
 
     check_invalid_mechs_by_code(d = d, sheet_name = schema$sheet_name)
     check_negative_numbers(d, schema$sheet_name)
-
+    
     d <- d %>%
       dplyr::mutate(
         .,
