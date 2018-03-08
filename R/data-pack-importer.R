@@ -243,10 +243,12 @@ check_negative_numbers <- function(d, sheet_name) {
 
 ImportSheet <- function(wb_info, schema) {
   if (schema$method == "standard") {
-    cell_range <- readxl::cell_limits(c(schema$row, schema$start_col),
-                                      c(NA, schema$end_col))
+    cell_range <- readxl::cell_limits(
+      c(schema$row, schema$start_col),
+      c(NA, schema$end_col)
+    )
     mechs <- datapackimporter::mechs
-    
+
     des <- datapackimporter::rCOP18deMapT %>%
       dplyr::select(code = DataPackCode, combi = pd_2019_P) %>%
       dplyr::filter(., complete.cases(.)) %>%
@@ -287,14 +289,23 @@ ImportSheet <- function(wb_info, schema) {
     mech_check <-
       check_invalid_mechs_by_code(d = d, sheet_name = schema$sheet_name)
     
+    na_orgunits<-is.na(d$orgunit)
+    
+    if (any(na_orgunits)) {
+      na_rows<-paste( (which(na_orgunits) + schema$row), sep="",collapse=",")
+      warning(paste("Organisation units with NULL UIDs were found in sheet",schema$sheet_name, "in rows ",na_rows))
+    }
+    
     d <- d %>%
       dplyr::mutate(
         .,
         attributeoptioncombo =
-          plyr::mapvalues(.$mech_code,
-                          mechs$code,
-                          mechs$uid,
-                          warn_missing = FALSE)
+          plyr::mapvalues(
+            .$mech_code,
+            mechs$code,
+            mechs$uid,
+            warn_missing = FALSE
+          )
       ) %>%
       # Filter out all dedupe data once again
       dplyr::filter(!attributeoptioncombo %in% c("YGT1o7UxfFu", "X8hrDf6bLDC")) %>%
@@ -306,6 +317,7 @@ ImportSheet <- function(wb_info, schema) {
                     value)
     #At this point, there should be no significant negative numbers
     neg_check <- check_negative_numbers(d, schema$sheet_name)
+    
     
   } else if (schema$method == "impatt") {
     cell_range <- readxl::cell_limits(
