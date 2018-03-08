@@ -114,11 +114,15 @@ chmod 0600 /path/to/vagrant/datim.json
 - Install `datim-validation` and load secrets:
 
 ```{r eval=FALSE}
+# ADJUST THIS -->
+filename="/vagrant/disagg_tools/path_to_psnu.csv"
+secrets_file="/vagrant/datim.json"
+
+# DON'T CHANGE
 devtools::install_github('jason-p-pickering/datim-validation')
 require(datimvalidation)
-secrets<-"/vagrant/datim.json"
+secrets<-secrets_file
 loadSecrets(secrets)
-filename="/vagrant/path_to_psnu.csv"
 d<-d2Parser(file=filename,
             type = "csv",
             dataElementIdScheme = "id",
