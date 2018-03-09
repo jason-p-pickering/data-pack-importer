@@ -35,7 +35,8 @@ get_percentage_distribution <- function(d,type) {
   if (!is.null(d$follow_on_mechs)) {
     
     followOns <- d$follow_on_mechs %>%
-      dplyr::mutate(closingCode = as.character(`Closing Out`), followOnCode = as.character(`Follow on`)) %>%
+      dplyr::mutate(closingCode = as.character(`Closing Out`),
+                    followOnCode = as.character(`Follow on`)) %>%
       dplyr::left_join(mechs, by = c("closingCode" = "code")) %>%
       dplyr::select(closingCode, closingUID = uid, followOnCode) %>%
       dplyr::left_join(mechs, by = c("followOnCode" = "code")) %>%
@@ -44,11 +45,17 @@ get_percentage_distribution <- function(d,type) {
     Pcts <- readRDS(file = file_path) %>%
       dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
       # Map follow-on mechs
-      dplyr::mutate(attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")) %>%
-      dplyr::left_join(dplyr::select(followOns, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
-      dplyr::mutate(whereWhoWhatHuh = dplyr::case_when(
-        !is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
-        TRUE~whereWhoWhatHuh
+      dplyr::mutate(
+        attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")
+      ) %>%
+      dplyr::left_join(
+        dplyr::select(followOns, closingUID, followOnUID),
+        by = c("attributeoptioncombo" = "closingUID")
+      ) %>%
+      dplyr::mutate(
+        whereWhoWhatHuh = dplyr::case_when(
+          !is.na(followOnUID) ~ stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
+          TRUE ~ whereWhoWhatHuh
       )) %>% 
       dplyr::select(-attributeoptioncombo, -followOnUID)
     
@@ -96,14 +103,23 @@ distributeCluster <- function(d) {
       # Pull _Military units out separately. Will bind back in at end. These need no manipulation
       dplyr::filter(!orgunit %in% militaryUnits$orgUnit) %>%
       # Create join key
-      dplyr::mutate(whereWhoWhatHuh = paste(orgunit, attributeoptioncombo, dataelement, categoryoptioncombo, sep = ".")) %>%
+      dplyr::mutate(
+        whereWhoWhatHuh = paste(
+          orgunit,
+          attributeoptioncombo,
+          dataelement,
+          categoryoptioncombo,
+          sep = "."
+        )
+      ) %>%
       # Identify if orgunit is a cluster
       dplyr::mutate(is_cluster = orgunit %in% unique(clusterMap$cluster_psnuuid)) %>%
       # Case 1: Clustered and has history AND Case 2: Un-clustered
           dplyr::left_join(Pcts, by = c("whereWhoWhatHuh")) %>%
           dplyr::mutate(value=dplyr::case_when((is_cluster=TRUE & !is.na(psnuPct)) ~ as.numeric(value) * psnuPct,
                                                TRUE~as.numeric(value)),
-                        whereWhoWhatHuh=dplyr::case_when((is_cluster=TRUE & !is.na(psnuPct)) ~ stringr::str_replace(whereWhoWhatHuh,orgunit,PSNUuid),
+                        whereWhoWhatHuh=dplyr::case_when((is_cluster=TRUE & !is.na(psnuPct)) ~ 
+                                                           stringr::str_replace(whereWhoWhatHuh,orgunit,PSNUuid),
                                                          TRUE~whereWhoWhatHuh),
                         orgunit=dplyr::case_when((is_cluster=TRUE & !is.na(psnuPct)) ~ PSNUuid,
                                                  TRUE~orgunit)) %>%
@@ -112,7 +128,8 @@ distributeCluster <- function(d) {
             dplyr::left_join(clusterAvgs, by = c("orgunit" = "cluster_psnuuid")) %>%
             dplyr::mutate(value = dplyr::case_when((is_cluster==TRUE & !is.na(avg)) ~ value * avg,
                                                    TRUE~value),
-                          whereWhoWhatHuh = dplyr::case_when((is_cluster=TRUE & !is.na(avg)) ~ stringr::str_replace(whereWhoWhatHuh,orgunit,psnuuid),
+                          whereWhoWhatHuh = dplyr::case_when((is_cluster=TRUE & !is.na(avg)) ~ 
+                                                               stringr::str_replace(whereWhoWhatHuh,orgunit,psnuuid),
                                                              TRUE~whereWhoWhatHuh),
                           orgunit=dplyr::case_when((is_cluster=TRUE & !is.na(avg)) ~ psnuuid,
                                                    TRUE~orgunit)) %>%
@@ -128,7 +145,7 @@ distributeCluster <- function(d) {
         categoryoptioncombo,
         attributeoptioncombo,
         value
-      )
+      ) %>%
     # Bind _Military units back in
     dplyr::bind_rows(mil_data)
   }
