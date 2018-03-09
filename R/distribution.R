@@ -35,7 +35,8 @@ get_percentage_distribution <- function(d,type) {
   if (!is.null(d$follow_on_mechs)) {
     
     followOns <- d$follow_on_mechs %>%
-      dplyr::mutate(closingCode = as.character(`Closing Out`), followOnCode = as.character(`Follow on`)) %>%
+      dplyr::mutate(closingCode = as.character(`Closing Out`),
+                    followOnCode = as.character(`Follow on`)) %>%
       dplyr::left_join(mechs, by = c("closingCode" = "code")) %>%
       dplyr::select(closingCode, closingUID = uid, followOnCode) %>%
       dplyr::left_join(mechs, by = c("followOnCode" = "code")) %>%
@@ -44,11 +45,17 @@ get_percentage_distribution <- function(d,type) {
     Pcts <- readRDS(file = file_path) %>%
       dplyr::filter(uidlevel3 == d$wb_info$ou_uid) %>%
       # Map follow-on mechs
-      dplyr::mutate(attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")) %>%
-      dplyr::left_join(dplyr::select(followOns, closingUID, followOnUID), by = c("attributeoptioncombo" = "closingUID")) %>%
-      dplyr::mutate(whereWhoWhatHuh = dplyr::case_when(
-        !is.na(followOnUID)~stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
-        TRUE~whereWhoWhatHuh
+      dplyr::mutate(
+        attributeoptioncombo = stringr::str_extract(whereWhoWhatHuh, "(?<=(^\\w{11}\\.))\\w{11}")
+      ) %>%
+      dplyr::left_join(
+        dplyr::select(followOns, closingUID, followOnUID),
+        by = c("attributeoptioncombo" = "closingUID")
+      ) %>%
+      dplyr::mutate(
+        whereWhoWhatHuh = dplyr::case_when(
+          !is.na(followOnUID) ~ stringr::str_replace(whereWhoWhatHuh, attributeoptioncombo, followOnUID),
+          TRUE ~ whereWhoWhatHuh
       )) %>% 
       dplyr::select(-attributeoptioncombo, -followOnUID)
     
@@ -71,54 +78,124 @@ get_percentage_distribution <- function(d,type) {
 #'
 
 distributeCluster <- function(d) {
-  
   if (d$wb_info$is_clustered) {
+    Pcts <- get_percentage_distribution(d, "cluster")
     
-    Pcts<-get_percentage_distribution(d,"cluster")
-    clusterMap <- datapackimporter::clusters
-    militaryUnits <- datapackimporter::militaryUnits
-    ou_uid <- d$wb_info$ou_uid
-
-    # Prepare Cluster Averages
-    clusterAvgs <- clusterMap %>%
+    cluster_map <- datapackimporter::clusters %>%
+      dplyr::filter(operatingUnitUID == d$wb_info$ou_uid) %>%
       dplyr::select(cluster_psnuuid, psnuuid) %>%
       dplyr::group_by(cluster_psnuuid) %>%
-      dplyr::mutate(avg = 1 / n() ) 
-
-    # At this point, data may still contain both clustered and nonclustered data within a
-    # "Clustered" OU, and likely will contain some _Military data
-
-    mil_data <- d$data[!d$data$orgunit %in% militaryUnits, ] %>%
-      dplyr::mutate(value = as.character(round_trunc(as.numeric(value)))) %>%
-      dplyr::filter(value != "0")
-
-    d$data <- d$data %>%
-      # Pull _Military units out separately. Will bind back in at end. These need no manipulation
-      dplyr::filter(!orgunit %in% militaryUnits$orgUnit) %>%
-      # Create join key
-      dplyr::mutate(whereWhoWhatHuh = paste(orgunit, attributeoptioncombo, dataelement, categoryoptioncombo, sep = ".")) %>%
-      # Join with Percentage distribution file (For non-clustered units, will pull in a series of 100%'s)
-      dplyr::left_join(Pcts, by = c("whereWhoWhatHuh")) %>%
-      # Where there is no history at PSNU level, simply distribute evenly among all underlying PSNUs
-      dplyr::left_join(clusterAvgs, by = c("orgunit" = "cluster_psnuuid")) %>%
-      dplyr::mutate(value = dplyr::case_when(is.na(psnuPct)~as.numeric(value) * avg,
-                                             TRUE~as.numeric(value) * psnuPct)) %>%
-      dplyr::mutate(orgunit = PSNUuid) %>%
-      # Round to integer values per MER requirements
-      dplyr::mutate(value = round_trunc(value)) %>%
-      # Remove zero value targets
-      dplyr::mutate(value = as.character(value)) %>%
-      dplyr::filter(value != "0") %>%
-      dplyr::select(
-        dataelement,
-        period,
-        orgunit,
-        categoryoptioncombo,
-        attributeoptioncombo,
-        value
+      dplyr::mutate(avg = 1 / n())
+    
+    military_units <- datapackimporter::militaryUnits
+    
+    # Create join key
+    d_all <- d$data %>%
+      dplyr::mutate(
+        whereWhoWhatHuh = paste(
+          orgunit,
+          attributeoptioncombo,
+          dataelement,
+          categoryoptioncombo,
+          sep = "."
+        )
       )
-    # Bind _Military units back in
-    dplyr::bind_rows(mil_data)
+    
+    #We leave military and data already at the PSNU level alone
+    d_mil_psnu <- d_all %>%
+      dplyr::filter(orgunit %in% military_units |
+                      !(orgunit %in% unique(cluster_map$cluster_psnuuid))) %>%
+      dplyr::select(dataelement,
+                    period,
+                    orgunit,
+                    categoryoptioncombo,
+                    attributeoptioncombo,
+                    value)
+    #Filter cluster data
+    d_clust <- d_all %>%
+      dplyr::filter(!(orgunit %in% military_units)) %>%
+      dplyr::filter(orgunit %in% unique(cluster_map$cluster_psnuuid))
+    #Check to be sure we have either Military, clusters or PSNU data
+    if (NROW(d_mil_psnu) + NROW(d_clust) != NROW(d_all)) {
+      warning("Mil,PSNU and cluster data are not congruent with parsed data")
+    }
+    #Join in the percentages
+    d_clust <-
+      d_clust %>% dplyr::left_join(Pcts, by = c("whereWhoWhatHuh"))
+    #Clusters to PSNU with history
+    d_clust_hist <- d_clust %>%
+      dplyr::filter(!is.na(psnuPct)) %>%
+      dplyr::mutate(value = as.character(as.numeric(value) * psnuPct)) %>%
+      dplyr::select(dataelement,
+                    period,
+                    orgunit = PSNUuid,
+                    categoryoptioncombo,
+                    attributeoptioncombo,
+                    value)
+    
+    #Clusters to PSNU with no history
+    d_clust_nohist <- d_clust %>%
+      dplyr::filter(is.na(psnuPct)) %>%
+      dplyr::select(-uidlevel3, -PSNUuid, -psnuPct) %>%
+      dplyr::rename(cluster_psnuuid = orgunit) %>%
+      dplyr::inner_join(cluster_map, by = "cluster_psnuuid") %>%
+      dplyr::mutate(value = as.character(as.numeric(value) * avg)) %>%
+      dplyr::select(dataelement,
+                    period,
+                    orgunit = psnuuid,
+                    categoryoptioncombo,
+                    attributeoptioncombo,
+                    value)
+    
+    #Bind everything back together
+    d_all_new <-
+      dplyr::bind_rows(d_mil_psnu, d_clust_hist, d_clust_nohist)
+    
+    #Check and be sure we are within 5% of the original
+    d_all_new_sum <- d_all_new  %>%
+      dplyr::group_by(dataelement,
+                      period,
+                      categoryoptioncombo,
+                      attributeoptioncombo) %>%
+      dplyr::summarise(value = sum(as.numeric(value)))
+    d_sum <- d$data %>%
+      dplyr::group_by(dataelement,
+                      period,
+                      categoryoptioncombo,
+                      attributeoptioncombo) %>%
+      dplyr::summarise(value_start = sum(as.numeric(value))) %>%
+      dplyr::full_join(
+        d_all_new_sum,
+        by = c(
+          "dataelement",
+          "period",
+          "categoryoptioncombo",
+          "attributeoptioncombo"
+        )
+      ) %>%
+      dplyr::mutate(diff = (value_start - value) / value_start * 100) %>%
+      #Difference greater than 5%
+      dplyr::filter(diff > 5)
+    if (NROW(d_sum) > 0) {
+      warning("Cluster to PSNU allocation did not go well.")
+      print(d_sum)
+    }
+    
+    # Round to integer values and filter zeros per MER requirements
+    d$data <- d_all_new %>%
+      dplyr::mutate(value = as.character(round_trunc(as.numeric(value)))) %>%
+      dplyr::filter(value != "0") %>%
+      dplyr::select(dataelement,
+                    period,
+                    orgunit,
+                    categoryoptioncombo,
+                    attributeoptioncombo,
+                    value)
+    
+    #There must be no duplicates at this point
+    if (sum(duplicated(d$data[, 1:5])) > 0) {
+      stop("Duplicates detected in cluster to PSNU export file!")
+    }
   }
   return(d)
 }
