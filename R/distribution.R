@@ -116,22 +116,22 @@ distributeCluster <- function(d) {
       dplyr::mutate(is_cluster = orgunit %in% unique(clusterMap$cluster_psnuuid)) %>%
       # Case 1: Clustered and has history AND Case 2: Un-clustered
           dplyr::left_join(Pcts, by = c("whereWhoWhatHuh")) %>%
-          dplyr::mutate(value=dplyr::case_when((is_cluster=TRUE & !is.na(psnuPct)) ~ as.numeric(value) * psnuPct,
+          dplyr::mutate(value=dplyr::case_when((is_cluster==TRUE & !is.na(psnuPct)) ~ as.numeric(value) * psnuPct,
                                                TRUE~as.numeric(value)),
-                        whereWhoWhatHuh=dplyr::case_when((is_cluster=TRUE & !is.na(psnuPct)) ~ 
+                        whereWhoWhatHuh=dplyr::case_when((is_cluster==TRUE & !is.na(psnuPct)) ~ 
                                                            stringr::str_replace(whereWhoWhatHuh,orgunit,PSNUuid),
                                                          TRUE~whereWhoWhatHuh),
-                        orgunit=dplyr::case_when((is_cluster=TRUE & !is.na(psnuPct)) ~ PSNUuid,
+                        orgunit=dplyr::case_when((is_cluster==TRUE & !is.na(psnuPct)) ~ PSNUuid,
                                                  TRUE~orgunit)) %>%
       dplyr::select(-uidlevel3, -PSNUuid,-psnuPct) %>%
       # Case 3: Clustered and no history: distribute evenly among PSNUs
             dplyr::left_join(clusterAvgs, by = c("orgunit" = "cluster_psnuuid")) %>%
             dplyr::mutate(value = dplyr::case_when((is_cluster==TRUE & !is.na(avg)) ~ value * avg,
                                                    TRUE~value),
-                          whereWhoWhatHuh = dplyr::case_when((is_cluster=TRUE & !is.na(avg)) ~ 
+                          whereWhoWhatHuh = dplyr::case_when((is_cluster==TRUE & !is.na(avg)) ~ 
                                                                stringr::str_replace(whereWhoWhatHuh,orgunit,psnuuid),
                                                              TRUE~whereWhoWhatHuh),
-                          orgunit=dplyr::case_when((is_cluster=TRUE & !is.na(avg)) ~ psnuuid,
+                          orgunit=dplyr::case_when((is_cluster==TRUE & !is.na(avg)) ~ psnuuid,
                                                    TRUE~orgunit)) %>%
       # Round to integer values per MER requirements
       dplyr::mutate(value = round_trunc(value)) %>%
