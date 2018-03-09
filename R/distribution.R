@@ -78,31 +78,19 @@ get_percentage_distribution <- function(d,type) {
 #'
 
 distributeCluster <- function(d) {
-  
   if (d$wb_info$is_clustered) {
-    
-    Pcts<-get_percentage_distribution(d,"cluster")
+    Pcts <- get_percentage_distribution(d, "cluster")
     
     cluster_map <- datapackimporter::clusters %>%
       dplyr::filter(operatingUnitUID == d$wb_info$ou_uid) %>%
       dplyr::select(cluster_psnuuid, psnuuid) %>%
       dplyr::group_by(cluster_psnuuid) %>%
-      dplyr::mutate(avg = 1 / n() )
+      dplyr::mutate(avg = 1 / n())
     
     militaryUnits <- datapackimporter::militaryUnits
-    ou_uid <- d$wb_info$ou_uid
-
-    # Prepare Cluster Averages
-    clusterAvgs <- clusterMap %>%
-      dplyr::select(orgunit=cluster_psnuuid, psnuuid) %>%
-      dplyr::group_by(orgunit) %>%
-      dplyr::mutate(avg = 1 / n() )
-
-    # At this point, data may still contain both clustered and nonclustered data within a
-    # "Clustered" OU, and likely will contain some _Military data
-
+    
+    # Create join key
     d_all <- d$data %>%
-      # Create join key
       dplyr::mutate(
         whereWhoWhatHuh = paste(
           orgunit,
@@ -111,67 +99,103 @@ distributeCluster <- function(d) {
           categoryoptioncombo,
           sep = "."
         )
-      ) 
+      )
     
     #We leave military and data already at the PSNU level alone
-    d_mil_psnu <- d_all %>% 
-      dplyr::filter(orgunit %in% militaryUnits | !(orgunit %in% unique(clusterMap$cluster_psnuuid))) %>%
-      dplyr::select(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo,value)
+    d_mil_psnu <- d_all %>%
+      dplyr::filter(orgunit %in% militaryUnits |
+                      !(orgunit %in% unique(cluster_map$cluster_psnuuid))) %>%
+      dplyr::select(dataelement,
+                    period,
+                    orgunit,
+                    categoryoptioncombo,
+                    attributeoptioncombo,
+                    value)
     #Filter cluster data
-    d_clust<-d_all %>% 
+    d_clust <- d_all %>%
       dplyr::filter(!(orgunit %in% militaryUnits)) %>%
-      dplyr::filter(orgunit %in% unique(clusterMap$cluster_psnuuid))
+      dplyr::filter(orgunit %in% unique(cluster_map$cluster_psnuuid))
     #Check to be sure we have either Military, clusters or PSNU data
     if (NROW(d_mil_psnu) + NROW(d_clust) != NROW(d_all)) {
       warning("Mil,PSNU and cluster data are not congruent with parsed data")
     }
     #Join in the percentages
-    d_clust<-d_clust%>% dplyr::left_join(Pcts, by = c("whereWhoWhatHuh")) 
+    d_clust <-
+      d_clust %>% dplyr::left_join(Pcts, by = c("whereWhoWhatHuh"))
     #Clusters to PSNU with history
-    d_clust_hist<-d_clust %>% 
+    d_clust_hist <- d_clust %>%
       dplyr::filter(!is.na(psnuPct)) %>%
-      dplyr::mutate(value=as.character(as.numeric(value)*psnuPct)) %>%
-      dplyr::select(dataelement,period,orgunit=PSNUuid,categoryoptioncombo,attributeoptioncombo,value) %>%
-      dplyr::mutate_all(as.character())
+      dplyr::mutate(value = as.character(as.numeric(value) * psnuPct)) %>%
+      dplyr::select(dataelement,
+                    period,
+                    orgunit = PSNUuid,
+                    categoryoptioncombo,
+                    attributeoptioncombo,
+                    value)
+    
     #Clusters to PSNU with no history
-    d_clust_nohist<-d_clust %>% 
+    d_clust_nohist <- d_clust %>%
       dplyr::filter(is.na(psnuPct)) %>%
-      dplyr::select(-uidlevel3,-PSNUuid,-psnuPct) %>%
-      dplyr::inner_join(clusterAvgs,by="orgunit") %>%
-      dplyr::mutate(value=as.character(as.numeric(value)*avg)) %>%
-      dplyr::select(dataelement,period,orgunit=psnuuid,categoryoptioncombo,attributeoptioncombo,value)
+      dplyr::select(-uidlevel3, -PSNUuid, -psnuPct) %>%
+      dplyr::rename(cluster_psnuuid = orgunit) %>%
+      dplyr::inner_join(cluster_map, by = "cluster_psnuuid") %>%
+      dplyr::mutate(value = as.character(as.numeric(value) * avg)) %>%
+      dplyr::select(dataelement,
+                    period,
+                    orgunit = psnuuid,
+                    categoryoptioncombo,
+                    attributeoptioncombo,
+                    value)
+    
     #Bind everything back together
-    d_all_new<-dplyr::bind_rows(d_mil_psnu,d_clust_hist,d_clust_nohist)
+    d_all_new <-
+      dplyr::bind_rows(d_mil_psnu, d_clust_hist, d_clust_nohist)
+    
     #Check and be sure we are within 5% of the original
     d_all_new_sum <- d_all_new  %>%
-      dplyr::group_by(dataelement,period,categoryoptioncombo,attributeoptioncombo) %>%
-      dplyr::summarise(value=sum(as.numeric(value)))
-    d_sum<-d$data %>%
-      dplyr::group_by(dataelement,period,categoryoptioncombo,attributeoptioncombo) %>%
-      dplyr::summarise(value_start=sum(as.numeric(value))) %>%
-      dplyr::full_join(d_all_new_sum,by = c("dataelement", "period", "categoryoptioncombo", "attributeoptioncombo")) %>%
-      dplyr::mutate(diff=(value_start-value)/value_start * 100) %>%
+      dplyr::group_by(dataelement,
+                      period,
+                      categoryoptioncombo,
+                      attributeoptioncombo) %>%
+      dplyr::summarise(value = sum(as.numeric(value)))
+    d_sum <- d$data %>%
+      dplyr::group_by(dataelement,
+                      period,
+                      categoryoptioncombo,
+                      attributeoptioncombo) %>%
+      dplyr::summarise(value_start = sum(as.numeric(value))) %>%
+      dplyr::full_join(
+        d_all_new_sum,
+        by = c(
+          "dataelement",
+          "period",
+          "categoryoptioncombo",
+          "attributeoptioncombo"
+        )
+      ) %>%
+      dplyr::mutate(diff = (value_start - value) / value_start * 100) %>%
+      #Difference greater than 5%
       dplyr::filter(diff > 5)
-    if(NROW(d_sum) > 0 ) {
+    if (NROW(d_sum) > 0) {
       warning("Cluster to PSNU allocation did not go well.")
       print(d_sum)
     }
     
     # Round to integer values and filter zeros per MER requirements
-    d$data <- d_all_new %>% 
+    d$data <- d_all_new %>%
       dplyr::mutate(value = as.character(round_trunc(as.numeric(value)))) %>%
       dplyr::filter(value != "0") %>%
-      dplyr::select(
-        dataelement,
-        period,
-        orgunit,
-        categoryoptioncombo,
-        attributeoptioncombo,
-        value
-      )
-  
+      dplyr::select(dataelement,
+                    period,
+                    orgunit,
+                    categoryoptioncombo,
+                    attributeoptioncombo,
+                    value)
+    
     #There must be no duplicates at this point
-    if (sum(duplicated(d$data[,1:5])) > 0) { stop("Duplicates detected in cluster to PSNU export file!")}
+    if (sum(duplicated(d$data[, 1:5])) > 0) {
+      stop("Duplicates detected in cluster to PSNU export file!")
+    }
   }
   return(d)
 }
