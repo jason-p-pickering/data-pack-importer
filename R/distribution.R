@@ -87,7 +87,7 @@ distributeCluster <- function(d) {
       dplyr::group_by(cluster_psnuuid) %>%
       dplyr::mutate(avg = 1 / n())
     
-    militaryUnits <- datapackimporter::militaryUnits
+    military_units <- datapackimporter::militaryUnits
     
     # Create join key
     d_all <- d$data %>%
@@ -103,7 +103,7 @@ distributeCluster <- function(d) {
     
     #We leave military and data already at the PSNU level alone
     d_mil_psnu <- d_all %>%
-      dplyr::filter(orgunit %in% militaryUnits |
+      dplyr::filter(orgunit %in% military_units |
                       !(orgunit %in% unique(cluster_map$cluster_psnuuid))) %>%
       dplyr::select(dataelement,
                     period,
@@ -113,7 +113,7 @@ distributeCluster <- function(d) {
                     value)
     #Filter cluster data
     d_clust <- d_all %>%
-      dplyr::filter(!(orgunit %in% militaryUnits)) %>%
+      dplyr::filter(!(orgunit %in% military_units)) %>%
       dplyr::filter(orgunit %in% unique(cluster_map$cluster_psnuuid))
     #Check to be sure we have either Military, clusters or PSNU data
     if (NROW(d_mil_psnu) + NROW(d_clust) != NROW(d_all)) {
