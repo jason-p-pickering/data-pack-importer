@@ -133,6 +133,8 @@ GetWorkbookInfo <- function(wb_path, distribution_method=NA, support_files_path=
   } else if (wb_type == "HTS_SITE") {
     distribution_method <- names(readxl::read_excel(wb_path, sheet = "Home", range = "O5"))
     schemas <- datapackimporter::hts_site_schema
+  } else {
+    stop("Unknown DataPack type!")
   }
 
   ou_uid <- names(readxl::read_excel(wb_path, sheet = "Home", range = "O4"))
