@@ -4,14 +4,8 @@
 \name{hts_site_schema}
 \alias{hts_site_schema}
 \title{hts_site_schema}
-\format{An object of class \code{list} of length 2.}
+\format{Schema of the HTS site level tool}
 \usage{
-hts_site_schema
-}
-\value{
-A list of column and row positions
-}
-\description{
-Schema of the HTS site level tool
+data(hts_site_schema)
 }
 \keyword{datasets}

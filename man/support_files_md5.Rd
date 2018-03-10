@@ -4,14 +4,8 @@
 \name{support_files_md5}
 \alias{support_files_md5}
 \title{support_files_md5}
-\format{An object of class \code{list} of length 1.}
+\format{Object used for validation of support files}
 \usage{
-support_files_md5
-}
-\value{
-Returns an object with the following columns
-}
-\description{
-Object used for validation of support files
+data(support_files_md5)
 }
 \keyword{datasets}

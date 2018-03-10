@@ -4,14 +4,8 @@
 \name{impatt}
 \alias{impatt}
 \title{impatt}
-\format{An object of class \code{list} of length 1.}
+\format{Returns a three column data frame with code,name and Data Pack code (dp_code)}
 \usage{
-impatt
-}
-\value{
-Returns a three column data frame with code,name and Data Pack code (dp_code)
-}
-\description{
-List of option codes for PSNU prioritization
+data(impatt)
 }
 \keyword{datasets}
