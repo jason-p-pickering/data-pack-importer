@@ -1,7 +1,7 @@
 Package: datapackimporter
 Type: Package
 Title: Utilities for importing the ICPI Data pack into DATIM
-Version: 0.2.84
+Version: 0.2.85
 Date: 2018-03-11
 Author: Jason P. Pickering, Scott Jackson, Aaron Chafetz
 Maintainer: Jason P. Pickering <jason.p.pickering@gmail.com>
@@ -10,7 +10,7 @@ License: file LICENSE
 Imports: readxl, jsonlite, rlist, tibble, tidyr, dplyr, plyr,compare
 Suggests: testthat,stringi,stringr
 Additional_repositories: https://github.com/jason-p-pickering/openxlsx
-Remotes: jason-p-pickering/openxlsx
+Remotes: git::https://github.com/jason-p-pickering/openxlsx.git
 LazyData: yes
 RoxygenNote: 6.0.1
 Depends: R (>= 3.2.0)
