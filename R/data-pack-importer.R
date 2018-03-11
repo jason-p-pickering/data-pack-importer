@@ -216,7 +216,7 @@ check_negative_numbers <- function(d, sheet_name) {
 
   if (any(has_negative_numbers)) {
     warning("Negative values were found in the data in sheet ", sheet_name, "!")
-    warning(paste0(capture.output(d[which(has_negative_numbers), ]), collapse = "\n"))
+    warning(paste0(utils::capture.output(d[which(has_negative_numbers), ]), collapse = "\n"))
   } else {
     return(NULL)
   }
