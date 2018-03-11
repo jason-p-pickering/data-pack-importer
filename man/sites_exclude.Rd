@@ -4,14 +4,11 @@
 \name{sites_exclude}
 \alias{sites_exclude}
 \title{sites_exclude}
-\format{An object of class \code{character} of length 111.}
+\format{Vector of sites to exlcude}
 \usage{
-sites_exclude
-}
-\value{
-Returns a character vector of UIDs
+data(sites_exclude)
 }
 \description{
-Vector of sites to exlcude
+Sites which should be excluded
 }
 \keyword{datasets}

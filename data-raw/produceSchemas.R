@@ -141,38 +141,41 @@ getSiteList <- function(siteType) {
 sheet_path = "./data-raw/COP18DisaggToolTemplate_HTS_5304cdb.xlsx"
 mode="HTS"
 hts_schema<-produceSchemas(sheet_path,mode)
+save(hts_schema,file="./data/hts_schema.rda")
 
 ##Normal PSNU template
 sheet_path = "./data-raw/COP18DisaggToolTemplate_5304cdb.xlsx"
 mode="NORMAL"
 main_schema<-produceSchemas(sheet_path,mode)
+save(main_schema,file="./data/main_schema.rda")
 
 #Normal Site level  tools
 sheet_path="./data-raw/SiteLevelReview_TEMPLATE.xlsx"
 mode="NORMAL_SITE"
 main_site_schema<-produceSiteToolSchemas(sheet_path,mode)
+save(main_site_schema,file="./data/main_site_schema.rda")
 
 #Normal HTS Site level  tool
 sheet_path="./data-raw/SiteLevelReview_HTS_TEMPLATE.xlsx"
 mode="HTS_SITE"
 hts_site_schema<-produceSiteToolSchemas(sheet_path,mode)
+save(hts_site_schema,file="./data/hts_site_schema.rda")
 
-schemas<-list(hts=hts_schema,normal=main_schema)
-names(schemas)<-c("hts","normal")
 
 #List of mechanisms
 datimvalidation::loadSecrets(getOption("datim_credentials"))
 mechs<-processMechs()
+save(mechs,file="./data/mechs.rda")
 #List of data elements
 #des<-processDataElements()
 #IMPATT option set
 impatt<-fromJSON("./data-raw/impatt_option_set.json")
-
+save(impatt,file="./data/impatt.rda")
 
 source("./data-raw/transform_code_lists.R")
 rCOP18deMapT<-generateCodeListT()%>% mapDataPackCodes()
 rCOP18deMap<-generateCOP18deMap(rCOP18deMapT)
-
+save(rCOP18deMapT,file="./data/rCOP18deMapT.rda")
 
 clusters <- 
   read.csv("./data-raw/COP18Clusters.csv",stringsAsFactors=F,header=T) %>%
@@ -183,9 +186,10 @@ clusters <-
                                       ,operatingunit=="Namibia"~"FFVkaV9Zk1S"
                                       ,operatingunit=="Burundi"~"Qh4XMQJhbk8"
                                       ,TRUE~""))
+save(clusters,file="./data/clusters.rda")
 #Sites to exclude
 sites_exclude<-c('fNH1Ny5vXI5', 'Tiqj6KDtx3p', 'BspXUn4c2i0', 'wnFyQ8gWVuP', 'b0WbjlNgwpg', 'Smw76afBRxh', 'TyDdI16aem2', 'u6UHEEYSsrY', 'ZHAEPwL6s87', 'oitze45vmuG', 'imQAg2FmqIi', 'JWb1FJrb6u0', 'oU9JrXHFBwo', 'ZvjmhaNkDJP', 'ph5hfp4TDYa', 'NDGAjm5He3s', 'S0wsB3mH7As', 'WKQumwV8vzz', 'aIl7B0aJZE7', 'EwvYCRwMaj2', 'Zj3QFD5LCN0', 'DWqxLhccQpN', 'FMA01mDjzg9', 'Wt4Ap0dVT0K', 'kTDYtuRlsRJ', 'B2aBYUFKEtP', 'eBMjxJa6Hyo', 'Jn8Dy8Kt8r6', 'BP8kSSf9mVh', 'uM7bKbyQMUb', 'xRNWRGhiL2x', 'CLsTOua0sYz', 'foN7Fc7qqd5', 'Pn5Egy0nEvw', 'ZU5YFwWSAM7', 'ahCpXE5nYKO', 'WQUnNhUravY', 'lSrgJWMVhKP', 'SWMW9b7WMMG', 'LdH3sTixu4G', 'PUWNeEDqKjG', 'kQLMdNG7tOr', 'qjxX1U1zOV9', 'un7KU5UBkTp', 'nMYhhbh463E', 'cugQdSJzIzf', 'Vgz3Af04heg', 'VXhW2lbMHeT', 'o1OrLbuDePL', 'gdWruPti7dW', 'kpLxWaoSWp5', 'GGNlHihWQLS', 'c78scqZGQPc', 'WXCDaZ8ldbb', 'DmpYVwgbt0k', 'kbLOPXlsHH4', 'KabE1XwF8CH', 'sk68oHctZOt', 'boqES0AhYHD', 'ecpaElyx1MZ', 'TDk0oLAqK6H', 'p3n96zLyWoP', 'hF8sLm9vE1U', 't5GdyeN9riy', 'Fu0wZlUnntH', 'TixiR1SsebU', 'u86Kfypb8DG', 'JJJOwYzvDZo', 'Dgi2sUBjGzO', 'e9eJh4Dn286', 'dV6akh4l1Ej', 'I93yMz1rjkQ', 'TVrtknExg0t', 'FL40UCPHJke', 'WxIBVamFcg0', 'BpLP6v9NeWX', 'D7uuBfToHfb', 'ItoS9FGQg24', 'M8Yb2Y9rgNe', 'tBcAME3DNk1', 'jBOH9BBbqEW', 'J9Nmumn9DRc', 'sEJ8peJ3Jz6', 'g0HJxd9XWMy', 'tLcy3vpV6LF', 'QITi8Rd6xV5', 'zrHn3k5oIAT', 'szenMEdV4sF', 'EzzYi29hyNF', 'RJWMt1CU1HW', 'JSmcOMrC6zZ', 'RQykElqy1HR', 'Ae8uPosEFeF', 'NEk0GiXI2SW', 'HSoAojlwB7Q', 'hRq9qYMyBE7', 'Rq9EVeiR0PU', 'OyDnBG2RCgS', 'q3WGbWcjdWf', 'aGQbouk9S3E', 'GMHwNlqPAzS', 'm6eYOfLPzmF', 'lAhBMeGXsvQ', 'zZXWPXydW2S', 'VGVbROfDHWh', 'bMtviLCfDub', 'ZCbh020F2TA', 'cVnfnV5N1w5', 'L6HMMjCf2em', 'U9YejzJibuv', 'ASSntKFP1Ns')
-
+save(sites_exclude,file="./data/sites_exclude.rda")
 #Map of OUs and PSNUs
 ous<-httr::GET(paste0(getOption("baseurl"),"api/organisationUnits?filter=level:eq:3&fields=id,name")) %>% 
   httr::content("text") %>% 
@@ -210,8 +214,10 @@ getOrgunitsAtLevel <- function(parent_id,level) {
 }
 
 psnus<-mapply(getOrgunitsAtLevel,ou_prioritization_levels$id,ou_prioritization_levels$prioritization)
+save(psnus,file="./data/psnus.rda")
 
 militaryUnits<-getSiteList("Military")
+save(militaryUnits,file="./data/militaryUnits.rda")
 
 generate_support_files_md5s<- function(support_files_path) { 
   file_names <- c(
@@ -231,5 +237,4 @@ generate_support_files_md5s<- function(support_files_path) {
  }
 
 support_files_md5<-generate_support_files_md5s(getOption("support_files_path"))
-#Save the data to sysdata.Rda. Be sure to rebuild the package and commit after this!
-devtools::use_data(hts_schema,main_schema,main_site_schema,hts_site_schema,mechs,impatt,rCOP18deMapT,clusters, sites_exclude,psnus,militaryUnits,support_files_md5,internal = TRUE,overwrite = TRUE)
+save(support_files_md5,file="./data/support_files_md5.rda")

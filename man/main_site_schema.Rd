@@ -4,14 +4,11 @@
 \name{main_site_schema}
 \alias{main_site_schema}
 \title{main_site_schema}
-\format{An object of class \code{list} of length 2.}
+\format{Schema of the Normal site level tool}
 \usage{
-main_site_schema
-}
-\value{
-A list of column and row positions
+data(main_site_schema)
 }
 \description{
-Schema of the Normal site level tool
+Schema of the normal site template.
 }
 \keyword{datasets}

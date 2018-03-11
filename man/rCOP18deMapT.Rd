@@ -4,14 +4,11 @@
 \name{rCOP18deMapT}
 \alias{rCOP18deMapT}
 \title{rCOP18deMapT}
-\format{An object of class \code{data.frame} with 5275 rows and 26 columns.}
+\format{Object used for mapping indicators and disaggs across time, including from FY19 PSNU level to FY19 Site level. Does not translate new indicators/disaggs}
 \usage{
-rCOP18deMapT
-}
-\value{
-Returns an object with the following columns
+data(rCOP18deMapT)
 }
 \description{
-Object used for mapping indicators and disaggs across time, including from FY19 PSNU level to FY19 Site level. Does not translate new indicators/disaggs
+Object for transformation of data element and disagg codes.
 }
 \keyword{datasets}

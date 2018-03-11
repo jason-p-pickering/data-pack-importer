@@ -4,14 +4,11 @@
 \name{psnus}
 \alias{psnus}
 \title{psnus}
-\format{An object of class \code{list} of length 37.}
+\format{PSNU UIDs and names}
 \usage{
-psnus
-}
-\value{
-Returns a list of data frames
+data(psnus)
 }
 \description{
-PSNU UIDs and names
+Names list of lists by OU with PSNU references
 }
 \keyword{datasets}

@@ -4,14 +4,11 @@
 \name{mechs}
 \alias{mechs}
 \title{mechs}
-\format{An object of class \code{data.frame} with 3311 rows and 2 columns.}
+\format{Returns a two column data frame with mechanisms and codes}
 \usage{
-mechs
-}
-\value{
-Returns a two column data frame with mechanisms and codes
+data(mechs)
 }
 \description{
-List of mechanisms and codes
+List of mechanism UIDs and codes
 }
 \keyword{datasets}
