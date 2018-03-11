@@ -8,4 +8,7 @@
 \usage{
 data(rCOP18deMapT)
 }
+\description{
+Object for transformation of data element and disagg codes.
+}
 \keyword{datasets}

@@ -8,4 +8,7 @@
 \usage{
 data(clusters)
 }
+\description{
+Object which defines clusters and their PSNUs
+}
 \keyword{datasets}

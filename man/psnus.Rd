@@ -8,4 +8,7 @@
 \usage{
 data(psnus)
 }
+\description{
+Names list of lists by OU with PSNU references
+}
 \keyword{datasets}

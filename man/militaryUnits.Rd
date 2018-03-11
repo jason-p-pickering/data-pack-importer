@@ -8,4 +8,7 @@
 \usage{
 data(militaryUnits)
 }
+\description{
+List of military units
+}
 \keyword{datasets}

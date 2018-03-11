@@ -11,4 +11,7 @@ data(main_schema)
 \value{
 Returns a list which defines the schema for the  Disagg tool
 }
+\description{
+Schema of the normal template
+}
 \keyword{datasets}

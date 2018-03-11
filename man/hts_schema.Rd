@@ -10,4 +10,7 @@ HTS Schemas of the Data Pack Excel sheets}
 \usage{
 data(hts_schema)
 }
+\description{
+Schema of the HTS template
+}
 \keyword{datasets}

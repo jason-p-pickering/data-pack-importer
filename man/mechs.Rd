@@ -8,4 +8,7 @@
 \usage{
 data(mechs)
 }
+\description{
+List of mechanism UIDs and codes
+}
 \keyword{datasets}

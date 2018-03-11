@@ -8,4 +8,7 @@
 \usage{
 data(hts_site_schema)
 }
+\description{
+Schema for the HTS Site template
+}
 \keyword{datasets}

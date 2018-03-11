@@ -8,4 +8,7 @@
 \usage{
 data(sites_exclude)
 }
+\description{
+Sites which should be excluded
+}
 \keyword{datasets}

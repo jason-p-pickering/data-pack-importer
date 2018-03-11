@@ -8,4 +8,7 @@
 \usage{
 data(impatt)
 }
+\description{
+Obejct for processing of IMPATT data
+}
 \keyword{datasets}

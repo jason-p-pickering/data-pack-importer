@@ -8,4 +8,7 @@
 \usage{
 data(main_site_schema)
 }
+\description{
+Schema of the normal site template.
+}
 \keyword{datasets}

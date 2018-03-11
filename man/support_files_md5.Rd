@@ -8,4 +8,7 @@
 \usage{
 data(support_files_md5)
 }
+\description{
+Checksum of required non-public support files
+}
 \keyword{datasets}
