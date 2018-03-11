@@ -1,5 +1,4 @@
 language: r
 sudo : false
-cache:
-  directories:
-    - ~/Rlib
+warnings_are_errors: false
+cache: packages
