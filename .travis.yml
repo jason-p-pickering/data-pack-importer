@@ -1,13 +1,5 @@
 language: r
-sudo: required
-warnings_are_errors: false
-cache: packages
-r_packages: readxl, rlist, tibble, tidyr, dplyr, plyr, compare, stringr, stringi
-r:
-  - release
-before_install:
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
-  - ./travis-tool.sh bootstrap
-install:
-    - ./travis-tool.sh install_github jason-p-pickering/openxlsx
+sudo : false
+cache:
+  directories:
+    - ~/Rlib
