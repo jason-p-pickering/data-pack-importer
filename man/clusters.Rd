@@ -4,14 +4,11 @@
 \name{clusters}
 \alias{clusters}
 \title{clusters}
-\format{An object of class \code{data.frame} with 54 rows and 12 columns.}
+\format{Object used dealing with distribution of values from clusters to PSNUs}
 \usage{
-clusters
-}
-\value{
-Returns an object with the following columns
+data(clusters)
 }
 \description{
-Object used dealing with distribution of values from clusters to PSNUs
+Object which defines clusters and their PSNUs
 }
 \keyword{datasets}

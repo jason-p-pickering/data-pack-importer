@@ -133,6 +133,8 @@ GetWorkbookInfo <- function(wb_path, distribution_method=NA, support_files_path=
   } else if (wb_type == "HTS_SITE") {
     distribution_method <- names(readxl::read_excel(wb_path, sheet = "Home", range = "O5"))
     schemas <- datapackimporter::hts_site_schema
+  } else {
+    stop("Unknown DataPack type!")
   }
 
   ou_uid <- names(readxl::read_excel(wb_path, sheet = "Home", range = "O4"))
@@ -214,7 +216,7 @@ check_negative_numbers <- function(d, sheet_name) {
 
   if (any(has_negative_numbers)) {
     warning("Negative values were found in the data in sheet ", sheet_name, "!")
-    warning(paste0(capture.output(d[which(has_negative_numbers), ]), collapse = "\n"))
+    warning(paste0(utils::capture.output(d[which(has_negative_numbers), ]), collapse = "\n"))
   } else {
     return(NULL)
   }

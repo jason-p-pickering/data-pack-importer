@@ -4,16 +4,13 @@
 \name{hts_schema}
 \alias{hts_schema}
 \title{hts_schema}
-\format{An object of class \code{list} of length 2.}
-\usage{
-hts_schema
-}
-\value{
-Returns a list which defines the schema for the HTS Disagg tool
+\format{Returns a list which defines the schema for the HTS Disagg tool
 
-HTS Schemas of the Data Pack Excel sheets
+HTS Schemas of the Data Pack Excel sheets}
+\usage{
+data(hts_schema)
 }
 \description{
-Returns the HTS Schema
+Schema of the HTS template
 }
 \keyword{datasets}

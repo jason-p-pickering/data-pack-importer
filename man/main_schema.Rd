@@ -6,12 +6,12 @@
 \title{main_schema}
 \format{An object of class \code{list} of length 2.}
 \usage{
-main_schema
+data(main_schema)
 }
 \value{
 Returns a list which defines the schema for the  Disagg tool
 }
 \description{
-Normal Schemas of the Data Pack Excel sheets
+Schema of the normal template
 }
 \keyword{datasets}

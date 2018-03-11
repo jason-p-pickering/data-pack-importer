@@ -4,14 +4,11 @@
 \name{militaryUnits}
 \alias{militaryUnits}
 \title{militaryUnits}
-\format{An object of class \code{data.frame} with 35 rows and 3 columns.}
+\format{PSNU UIDs and names}
 \usage{
-militaryUnits
-}
-\value{
-Returns a data frame of military units which shold be exlcuded
+data(militaryUnits)
 }
 \description{
-PSNU UIDs and names
+List of military units
 }
 \keyword{datasets}

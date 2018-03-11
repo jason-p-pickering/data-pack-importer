@@ -4,10 +4,12 @@
 \alias{check_support_files}
 \title{check_support_files(support_files_path)}
 \usage{
-check_support_files(support_files_path)
+check_support_files(support_files_path, want_md5s = NA)
 }
 \arguments{
 \item{support_files_path}{The absolute file path to support files directory.}
+
+\item{want_md5s}{A named list of support files along with their MD5 signature}
 }
 \value{
 Returns a list of files which are not correct.
