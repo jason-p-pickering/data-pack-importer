@@ -42,7 +42,7 @@ prepare_export_to_datim <- function(d) {
       dplyr::ungroup() %>%
       dplyr::mutate_all(as.character)
     
-    d$data <- dplyr::lbind_rows(d$data,d_hts)
+    d$data <- dplyr::bind_rows(d$data,d_hts)
   }
   
   export_data <- d$data %>%
