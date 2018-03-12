@@ -41,3 +41,4 @@ expect_equal(d$data$attributeoptioncombo,"X4RVqWqOwbX")
 expect_equal(d$data$value,"100")
 unlink(template_copy)
 })
+
