@@ -420,7 +420,7 @@ ImportSheet <- function(wb_info, schema) {
       warning(msg)
     }
 
-    check_negative_numbers(d, sheet_name)
+    check_negative_numbers(d, sheet_name = schema$sheet_name)
 
     d <- d %>%
       dplyr::mutate(
