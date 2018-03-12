@@ -68,3 +68,5 @@ test_that("can distribute normal cluster data with history", {
   unlink(template_copy)
   unlink(dest_file) })
 
+unlink(template_copy)
+})

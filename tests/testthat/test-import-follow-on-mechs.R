@@ -1,13 +1,11 @@
 
+
 context("import_follow_on_mechs")
-
-
-
 
 test_that("can import follow on mechs", {
 
-  support_files <- test_support_files_directory()
-  distribution_method<-2017
+support_files <- test_support_files_directory()
+distribution_method<-2017
   
   template_copy=paste0(tempfile(),".xlsx")
   file.copy(from = test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"), to=template_copy)
