@@ -67,6 +67,3 @@ test_that("can distribute normal cluster data with history", {
   expect_equal(d_psnu$data$value[d_psnu$data$orgunit == "yNcvm7JYBfi"],"40")
   unlink(template_copy)
   unlink(dest_file) })
-
-unlink(template_copy)
-})
