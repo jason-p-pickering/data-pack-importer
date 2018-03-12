@@ -1,10 +1,10 @@
 context("hts_worbook_info")
 
-support_files <- "/home/jason/consultancy/datim/datapack/"
+support_files <- test_support_files_directory()
 distribution_method<-2017
 
 test_that("can generate workbook info", {
-  skip_if_no_resource_files()
+
    wb_info_names <-
      c(
        "wb_path",
@@ -38,7 +38,7 @@ expect_equal(x$wb_info$support_files_path, support_files)
 })
 
 test_that("can validate good NORMAL template" , {
-  skip_if_no_resource_files()
+
   
   template_copy=paste0(tempfile(),".xlsx")
   file.copy(from = test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"), to=template_copy)
@@ -64,8 +64,7 @@ test_that("can validate good NORMAL template" , {
    
  test_that("can fail with missing sheet" , {
    
-   skip_if_no_resource_files()
-   
+
    template_copy=paste0(tempfile(),".xlsx")
    file.copy(from = test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"), to=template_copy)
    wb = openxlsx::loadWorkbook(template_copy)
@@ -76,9 +75,7 @@ test_that("can validate good NORMAL template" , {
   unlink(template_copy)})
 
  test_that("can pass with extra sheet" , {
-   
-   skip_if_no_resource_files()
-   
+
    template_copy=paste0(tempfile(),".xlsx")
    wb = openxlsx::loadWorkbook(test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"))
    openxlsx::addWorksheet(wb,sheetName = "ExtraSheet")
@@ -91,7 +88,6 @@ test_that("can validate good NORMAL template" , {
  
  test_that("can fail with modified sheet" , { 
    
-   skip_if_no_resource_files()
    
    template_copy=paste0(tempfile(),".xlsx")
    wb = openxlsx::loadWorkbook(test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"))
