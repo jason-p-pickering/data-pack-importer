@@ -38,4 +38,7 @@ expect_equal(d$data$period,"2018Oct")
 expect_equal(d$data$orgunit,"AFaZlpk6uf6")
 expect_equal(d$data$categoryoptioncombo,"HllvX50cXC0")
 expect_equal(d$data$attributeoptioncombo,"X4RVqWqOwbX")
-expect_equal(d$data$value,"100") })
+expect_equal(d$data$value,"100")
+unlink(template_copy)
+})
+
