@@ -222,6 +222,28 @@ check_negative_numbers <- function(d, sheet_name) {
   }
 }
 
+check_duplicates<-function(d,sheet_name) {
+  
+  any_dups<- d %>% 
+    dplyr::select(dataelement,
+  period,
+  orgunit,
+  categoryoptioncombo,
+  attributeoptioncombo) %>%
+    dplyr::group_by(dataelement,
+             period,
+             orgunit,
+             categoryoptioncombo,
+             attributeoptioncombo) %>%
+    dplyr::summarise(n=n()) %>%
+    dplyr::filter(n>1)
+  
+  if (NROW(any_dups)>0) {
+    print(d)
+    stop(paste0("Duplicates found in source data in sheet",sheet_name,"!"))
+  }
+  
+}
 #' @export
 #' @importFrom stats complete.cases
 #' @title ImportSheet(wb_path,schema)
@@ -317,7 +339,7 @@ ImportSheet <- function(wb_info, schema) {
                     value)
     #At this point, there should be no significant negative numbers
     neg_check <- check_negative_numbers(d, schema$sheet_name)
-    
+    dup_check <- check_duplicates(d,schema$sheet_name)
     
   } else if (schema$method == "impatt") {
     cell_range <- readxl::cell_limits(
@@ -355,6 +377,8 @@ ImportSheet <- function(wb_info, schema) {
         value = as.character(value)
       ) %>%
       dplyr::select(., dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, value)
+    
+    dup_check <- check_duplicates(d,"IMPATT")
     
   } else if (schema$method == "site_tool") {
     cell_range <- readxl::cell_limits(
@@ -396,7 +420,7 @@ ImportSheet <- function(wb_info, schema) {
       warning(msg)
     }
 
-    check_negative_numbers(d, sheet_name)
+    check_negative_numbers(d, sheet_name = schema$sheet_name)
 
     d <- d %>%
       dplyr::mutate(
@@ -413,6 +437,8 @@ ImportSheet <- function(wb_info, schema) {
       dplyr::left_join(de_map, by = "DataPackCode") %>%
       tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
       dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo = uid, value)
+    
+    dup_check <- check_duplicates(d,schema$sheet_name)
   }
 
   else {
