@@ -1,11 +1,13 @@
 
-context("fail_duplicate_data")
-
-support_files <- test_support_files_directory()
-distribution_method<-2017
+context("import_impatt")
 
 
-test_that("can error on duplicate data", {
+
+
+test_that("can import impatt data", {
+  
+  support_files <- test_support_files_directory()
+  distribution_method<-2017
   
   template_copy=paste0(tempfile(),".xlsx")
   file.copy(from = test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"), to=template_copy)
