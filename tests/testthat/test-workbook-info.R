@@ -76,6 +76,9 @@ test_that("can validate good NORMAL template" , {
   unlink(template_copy)})
 
  test_that("can pass with extra sheet" , {
+   
+   skip_if_no_resource_files()
+   
    template_copy=paste0(tempfile(),".xlsx")
    wb = openxlsx::loadWorkbook(test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"))
    openxlsx::addWorksheet(wb,sheetName = "ExtraSheet")
