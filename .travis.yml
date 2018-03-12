@@ -2,4 +2,4 @@ language: r
 sudo : false
 warnings_are_errors: false
 cache: packages
-before_install: R -q -e 'install.packages("remotes"); remotes::install_github("jason-p-pickering/openxlsx");
+before_install: R -q -e 'install.packages("remotes"); remotes::install_github("jason-p-pickering/openxlsx");'
