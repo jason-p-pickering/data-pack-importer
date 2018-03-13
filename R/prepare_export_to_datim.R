@@ -18,10 +18,11 @@ prepare_export_to_datim <- function(d) {
   if (d$wb_info$wb_type %in% c("HTS_SITE","HTS")) {
     
     hts_codes <- datapackimporter::rCOP18deMapT %>%
-      dplyr::filter(indicator=="HTS_TST" & !is.na(DataPackCode) & !is.na(pd_2019_P) & Modality !="") %>%
+      dplyr::filter(indicator=="HTS_TST" & !is.na(DataPackCode) & !is.na(pd_2019_P)) %>%
       tidyr::separate(pd_2019_S,into=c("pd_2019_S_de","pd_2019_S_coc"),sep="\\.",remove=T) %>%
       tidyr::separate(pd_2019_P,into=c("pd_2019_P_de","pd_2019_P_coc"),sep="\\.",remove=T) %>%
-      dplyr::select(pd_2019_S_de, pd_2019_P_de, supportType) %>%
+      dplyr::mutate(KP = dplyr::case_when(KeyPop!="" ~ "KP", TRUE ~ "Modality")) %>%
+      dplyr::select(pd_2019_S_de, pd_2019_P_de, supportType, KP) %>%
       dplyr::distinct()
     
     d_hts <- d$data %>%
@@ -36,9 +37,12 @@ prepare_export_to_datim <- function(d) {
                                                    supportType == "DSD" & d$wb_info$wb_type == "HTS" ~ "bCdPl0retrn",
                                                    supportType == "TA" & d$wb_info$wb_type == "HTS_SITE" ~ "zmAsEta7AiO",
                                                    supportType == "TA" & d$wb_info$wb_type == "HTS" ~ "D131hA9xpEx")) %>%
-      dplyr::select(-supportType) %>%
-      dplyr::group_by(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo) %>%
+      dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, KP, value) %>%
+      dplyr::group_by(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo, KP) %>%
       dplyr::summarise(value = sum(value)) %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo) %>%
+      dplyr::summarise(value = max(value, na.rm = T)) %>%
       dplyr::ungroup() %>%
       dplyr::mutate_all(as.character)
     
