@@ -36,7 +36,7 @@ test_that("can fail bad mechanisms in psnu data", {
   expect_equal(test_mechs$code %in% "7212", FALSE)
 
   template_copy <- generate_invalid_mech_data()
-  # Warning is expdected here because no IMPATT Table
+  # Error if there is an invalid mech
   expect_error(
     d <- ImportSheets(template_copy, support_files = support_files, distribution_method),
     "The following mechanisms in sheet GEND_GBV were invalid:7212"
