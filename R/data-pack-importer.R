@@ -458,7 +458,7 @@ ImportSheet <- function(wb_info, schema) {
         period = "2018Oct"
       )
 
-    mechs_are_valid <- check_invalid_mechs_by_code(d = d, sheet_name = schema$sheet_name)
+    mechs_are_valid <- check_mechs_by_code(d = d, sheet_name = schema$sheet_name)
 
     d <- d %>%
       dplyr::left_join(mechs, by = c("mech_code" = "code")) %>%
