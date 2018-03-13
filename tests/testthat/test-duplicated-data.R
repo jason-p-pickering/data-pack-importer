@@ -4,6 +4,13 @@ context("fail_duplicate_data")
 support_files <- test_support_files_directory()
 distribution_method<-2017
 
+setup_mechs<-function() {
+  mech_list<-data.frame(mechanism="70013 - [Placeholder - 70013 Botswana USAID]",
+                        code="70013",
+             uid="BooXMSFBYBU",
+             ou="Botswana",stringsAsFactors = FALSE)
+  saveRDS(mech_list,file=paste0(test_support_files_directory(),"mech_list.rda"))
+}
 
 test_that("can error on duplicate data", {
   
@@ -20,7 +27,7 @@ test_that("can error on duplicate data", {
   #Priority
   openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="NOT DEFINED",xy = c(5,7))
   #Mech ID
-  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="13258",xy = c(6,7))
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="70013",xy = c(6,7))
   #Mechname
   openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="Foo mech",xy = c(7,7))
   #DE Type
@@ -37,7 +44,7 @@ test_that("can error on duplicate data", {
   #Priority
   openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="NOT DEFINED",xy = c(5,8))
   #Mech ID
-  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="13258",xy = c(6,8))
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="70013",xy = c(6,8))
   #Mechname
   openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="Foo mech",xy = c(7,8))
   #DE Type

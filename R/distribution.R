@@ -74,12 +74,17 @@ get_percentage_distribution <- function(d,type) {
 #'
 #' @description Distributes clustered Data Pack data to PSNU level for DATIM import
 #' @param d Data object returned from ImportSheets function.
+#' @param Pcts Percentage object for this data set. Setting this allows one to override the default 
+#' percentage allocation with a custom one. 
 #' @return Returns an object structured for allocation to the import into the PNSU dataset.
 #'
 
-distributeCluster <- function(d) {
+distributeCluster <- function(d,Pcts=NULL) {
   if (d$wb_info$is_clustered) {
-    Pcts <- get_percentage_distribution(d, "cluster")
+    
+    if (is.null(Pcts)) {
+      Pcts <- get_percentage_distribution(d, "cluster")
+    }
     
     cluster_map <- datapackimporter::clusters %>%
       dplyr::filter(operatingUnitUID == d$wb_info$ou_uid) %>%
@@ -206,12 +211,17 @@ distributeCluster <- function(d) {
 #'
 #' @description Distributes Data Pack data (both Clustered and non-Clustered) to Site level for DATIM import
 #' @param d Data object returned from ImportSheets function.
+#' @param Pcts Percentage object used to distribute from PSNU to site. Setting this allows for the default
+#' distribution method to be overridden. 
 #' @return Returns an object structured for allocation to the site level tool.
 #'
 
-distributeSite <- function(d) {
+distributeSite <- function(d, Pcts=NULL ) {
 
-  Pcts<-get_percentage_distribution(d,"site")
+  if (is.null(Pcts)) {
+    Pcts <- get_percentage_distribution(d, "site")
+  }
+  
   de_map <- datapackimporter::rCOP18deMapT %>%
     dplyr::select(supportType, pd_2019_S, pd_2019_P, DataPackCode) %>%
     na.omit() %>%

@@ -4,10 +4,13 @@
 \alias{distributeSite}
 \title{distributeSite(d)}
 \usage{
-distributeSite(d)
+distributeSite(d, Pcts = NA)
 }
 \arguments{
 \item{d}{Data object returned from ImportSheets function.}
+
+\item{Pcts}{Percentage object used to distribute from PSNU to site. Setting this allows for the default
+distribution method to be overridden.}
 }
 \value{
 Returns an object structured for allocation to the site level tool.

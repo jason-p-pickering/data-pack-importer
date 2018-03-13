@@ -4,10 +4,13 @@
 \alias{distributeCluster}
 \title{distributeCluster(data)}
 \usage{
-distributeCluster(d)
+distributeCluster(d, Pcts = NA)
 }
 \arguments{
 \item{d}{Data object returned from ImportSheets function.}
+
+\item{Pcts}{Percentage object for this data set. Setting this allows one to override the default 
+percentage allocation with a custom one.}
 }
 \value{
 Returns an object structured for allocation to the import into the PNSU dataset.
