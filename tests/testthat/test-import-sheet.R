@@ -57,13 +57,11 @@ test_that("can distribute normal cluster data with history", {
   expect_warning(d<-ImportSheets(template_copy, support_files=support_files, distribution_method)) 
   pcts_file<-paste0(d$wb_info$support_files_path,"psnu_cluster17_pcts.csv")
   distrClusterFY17<-read.csv(pcts_file,stringsAsFactors = FALSE)
-  dest_file<-paste0(d$wb_info$support_files_path,"distrClusterFY17.rda")
-  saveRDS(distrClusterFY17,file=dest_file)
+
   #Be sure there are no follow on mechs here
   d$follow_on_mechs<-NULL
-  d_psnu<-distributeCluster(d)
+  d_psnu<-distributeCluster(d,Pcts = distrClusterFY17)
   
   expect_equal(d_psnu$data$value[d_psnu$data$orgunit == "VB7am4futjm"],"60")
   expect_equal(d_psnu$data$value[d_psnu$data$orgunit == "yNcvm7JYBfi"],"40")
-  unlink(template_copy)
-  unlink(dest_file) })
+  unlink(template_copy) })
