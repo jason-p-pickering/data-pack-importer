@@ -264,10 +264,15 @@ check_duplicates<-function(d,sheet_name) {
              categoryoptioncombo,
              attributeoptioncombo) %>%
     dplyr::summarise(n=n()) %>%
-    dplyr::filter(n>1)
+    dplyr::filter(n>1) %>%
+    dplyr::arrange(dataelement,
+                   period,
+                   orgunit,
+                   categoryoptioncombo,
+                   attributeoptioncombo)
   
   if (NROW(any_dups)>0) {
-    print(d)
+    print(any_dups)
     stop(paste0("Duplicates found in source data in sheet",sheet_name,"!"))
   }
   
