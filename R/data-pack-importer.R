@@ -17,8 +17,23 @@ ValidateSheet <- function(d, this_sheet) {
     c(schema$row, schema$start_col),
     c(schema$row, schema$end_col)
   )
-
-  fields_got <- names(readxl::read_excel(d$wb_info$wb_path, sheet = this_sheet, range = cell_range, col_types = "text"))
+  fields_got <- tryCatch(
+    {
+        names(
+          readxl::read_excel(
+            d$wb_info$wb_path,
+            sheet = this_sheet,
+            range = cell_range,
+            col_types = "text"
+          ))
+    },
+    error = function(err) {
+      msg<-paste0("Could not parse sheet ", this_sheet,". File may be corrupt!")
+      stop(msg)
+    },
+    finally = {}
+  )
+  
   fields_want <- unlist(schema$fields, use.names = FALSE)
   all_good <- all(fields_want == fields_got)
 
