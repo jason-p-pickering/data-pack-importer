@@ -196,16 +196,29 @@ ValidateWorkbook <- function(wb_path, distribution_method=NA, support_files_path
 }
 
 
-check_invalid_mechs_by_code <- function(d, sheet_name) {
-  mechs_wanted <- datapackimporter::mechs$code
-  # Check for invalid mechanisms
+#' check_invalid_mechs_by_code(d,sheet_name,mechanisms)
+#'
+#' @param d Parsed data from a single import sheet
+#' @param wb_info Workbook info
+#' @param sheet_name Name of the sheet
+#'
+#' @return TRUE if no invalid mechanisms were found, otherwise issues a warning and returns FALSE.
+#'
+#' @examples
+check_mechs_by_code <- function(d, wb_info, sheet_name ) {
+
+    mechs_wanted <- readRDS(paste0(wb_info$support_files_path, "mech_list.rda")) %>%
+    dplyr::filter(ou == wb_info$ou_name) %>%
+    dplyr::pull(code)
+    
   invalid_mechs <- unique(d$mech_code)[!(unique(d$mech_code) %in% mechs_wanted)]
+  
   if (length(invalid_mechs) > 0) {
     msg <- paste0(
       "The following mechanisms in sheet ", sheet_name, " were invalid:",
       paste(invalid_mechs, sep = "", collapse = ";")
     )
-    warning(msg)
+    stop(msg)
     return(FALSE)
   }
   return(TRUE)
@@ -309,7 +322,7 @@ ImportSheet <- function(wb_info, schema) {
       )
     
     mech_check <-
-      check_invalid_mechs_by_code(d = d, sheet_name = schema$sheet_name)
+      check_mechs_by_code(d = d, wb_info,sheet_name = schema$sheet_name)
     
     na_orgunits<-is.na(d$orgunit)
     

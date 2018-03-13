@@ -16,7 +16,7 @@ generate_negative_values<-function() {
   #Priority
   openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="NOT DEFINED",xy = c(5,7))
   #Mech ID
-  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="13258",xy = c(6,7))
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="70013",xy = c(6,7))
   #Mechname
   openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="Foo mech",xy = c(7,7))
   #DE Type
@@ -42,7 +42,7 @@ expect_equal(d$data$dataelement, "NTzodLPuWgg")
 expect_equal(d$data$period,"2018Oct")
 expect_equal(d$data$orgunit,"Y6TnOG79VvP")
 expect_equal(d$data$categoryoptioncombo,"HllvX50cXC0")
-expect_equal(d$data$attributeoptioncombo,"X4RVqWqOwbX")
+expect_equal(d$data$attributeoptioncombo,"BooXMSFBYBU")
 expect_equal(d$data$value,"-100")
 
 unlink(template_copy)

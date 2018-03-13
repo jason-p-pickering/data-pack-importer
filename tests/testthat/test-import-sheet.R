@@ -16,7 +16,7 @@ generate_test_cluster_wb<-function() {
   #Priority
   openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="NOT DEFINED",xy = c(5,7))
   #Mech ID
-  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="13258",xy = c(6,7))
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="70013",xy = c(6,7))
   #Mechname
   openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="Foo mech",xy = c(7,7))
   #DE Type
@@ -41,7 +41,7 @@ expect_equal(d$data$dataelement, "NTzodLPuWgg")
 expect_equal(d$data$period,"2018Oct")
 expect_equal(d$data$orgunit,"Y6TnOG79VvP")
 expect_equal(d$data$categoryoptioncombo,"HllvX50cXC0")
-expect_equal(d$data$attributeoptioncombo,"X4RVqWqOwbX")
+expect_equal(d$data$attributeoptioncombo,"BooXMSFBYBU")
 expect_equal(d$data$value,"100")
 
 unlink(template_copy)
@@ -56,11 +56,11 @@ test_that("can distribute normal cluster data with history", {
   #Warning is expdected here because no IMPATT Table
   expect_warning(d<-ImportSheets(template_copy, support_files=support_files, distribution_method)) 
   pcts_file<-paste0(d$wb_info$support_files_path,"psnu_cluster17_pcts.csv")
-  distrClusterFY17<-read.csv(pcts_file,stringsAsFactors = FALSE)
+  distr_test<-read.csv(pcts_file,stringsAsFactors = FALSE)
 
   #Be sure there are no follow on mechs here
   d$follow_on_mechs<-NULL
-  d_psnu<-distributeCluster(d,Pcts = distrClusterFY17)
+  d_psnu<-distributeCluster(d,Pcts = distr_test)
   
   expect_equal(d_psnu$data$value[d_psnu$data$orgunit == "VB7am4futjm"],"60")
   expect_equal(d_psnu$data$value[d_psnu$data$orgunit == "yNcvm7JYBfi"],"40")
