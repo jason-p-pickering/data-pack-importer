@@ -236,5 +236,30 @@ generate_support_files_md5s<- function(support_files_path) {
  return(foo)
  }
 
+generate_support_files_schemas<- function(support_files_path) { 
+  file_names <- c(
+    "distrClusterFY17.rda",
+    "distrClusterFY18.rda",
+    "distrSiteFY17.rda" ,
+    "distrSiteFY18.rda" ,
+    "mech_list.rda",
+    "ous_list.rda"
+  )
+  support_files <- paste0(support_files_path, file_names)
+  files_schema<-list()
+  for (i in 1:length(support_files )){
+    foo<-readRDS(support_files[i])
+    foo_df<-data.frame(names=names(foo),
+                       class=as.vector(sapply(foo,class)),
+                       stringsAsFactors = FALSE)
+    this_schema<-list(file=basename(support_files[i]),
+                      schema=foo_df)
+    files_schema<-append(this_schema,files_schema)
+  }
+
+  return(files_schema)
+}
+
+
 support_files_md5<-generate_support_files_md5s(getOption("support_files_path"))
 save(support_files_md5,file="./data/support_files_md5.rda")
