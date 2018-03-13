@@ -211,7 +211,7 @@ ValidateWorkbook <- function(wb_path, distribution_method=NA, support_files_path
 }
 
 
-#' check_invalid_mechs_by_code(d,sheet_name,mechanisms)
+#' check_mechs_by_code(d,sheet_name,mechanisms)
 #'
 #' @param d Parsed data from a single import sheet
 #' @param wb_info Workbook info

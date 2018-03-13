@@ -4,7 +4,7 @@
 \alias{distributeSite}
 \title{distributeSite(d)}
 \usage{
-distributeSite(d, Pcts = NA)
+distributeSite(d, Pcts = NULL)
 }
 \arguments{
 \item{d}{Data object returned from ImportSheets function.}

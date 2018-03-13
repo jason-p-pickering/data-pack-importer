@@ -4,7 +4,7 @@
 \alias{distributeCluster}
 \title{distributeCluster(data)}
 \usage{
-distributeCluster(d, Pcts = NA)
+distributeCluster(d, Pcts = NULL)
 }
 \arguments{
 \item{d}{Data object returned from ImportSheets function.}
