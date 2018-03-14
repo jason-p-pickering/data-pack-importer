@@ -1,5 +1,5 @@
 
-context("fail_duplicate_psnu_data")
+context("identify_duplicate_data")
 
 support_files <- test_support_files_directory()
 distribution_method<-2017
@@ -12,7 +12,7 @@ setup_mechs<-function() {
   saveRDS(mech_list,file=paste0(test_support_files_directory(),"mech_list.rda"))
 }
 
-test_that("can error on duplicate psnu data", {
+test_that("can warn on duplicate psnu data", {
   
   template_copy=paste0(tempfile(),".xlsx")
   file.copy(from = test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"), to=template_copy)
@@ -58,3 +58,36 @@ test_that("can error on duplicate psnu data", {
   expect_warning(d<-ImportSheets(template_copy, support_files=support_files, distribution_method),
                  "Duplicate rows found sheet GEND_GBV in rows: Foo PSNU : 70013") 
   })
+
+
+test_that("can warn on duplicate site data", {
+  
+  template_copy=paste0(tempfile(),".xlsx")
+  file.copy(from = test_sheet("SiteLevelReview_TEMPLATE.xlsx"), to=template_copy)
+  wb = openxlsx::loadWorkbook(template_copy)
+  openxlsx::writeData(wb = wb,sheet="Home", x="Botswana",xy = c(15,1))
+  openxlsx::writeData(wb = wb,sheet="Home", x="NORMAL_SITE",xy = c(15,3))
+  openxlsx::writeData(wb = wb,sheet="Home", x="l1KFEXKI4Dg",xy = c(15,4))
+  #Site name
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="Test District > Test Site A  {Facility} (VdhX8b4RH6U)",xy = c(2,7))
+  #Mechanism name
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="70013 - [Placeholder - 70013 Botswana USAID]",xy = c(3,7))
+  #Type
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="DSD",xy = c(4,7))
+  #Value
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x=100,xy = c(5,7))
+  #Duplicate
+  #Site name
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="Test District > Test Site A  {Facility} (VdhX8b4RH6U)",xy = c(2,8))
+  #Mechanism name
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="70013 - [Placeholder - 70013 Botswana USAID]",xy = c(3,8))
+  #Type
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="DSD",xy = c(4,8))
+  #Value
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x=200,xy = c(5,8))
+  openxlsx::saveWorkbook(wb = wb,file = template_copy,overwrite = TRUE)
+  
+  expect_warning(d<-ImportSheets(template_copy, support_files=support_files, distribution_method),
+                 "Duplicate rows were found in sheet GEND_GBV")
+  unlink(template_copy)
+})
