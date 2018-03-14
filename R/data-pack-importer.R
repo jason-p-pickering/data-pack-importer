@@ -63,40 +63,6 @@ ValidateSheets <- function(d) {
   }, FUN.VALUE = logical(1))
 }
 
-
-#' @export
-#' @title ValidateImpattSheet(d,wb_info)
-#' @description Validates the impatt sheet for completeness.
-#' @param d A parsed data frame with IMPATT data
-#' @param wb_info Workbook info for the workbook
-#'
-ValidateImpattSheet <- function(d, wb_info) {
-  psnus <- datapackimporter::psnus[[wb_info$ou_uid]]
-  psnus_missing <- !(psnus$id %in% d$psnuuid)
-  if (any(psnus_missing)) {
-    msg <-
-      paste(
-        "The following PNSUs were missing from the IMPATT table:",
-        paste(psnus$name[psnus_missing], sep = "", collapse = ",")
-      )
-    return(msg)
-  } else {
-    return(NULL)
-  }
-}
-
-get_distribution_method <- function(distribution_method=NA) {
-  distribution_methods <- c(2017, 2018)
-  if (is.na(distribution_method) | !any(distribution_method %in% distribution_methods)) {
-    # Distribution method
-    promptText <- paste0("Please enter the distribution method (2017 or 2018):")
-    print(promptText)
-    distribution_method <- utils::select.list(distribution_methods, multiple = FALSE)
-  }
-
-  return(distribution_method)
-}
-
 #' @export
 #' @title GetWorkbookInfo(wb_path,distribution_method,support_files_path)
 #'
@@ -211,70 +177,7 @@ ValidateWorkbook <- function(wb_path, distribution_method=NA, support_files_path
 }
 
 
-#' check_mechs_by_code(d,sheet_name,mechanisms)
-#'
-#' @param d Parsed data from a single import sheet
-#' @param wb_info Workbook info
-#' @param sheet_name Name of the sheet
-#'
-#' @return TRUE if no invalid mechanisms were found, otherwise issues a warning and returns FALSE.
-#'
-#' @examples
-check_mechs_by_code <- function(d, wb_info, sheet_name ) {
 
-    mechs_wanted <- readRDS(paste0(wb_info$support_files_path, "mech_list.rda")) %>%
-    dplyr::filter(ou == wb_info$ou_name) %>%
-    dplyr::pull(code)
-    
-  invalid_mechs <- unique(d$mech_code)[!(unique(d$mech_code) %in% mechs_wanted)]
-  
-  if (length(invalid_mechs) > 0) {
-    msg <- paste0(
-      "The following mechanisms in sheet ", sheet_name, " were invalid:",
-      paste(invalid_mechs, sep = "", collapse = ";")
-    )
-    stop(msg)
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-check_negative_numbers <- function(d, sheet_name) {
-  has_negative_numbers <- as.numeric(d$value) < 0
-
-  if (any(has_negative_numbers)) {
-    warning("Negative values were found in the data in sheet ", sheet_name, "!")
-    warning(paste0(utils::capture.output(d[which(has_negative_numbers), ]), collapse = "\n"))
-  } else {
-    return(NULL)
-  }
-}
-
-check_psnu_duplicates<-function(d,sheet_name,wb_info) {
-  
-  any_dups<- d %>% 
-    dplyr::select(code,psnu, mech_code) %>%
-    dplyr::group_by(code,psnu , mech_code) %>%
-    dplyr::summarise(n=n()) %>%
-    dplyr::filter(n>1) %>%
-    dplyr::ungroup()%>%
-    dplyr::select(psnu,mech_code) %>%
-    dplyr::distinct() %>%
-    dplyr::arrange(psnu,mech_code) %>%
-    dplyr::mutate(row_id = paste(psnu,":",mech_code)) %>%
-    dplyr::pull(row_id)
-  
-  if (NROW(any_dups)>0) {
-    
-   warning(paste0(
-     "Duplicate rows found sheet ",
-     sheet_name,
-     " in rows: ",
-     paste(any_dups, sep = "", collapse = ",")
-   ))
-  }
-  
-}
 
 #' @export
 #' @importFrom stats complete.cases
@@ -295,182 +198,25 @@ check_psnu_duplicates<-function(d,sheet_name,wb_info) {
 #'   \item value: Value as a string.
 #' }
 #'
-
-
 ImportSheet <- function(wb_info, schema) {
+  
   if (schema$method == "standard") {
-    cell_range <- readxl::cell_limits(c(schema$row, schema$start_col),
-                                      c(NA, schema$end_col))
-    mechs <- datapackimporter::mechs
-    
-    des <- datapackimporter::rCOP18deMapT %>%
-      dplyr::select(code = DataPackCode, combi = pd_2019_P) %>%
-      dplyr::filter(., complete.cases(.)) %>%
-      dplyr::distinct() %>%
-      tidyr::separate(col = combi,
-                      into = c("dataelement", "categoryoptioncombo"))
-    
-    d <- readxl::read_excel(
-      wb_info$wb_path,
-      sheet = schema$sheet_name,
-      range = cell_range,
-      col_types = "text"
-    ) %>%
-      dplyr::mutate_all(as.character) %>%
-      tidyr::gather(variable, value,-c(1:7), convert = FALSE) %>%
-      dplyr::select(-psnu_type) %>%
-      # Special handling for dedupe which is coerced to 0 and 1
-      # Dedupe should always be dropped.
-      dplyr::filter(!(mechid %in% c("0", "00000", "1", "00001"))) %>%
-      dplyr::filter(!(value == "NA")) %>%
-      # Remove anyting which is not-numeric
-      dplyr::filter(!is.na(suppressWarnings(as.numeric(value)))) %>%
-      # Remove anything which is close to zero
-      dplyr::filter(round_trunc(as.numeric(value)) != "0") %>%
-      dplyr::mutate(code = paste0(variable, "_", tolower(type)),
-                    period = "2018Oct") %>%
-      #Filter out data elements we are not interested in
-      dplyr::inner_join(des, by = "code") %>%
-      dplyr::select(
-        psnu,
-        orgunit = psnuuid,
-        mech_code = mechid,
-        period,
-        dataelement,
-        categoryoptioncombo,
-        code,
-        value
-      )
-    #Perform checks before transformation to DHIS2 UIDs to make identification easier
-    mech_check <-
-      check_mechs_by_code(d = d, wb_info,sheet_name = schema$sheet_name)
-    dup_check <- check_psnu_duplicates(d,schema$sheet_name,wb_info)
-    
-    na_orgunits<-is.na(d$orgunit)
-    if (any(na_orgunits)) {
-      na_rows<-paste( (which(na_orgunits) + schema$row), sep="",collapse=",")
-      warning(paste("Organisation units with NULL UIDs were found in sheet",schema$sheet_name, "in rows ",na_rows))
-    }
-    
-    d <- d %>%
-      dplyr::mutate(
-        .,
-        attributeoptioncombo =
-          plyr::mapvalues(
-            .$mech_code,
-            mechs$code,
-            mechs$uid,
-            warn_missing = FALSE
-          )
-      ) %>%
-      # Filter out all dedupe data once again
-      dplyr::filter(!attributeoptioncombo %in% c("YGT1o7UxfFu", "X8hrDf6bLDC")) %>%
-      dplyr::select(dataelement,
-                    period,
-                    orgunit,
-                    categoryoptioncombo,
-                    attributeoptioncombo,
-                    value)
-    #At this point, there should be no significant negative numbers
-    neg_check <- check_negative_numbers(d, schema$sheet_name)
-
-    
+    d<-import_disagg_tool_sheet(wb_info,schema)
   } else if (schema$method == "impatt") {
-    cell_range <- readxl::cell_limits(
-      c(schema$row, schema$start_col),
-      c(NA, schema$end_col)
-    )
-    from <- c("snu_priotization_fy19", "plhiv_fy19")
-    # IMPATT.PRIORITY_SNU (SUBNAT), IMPATT.PLHIV (SUBNAT, Age/Sex)
-    to <- c("r4zbW3owX9n", "rORzrY9rpQ1")
-    # https://www.datim.org/api/optionSets/mvbwbgbJgXr.json?fields=options[code,name]
-    d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range, col_types = "text")
-    msg <- ValidateImpattSheet(d, wb_info)
-    if (!is.null(msg)) {
-      warning(msg)
-    }
     
-    #Duplicate check
-    dups<- d %>%
-      dplyr::group_by(psnu) %>%
-      dplyr::summarise(n=n()) %>%
-      dplyr::filter(n>1)%>%
-      dplyr::pull(psnu)
-    
-    if (length(dups) > 0) {
-      warning("Duplicate PSNUs were found in the IMPATT sheet! ",paste(dups,sep="",collapse=","))
-    }
-    
-    d <- d %>%
-      dplyr::filter(snu_priotization_fy19 != "Mil") %>%
-      dplyr::mutate(
-        .,
-        snu_priotization_fy19 = plyr::mapvalues(
-          snu_priotization_fy19,
-          datapackimporter::impatt$options$dp_code,
-          datapackimporter::impatt$options$code,
-          warn_missing = FALSE
-        )
-      ) %>%
-      tidyr::gather(variable, value, -c(1:2)) %>%
-      dplyr::filter(complete.cases(.)) %>%
-      dplyr::mutate(
-        ., dataelement = plyr::mapvalues(variable, from, to, warn_missing = FALSE),
-        orgunit = psnuuid,
-        period = "2018Oct",
-        attributeoptioncombo = "HllvX50cXC0",
-        categoryoptioncombo = "HllvX50cXC0",
-        value = as.character(value)
-      ) %>%
-      dplyr::select(., dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, value)
+    d<-import_impatt_sheet(wb_info,schema)
     
   } else if (schema$method == "site_tool") {
     
     d<-import_site_tool_sheet(wb_info,schema) 
     
   } else {
-    d <- tibble::tibble(
-      "dataelement" = character(),
-      "period" = character(),
-      "orgunit" = character(),
-      "categoryoptioncombo" = character(),
-      "attributeoptioncombo" = character(),
-      "value" = character()
-    )
+    #TODO: Error out here instead
+    d <- empty_dhis_tibble()
   }
 
   return(d)
 }
-
-#' @export
-#' @title ImportFollowOnMechs(wb_info)
-#'
-#' @description Imports the follow on mechs sheet.
-#' @param wb_info  Workbook info object.
-#' @return A data  frame with three columns Closing Out, Follow On, Notes.
-#' If this sheet is blank, returns NULL.
-
-ImportFollowOnMechs <- function(wb_info) {
-  sheet_name <- NULL
-  if (wb_info$wb_type == "NORMAL") {
-    schemas <- datapackimporter::main_schema
-  } else {
-    stop("Only Normal Disagg tools with follow on mechs are supported!")
-  }
-  sheet_to_import <- "Follow on Mech List"
-  schema <- rlist::list.find(schemas$schema, sheet_name == sheet_to_import)[[1]]
-  cell_range <- readxl::cell_limits(
-    c(schema$row, schema$start_col),
-    c(NA, schema$end_col)
-  )
-  d <- readxl::read_excel(wb_info$wb_path, sheet = sheet_to_import, range = cell_range, col_types = "text")
-  if (!is.null(d) & nrow(d) > 0) {
-    return(d)
-  } else {
-    return(NULL)
-  }
-}
-
 
 
 #' @export
@@ -550,14 +296,12 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
     sums <- NULL
   }
 
-
   # Import the follow on mechs
   if (d$wb_info$wb_type == "NORMAL") {
     follow_on_mechs <- ImportFollowOnMechs(d$wb_info)
   } else {
     follow_on_mechs <- NULL
   }
-  
   
   return(list(
     wb_info = d$wb_info,
