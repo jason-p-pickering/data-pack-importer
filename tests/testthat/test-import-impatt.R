@@ -22,8 +22,7 @@ test_that("can import impatt data", {
   openxlsx::removeTable(wb,sheet = "IMPATT Table", table = "impatt")
   openxlsx::writeDataTable(wb,sheet = "IMPATT Table",x = d_impatt,tableName = "impatt",xy=c(3,6))
   openxlsx::saveWorkbook(wb = wb,file = template_copy,overwrite = TRUE)
-  expect_silent(d<-ImportSheets(template_copy, support_files=support_files, distribution_method))
-  openxlsx::saveWorkbook(wb = wb,file = template_copy,overwrite = TRUE)
+  
   
   expect_silent(d<-ImportSheets(template_copy, support_files=support_files, distribution_method))
   expect_equivalent(unique(d$data$dataelement),c("r4zbW3owX9n","rORzrY9rpQ1"))

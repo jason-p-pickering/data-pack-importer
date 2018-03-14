@@ -1,5 +1,5 @@
 
-context("fail_duplicate_data")
+context("fail_duplicate_psnu_data")
 
 support_files <- test_support_files_directory()
 distribution_method<-2017
@@ -12,7 +12,7 @@ setup_mechs<-function() {
   saveRDS(mech_list,file=paste0(test_support_files_directory(),"mech_list.rda"))
 }
 
-test_that("can error on duplicate data", {
+test_that("can error on duplicate psnu data", {
   
   template_copy=paste0(tempfile(),".xlsx")
   file.copy(from = test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"), to=template_copy)
@@ -55,5 +55,6 @@ test_that("can error on duplicate data", {
   openxlsx::writeData(wb = wb,sheet="GEND_GBV", x=200,xy = c(48,8))
   openxlsx::saveWorkbook(wb = wb,file = template_copy,overwrite = TRUE)
   
-  expect_error(d<-ImportSheets(template_copy, support_files=support_files, distribution_method)) 
+  expect_warning(d<-ImportSheets(template_copy, support_files=support_files, distribution_method),
+                 "Duplicate rows found sheet GEND_GBV in rows: Foo PSNU : 70013") 
   })

@@ -250,33 +250,54 @@ check_negative_numbers <- function(d, sheet_name) {
   }
 }
 
-check_duplicates<-function(d,sheet_name) {
+check_psnu_duplicates<-function(d,sheet_name,wb_info) {
   
   any_dups<- d %>% 
-    dplyr::select(dataelement,
-  period,
-  orgunit,
-  categoryoptioncombo,
-  attributeoptioncombo) %>%
-    dplyr::group_by(dataelement,
-             period,
-             orgunit,
-             categoryoptioncombo,
-             attributeoptioncombo) %>%
+    dplyr::select(code,psnu, mech_code) %>%
+    dplyr::group_by(code,psnu , mech_code) %>%
     dplyr::summarise(n=n()) %>%
     dplyr::filter(n>1) %>%
-    dplyr::arrange(dataelement,
-                   period,
-                   orgunit,
-                   categoryoptioncombo,
-                   attributeoptioncombo)
+    dplyr::ungroup()%>%
+    dplyr::select(psnu,mech_code) %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(psnu,mech_code) %>%
+    dplyr::mutate(row_id = paste(psnu,":",mech_code)) %>%
+    dplyr::pull(row_id)
   
   if (NROW(any_dups)>0) {
-    print(any_dups)
-    stop(paste0("Duplicates found in source data in sheet",sheet_name,"!"))
+    
+   warning(paste0(
+     "Duplicate rows found sheet ",
+     sheet_name,
+     " in rows: ",
+     paste(any_dups, sep = "", collapse = ",")
+   ))
   }
   
 }
+
+
+get_site_tool_duplicates <- function(d,sheet_name) {
+  site_dupes<-d %>% dplyr::select(Site,mech_code,DataPackCode) %>%
+    dplyr::group_by(Site,mech_code,DataPackCode) %>%
+    dplyr::summarise(n=n()) %>%
+    dplyr::filter(n>1) %>%
+    dplyr::select(Site,mech_code) %>%
+    dplyr::distinct()
+  
+  if (NROW(site_dupes) > 0) {
+    msg <-
+      paste0("Duplicate rows were found in sheet ", sheet_name,": ",
+             paste(
+               paste0(site_dupes$Site, ":", site_dupes$mech_code),
+               sep = "",
+               collapse = ";"
+             ))
+    warning(msg)
+  }
+}
+
+
 #' @export
 #' @importFrom stats complete.cases
 #' @title ImportSheet(wb_path,schema)
@@ -333,19 +354,21 @@ ImportSheet <- function(wb_info, schema) {
       #Filter out data elements we are not interested in
       dplyr::inner_join(des, by = "code") %>%
       dplyr::select(
+        psnu,
         orgunit = psnuuid,
         mech_code = mechid,
         period,
         dataelement,
         categoryoptioncombo,
+        code,
         value
       )
-    
+    #Perform checks before transformation to DHIS2 UIDs to make identification easier
     mech_check <-
       check_mechs_by_code(d = d, wb_info,sheet_name = schema$sheet_name)
+    dup_check <- check_psnu_duplicates(d,schema$sheet_name,wb_info)
     
     na_orgunits<-is.na(d$orgunit)
-    
     if (any(na_orgunits)) {
       na_rows<-paste( (which(na_orgunits) + schema$row), sep="",collapse=",")
       warning(paste("Organisation units with NULL UIDs were found in sheet",schema$sheet_name, "in rows ",na_rows))
@@ -372,7 +395,7 @@ ImportSheet <- function(wb_info, schema) {
                     value)
     #At this point, there should be no significant negative numbers
     neg_check <- check_negative_numbers(d, schema$sheet_name)
-    dup_check <- check_duplicates(d,schema$sheet_name)
+
     
   } else if (schema$method == "impatt") {
     cell_range <- readxl::cell_limits(
@@ -388,6 +411,18 @@ ImportSheet <- function(wb_info, schema) {
     if (!is.null(msg)) {
       warning(msg)
     }
+    
+    #Duplicate check
+    dups<- d %>%
+      dplyr::group_by(psnu) %>%
+      dplyr::summarise(n=n()) %>%
+      dplyr::filter(n>1)%>%
+      dplyr::pull(psnu)
+    
+    if (length(dups) > 0) {
+      warning("Duplicate PSNUs were found in the IMPATT sheet! ",paste(dups,sep="",collapse=","))
+    }
+    
     d <- d %>%
       dplyr::filter(snu_priotization_fy19 != "Mil") %>%
       dplyr::mutate(
@@ -410,8 +445,6 @@ ImportSheet <- function(wb_info, schema) {
         value = as.character(value)
       ) %>%
       dplyr::select(., dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo, value)
-    
-    dup_check <- check_duplicates(d,"IMPATT")
     
   } else if (schema$method == "site_tool") {
     cell_range <- readxl::cell_limits(
@@ -453,8 +486,6 @@ ImportSheet <- function(wb_info, schema) {
       warning(msg)
     }
 
-    check_negative_numbers(d, sheet_name = schema$sheet_name)
-
     d <- d %>%
       dplyr::mutate(
         mech_code = stringi::stri_extract_first_regex(Mechanism, "^[0-9]{4,5}(?=\\s-)"),
@@ -462,16 +493,20 @@ ImportSheet <- function(wb_info, schema) {
         DataPackCode = paste0(variable, "_", tolower(Type)),
         period = "2018Oct"
       )
-
-    mechs_are_valid <- check_mechs_by_code(d = d, wb_info = wb_info, sheet_name = schema$sheet_name)
-
+    
+    #Data checks
+    get_site_tool_duplicates(d,sheet_name = schema$sheet_name)
+    check_mechs_by_code(d = d, wb_info = wb_info, sheet_name = schema$sheet_name)
+    check_negative_numbers(d, sheet_name = schema$sheet_name)
+    
+    #DHIS2 form
     d <- d %>%
       dplyr::left_join(mechs, by = c("mech_code" = "code")) %>%
       dplyr::left_join(de_map, by = "DataPackCode") %>%
       tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
       dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo = uid, value)
     
-    dup_check <- check_duplicates(d,schema$sheet_name)
+    #dup_check <- check_duplicates(d,schema$sheet_name,wb_info)
   }
 
   else {
