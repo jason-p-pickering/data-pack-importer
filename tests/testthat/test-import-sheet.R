@@ -53,7 +53,7 @@ test_that("can distribute normal cluster data with history", {
   distribution_method<-2017
   
   template_copy<-generate_test_cluster_wb()
-  #Warning is expdected here because no IMPATT Table
+  #Warning is expected here because no IMPATT Table
   expect_warning(d<-ImportSheets(template_copy, support_files=support_files, distribution_method)) 
   pcts_file<-paste0(d$wb_info$support_files_path,"psnu_cluster17_pcts.csv")
   distr_test<-read.csv(pcts_file,stringsAsFactors = FALSE)
