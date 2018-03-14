@@ -3,7 +3,7 @@
 #' @description Validates the impatt sheet for completeness.
 #' @param d A parsed data frame with IMPATT data
 #' @param wb_info Workbook info for the workbook
-#' @return 
+#' @return NULL
 ValidateImpattSheet <- function(d, wb_info) {
   psnus <- datapackimporter::psnus[[wb_info$ou_uid]]
   psnus_missing <- !(psnus$id %in% d$psnuuid)
@@ -18,7 +18,7 @@ ValidateImpattSheet <- function(d, wb_info) {
 }
 
 
-#' @description import_impatt_sheet(wb_info,schema)
+#' @title import_impatt_sheet(wb_info,schema)
 #'
 #' @param wb_info Workbook info object
 #' @param schema Schema for a single sheet

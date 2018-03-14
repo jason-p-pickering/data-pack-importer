@@ -40,16 +40,17 @@ import_site_tool_sheet<-function(wb_info, schema) {
     c(schema$row, schema$start_col),
     c(NA, schema$end_col)
   )
+
+  d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range, col_types = "text") 
+  
+  if (NROW(d) == 0) { return(empty_dhis_tibble()) }
+  
   de_map <- datapackimporter::rCOP18deMapT %>%
     dplyr::select(supportType, pd_2019_S, pd_2019_P, DataPackCode) %>%
     na.omit() %>%
     dplyr::distinct()
   
   mechs <- datapackimporter::mechs
-  
-  d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range, col_types = "text") 
-  
-  if (NROW(d) == 0) { return(empty_dhis_tibble()) }
   
   d<-d %>%
     dplyr::select(-Inactive) %>%
