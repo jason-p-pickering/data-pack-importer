@@ -257,7 +257,9 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
     df_parsed <- ImportSheet(d$wb_info, schema)
     df <- dplyr::bind_rows(df, df_parsed)
   }
-
+  
+  d$data<-df
+  
   # Calculate sums
   if (d$wb_info$wb_type %in% c("HTS", "NORMAL")) {
     df_codes <- unique(datapackimporter::rCOP18deMapT[, c("pd_2019_P", "DataPackCode")]) %>%
@@ -265,7 +267,7 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
       dplyr::distinct()
 
     # Generate the sums
-    sums <- df %>%
+    sums <- d$data %>%
       dplyr::mutate(
         value = as.numeric(value),
         pd_2019_P = paste0(dataelement, ".", categoryoptioncombo)
@@ -292,22 +294,12 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
       dplyr::group_by(match_code) %>%
       dplyr::summarise(value = sum(value)) %>%
       dplyr::mutate(value = round_trunc(value))
-  } else {
-    sums <- NULL
+    d$sums<-sums
   }
 
   # Import the follow on mechs
   if (d$wb_info$wb_type == "NORMAL") {
-    follow_on_mechs <- ImportFollowOnMechs(d$wb_info)
-  } else {
-    follow_on_mechs <- NULL
-  }
+    d <- ImportFollowOnMechs(d) } 
   
-  return(list(
-    wb_info = d$wb_info,
-    schemas = d$schemas,
-    follow_on_mechs = follow_on_mechs,
-    sums = sums,
-    data = df
-  ))
+  return(d)
 }
