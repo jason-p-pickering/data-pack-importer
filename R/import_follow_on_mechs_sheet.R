@@ -1,3 +1,4 @@
+
 validate_follow_on_mechs_sheet<-function(d_follow_on,d) {
   
   is_valid<-TRUE
@@ -65,6 +66,7 @@ validate_follow_on_mechs_sheet<-function(d_follow_on,d) {
   return(is_valid)
   
 }
+
 #' @export
 #' @title ImportFollowOnMechs(d)
 #'
@@ -81,10 +83,12 @@ ImportFollowOnMechs <- function(d) {
   
   sheet_to_import <- "Follow on Mech List"
   schema <- rlist::list.find(d$schemas$schema, sheet_name == sheet_to_import)[[1]]
+
   cell_range <- readxl::cell_limits(
     c(schema$row, schema$start_col),
     c(NA, schema$end_col)
   )
+
   d_follow_on <-
     readxl::read_excel(
       d$wb_info$wb_path,
@@ -103,6 +107,7 @@ ImportFollowOnMechs <- function(d) {
   } 
   
   return(d)
+  
 }
 
 

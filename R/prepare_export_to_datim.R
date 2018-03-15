@@ -13,6 +13,9 @@ prepare_export_to_datim <- function(d) {
     file_prefix <- "/site_import_"
   }
   
+  d$data <- d$data %>%
+    dplyr::mutate(value = as.character(round_trunc(as.numeric(value)))) %>%
+    dplyr::filter(!(value < 1))
   
   #Compute HTS_TST Numerator values from HTS Tools
   if (d$wb_info$wb_type %in% c("HTS_SITE","HTS")) {
@@ -46,8 +49,6 @@ prepare_export_to_datim <- function(d) {
   }
   
   export_data <- d$data %>%
-    dplyr::mutate(value = as.character(round_trunc(as.numeric(value)))) %>%
-    dplyr::filter(!(value < 1)) %>%
     dplyr::select(
       dataelement,
       period,
