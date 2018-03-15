@@ -83,7 +83,7 @@ import_site_tool_sheet<-function(wb_info, schema) {
   d <- d %>%
     dplyr::mutate(
       mech_code = stringi::stri_extract_first_regex(Mechanism, "^[0-9]{4,5}(?=\\s-)"),
-      orgunit = stringi::stri_extract_first_regex(Site, "(?<=\\()([A-Za-z][A-Za-z0-9]{10})(?=\\))"),
+      orgunit = stringi::stri_extract_first_regex(Site, "(?<=\\()([A-Za-z][A-Za-z0-9]{10})(?=\\)$)"),
       DataPackCode = paste0(variable, "_", tolower(Type)),
       period = "2018Oct"
     )
