@@ -20,6 +20,9 @@ prepare_export_to_datim <- function(d) {
   #Compute HTS_TST Numerator values from HTS Tools
   if (d$wb_info$wb_type %in% c("HTS_SITE","HTS")) {
     
+    d$data <- d$data %>%
+      dplyr::filter(!dataelement %in% c('Z8ipcHlKg28','cnuIrFiHdYf'))
+    
     hts_codes <- datapackimporter::rCOP18deMapT %>%
       dplyr::filter(indicator=="HTS_TST" & !is.na(DataPackCode) & !is.na(pd_2019_P) & Modality !="") %>%
       tidyr::separate(pd_2019_S,into=c("pd_2019_S_de","pd_2019_S_coc"),sep="\\.",remove=T) %>%
