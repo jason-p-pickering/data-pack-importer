@@ -2,15 +2,15 @@
 % Please edit documentation in R/import_follow_on_mechs_sheet.R
 \name{ImportFollowOnMechs}
 \alias{ImportFollowOnMechs}
-\title{ImportFollowOnMechs(wb_info)}
+\title{ImportFollowOnMechs(d)}
 \usage{
-ImportFollowOnMechs(wb_info)
+ImportFollowOnMechs(d)
 }
 \arguments{
-\item{wb_info}{Workbook info object.}
+\item{d}{Object from import sheets}
 }
 \value{
-A data  frame with three columns Closing Out, Follow On, Notes.
+An data object with a follow on mechs sheet object. NULL if blank. 
 If this sheet is blank, returns NULL.
 }
 \description{

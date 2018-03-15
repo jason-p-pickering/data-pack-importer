@@ -35,8 +35,6 @@ get_percentage_distribution <- function(d,type) {
   if (!is.null(d$follow_on_mechs)) {
     
     followOns <- d$follow_on_mechs %>%
-      dplyr::mutate(closingCode = as.character(`Closing Out`),
-                    followOnCode = as.character(`Follow on`)) %>%
       dplyr::left_join(mechs, by = c("closingCode" = "code")) %>%
       dplyr::select(closingCode, closingUID = uid, followOnCode) %>%
       dplyr::left_join(mechs, by = c("followOnCode" = "code")) %>%

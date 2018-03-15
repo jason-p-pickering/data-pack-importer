@@ -5,10 +5,15 @@ support_files <- test_support_files_directory()
 distribution_method<-2017
 
 setup_mechs<-function() {
-  mech_list<-data.frame(mechanism="70013 - [Placeholder - 70013 Botswana USAID]",
+  mech_A<-list(mechanism="70013 - [Placeholder - 70013 Botswana USAID]",
                         code="70013",
              uid="BooXMSFBYBU",
-             ou="Botswana",stringsAsFactors = FALSE)
+             ou="Botswana")
+  mech_B<-list(mechanism="70014 - [Placeholder - 70014 Botswana USAID]",
+               code="70014",
+               uid="eda4jL580Kb",
+               ou="Botswana")
+  mech_list<-rbind.data.frame(mech_A,mech_B,stringsAsFactors = FALSE)
   saveRDS(mech_list,file=paste0(test_support_files_directory(),"mech_list.rda"))
 }
 
