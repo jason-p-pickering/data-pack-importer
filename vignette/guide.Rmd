@@ -134,28 +134,41 @@ d<-d2Parser(file=filename,
 then run these one by one:
 
 ```{r eval=FALSE}
-getInvalidMechanisms(d,ISO="2018Oct")
+getInvalidMechanisms(d)
 ```
+
+For site level tools, invoke this command: 
 
 ```{r eval=FALSE}
-getInvalidDataElements(d)
+getInvalidDataElements(d,c("eyI0UOWJnDk","l796jk9SW7q")
 ```
-You should get a long list of options (over 100) and should choose the following numbers:
 
-- 82: `MER Target Setting: PSNU (Facility and Community Combined)`
-- 100: `Planning Attributes: COP Prioritization SNU`
+For PSNU level tools, invoke this command
 
-So type in: `82 100` and hit `ENTER`.
+```{r eval=FALSE}
+getInvalidDataElements(d,c("msJImKkTJkV","pTuDWXzkAkJ"))
+```
+
+For both of these commands, you should not get any rows returned from the function. 
 
 Then run remaining code (one by one or together should work):
-```
+
+```{r eval=FALSE}
 checkValueTypeCompliance(d)
 vr_violations<-validateData(data = d,
                             return_violations_only = TRUE,
                             parallel = FALSE)
-View(vr_violations)
+                            
+vr_rules<-getValidationRules()
+cop_18_des<-getValidDataElements(datasets=c("l796jk9SW7q","eyI0UOWJnDk","msJImKkTJkV"))
+match<-paste(unique(cop_18_des$dataelementuid),sep="",collapse="|")
+vr_filter<-vr_rules[grepl(match,vr_rules$leftSide.expression) & grepl(match,vr_rules$rightSide.expression),"id"]
+vr_violations<-vr_violations[ vr_violations$id %in% vr_filter,]
+diff<-gsub(" <= ","/",vr_violations$formula)
+vr_violations$diff<-sapply(diff,function(x) { round( ( eval(parse(text=x)) -1 ) * 100 , 2) })
 write.csv(vr_violations,file="validation_violations.csv")
 ```
+
 You can download the resulting file by checking the checkbox next to the appropriate file in the file panel, then by clicking More and selecting Export.
 
 If the validation passes, reroute file to Tier III.
