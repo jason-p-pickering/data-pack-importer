@@ -123,7 +123,7 @@ import_disagg_tool_sheet <- function(wb_info, schema) {
       value
     )
   # At this point, there should be no significant negative numbers
-  check_negative_numbers(d, schema$sheet_name)
+  check_negative_numbers(d, schema)
 
   return(d)
 }
