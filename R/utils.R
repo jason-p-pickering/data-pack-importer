@@ -31,18 +31,19 @@ check_mechs_by_code <- function(d, wb_info, sheet_name ) {
       "The following mechanisms in sheet ", sheet_name, " were invalid:",
       paste(invalid_mechs, sep = "", collapse = ";")
     )
-    stop(msg)
+    warning(msg)
     return(FALSE)
   }
   return(TRUE)
 }
 
-check_negative_numbers <- function(d, sheet_name) {
+check_negative_numbers <- function(d, schema) {
+  
   has_negative_numbers <- as.numeric(d$value) < 0
   
   if (any(has_negative_numbers)) {
-    warning("Negative values were found in the data in sheet ", sheet_name, "!")
-    warning(paste0(utils::capture.output(d[which(has_negative_numbers), ]), collapse = "\n"))
+   msg<-paste0("Negative values were found in sheet ", schema$sheet_name )
+   warning(msg)
   } else {
     return(NULL)
   }
@@ -63,4 +64,16 @@ empty_dhis_tibble<-function()  {
     "attributeoptioncombo" = character(),
     "value" = character()
   ) 
+}
+
+
+divide_evenly<-function(x,n) {
+  if (n == 0 ) {
+    stop("N must be greater than 0")
+  }
+  if (n == 1 ) {
+    return(x)  }
+  a<-rep(x %/% n,n)
+  b <- 1:n <= x %% n
+  sample(a + b,n)
 }
