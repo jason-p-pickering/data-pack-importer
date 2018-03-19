@@ -58,21 +58,23 @@ prepare_export_to_datim <- function(d) {
     dplyr::mutate(value = as.character(round_trunc(as.numeric(value)))) %>%
     dplyr::filter(!(value < 1))
   
-  #We need to be sure we ONLY have HTS data here. 
   
-  hts_codes <- datapackimporter::rCOP18deMapT %>%
-    dplyr::filter( indicator == "HTS_TST" & !is.na(DataPackCode) & !is.na(pd_2019_P)) %>%
-    tidyr::separate(pd_2019_S,into=c("pd_2019_S_de","pd_2019_S_coc"),sep="\\.",remove=T) %>%
-    tidyr::separate(pd_2019_P,into=c("pd_2019_P_de","pd_2019_P_coc"),sep="\\.",remove=T) %>%
-    dplyr::select(pd_2019_S_de, pd_2019_P_de, supportType, Modality) %>%
-    dplyr::distinct()
-  
-    hts_des <- c(hts_codes[, "pd_2019_S_de"], hts_codes[, "pd_2019_P_de"])
-  #Only HTS data should be here
-  d$data <- d$data %>% dplyr::filter(dataelement %in% hts_des)
 
   #Compute HTS_TST Numerator values from HTS Modalities
   if (d$wb_info$wb_type %in% c("HTS_SITE","HTS")) {
+    
+    #We need to be sure we ONLY have HTS data here. 
+    
+    hts_codes <- datapackimporter::rCOP18deMapT %>%
+      dplyr::filter( indicator == "HTS_TST" & !is.na(DataPackCode) & !is.na(pd_2019_P)) %>%
+      tidyr::separate(pd_2019_S,into=c("pd_2019_S_de","pd_2019_S_coc"),sep="\\.",remove=T) %>%
+      tidyr::separate(pd_2019_P,into=c("pd_2019_P_de","pd_2019_P_coc"),sep="\\.",remove=T) %>%
+      dplyr::select(pd_2019_S_de, pd_2019_P_de, supportType, Modality) %>%
+      dplyr::distinct()
+    
+    hts_des <- c(hts_codes[, "pd_2019_S_de"], hts_codes[, "pd_2019_P_de"])
+    #Only HTS data should be here
+    d$data <- d$data %>% dplyr::filter(dataelement %in% hts_des)
     
     hts_numerator_codes <- hts_codes %>% 
       dplyr::filter( Modality !="") 
