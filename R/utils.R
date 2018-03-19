@@ -65,3 +65,15 @@ empty_dhis_tibble<-function()  {
     "value" = character()
   ) 
 }
+
+
+divide_evenly<-function(x,n) {
+  if (n == 0 ) {
+    stop("N must be greater than 0")
+  }
+  if (n == 1 ) {
+    return(x)  }
+  a<-rep(x %/% n,n)
+  b <- 1:n <= x %% n
+  sample(a + b,n)
+}
