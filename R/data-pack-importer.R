@@ -19,13 +19,13 @@ ValidateSheet <- function(d, this_sheet) {
   )
   fields_got <- tryCatch(
     {
-        names(
-          readxl::read_excel(
-            d$wb_info$wb_path,
-            sheet = this_sheet,
-            range = cell_range,
-            col_types = "text"
-          ))
+      names(
+        readxl::read_excel(
+          d$wb_info$wb_path,
+          sheet = this_sheet,
+          range = cell_range,
+          col_types = "text"
+        ))
     },
     error = function(err) {
       msg<-paste0("Could not parse sheet ", this_sheet,". File may be corrupt!")
@@ -36,7 +36,7 @@ ValidateSheet <- function(d, this_sheet) {
   
   fields_want <- unlist(schema$fields, use.names = FALSE)
   all_good <- all(fields_want == fields_got)
-
+  
   if (!all_good) {
     fields_compare <- data.frame(wanted = fields_want, got = fields_got, stringsAsFactors = FALSE) %>%
       dplyr::mutate(ok = fields_want == fields_got) %>%
@@ -45,7 +45,7 @@ ValidateSheet <- function(d, this_sheet) {
     print(fields_compare)
     return(FALSE)
   }
-
+  
   return(TRUE)
 }
 
@@ -83,23 +83,23 @@ GetWorkbookInfo <- function(wb_path, distribution_method=NA, support_files_path=
   if (!file.exists(wb_path)) {
     stop("Workbook could not be read!")
   }
-
+  
   if (is.na(support_files_path)) {
     # Supporting files directory
     support_files_path <- readline("Please provide the path to DataPack Support Files:")
   }
-
+  
   if (!stringr::str_detect(support_files_path, "\\/$")) {
     stop("support_files_path must include a final slash!")
   }
-
+  
   if (!dir.exists(support_files_path)) {
     stop("Could not access support files directory!")
   }
-
-
+  
+  
   wb_type <- names(readxl::read_excel(wb_path, sheet = "Home", range = "O3"))
-
+  
   if (wb_type == "normal") {
     wb_type <- "NORMAL"
     distribution_method <- get_distribution_method(distribution_method)
@@ -117,7 +117,7 @@ GetWorkbookInfo <- function(wb_path, distribution_method=NA, support_files_path=
   } else {
     stop("Unknown DataPack type!")
   }
-
+  
   ou_uid <- names(readxl::read_excel(wb_path, sheet = "Home", range = "O4"))
   ou_name <- names(readxl::read_excel(wb_path, sheet = "Home", range = "O1"))
   return(list(
@@ -156,8 +156,8 @@ ValidateWorkbook <- function(wb_path, distribution_method=NA, support_files_path
       distribution_method = distribution_method,
       support_files_path = support_files_path
     )
-
-
+  
+  
   all_sheets <- readxl::excel_sheets(path = d$wb_info$wb_path)
   expected_sheets <- unlist(sapply(d$schemas$schema, `[`, c("sheet_name")), use.names = FALSE)
   all_there <- expected_sheets %in% all_sheets
@@ -214,7 +214,7 @@ ImportSheet <- function(wb_info, schema) {
     #TODO: Error out here instead
     d <- empty_dhis_tibble()
   }
-
+  
   return(d)
 }
 
@@ -236,7 +236,7 @@ ImportSheet <- function(wb_info, schema) {
 ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=NA) {
   d <-
     ValidateWorkbook(wb_path, distribution_method, support_files_path)
-
+  
   sheets <-
     unlist(sapply(d$schemas$schema, `[`, c("sheet_name")), use.names = FALSE)
   df <- tibble::tibble(
@@ -249,9 +249,9 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
   )
   actual_sheets <- readxl::excel_sheets(d$wb_info$wb_path)
   sheets_to_import <- actual_sheets[actual_sheets %in% sheets]
-
+  
   sheet_name <- NULL
-
+  
   for (i in 1:length(sheets_to_import)) {
     schema <- rlist::list.find(d$schemas$schema, sheet_name == sheets_to_import[i])[[1]]
     df_parsed <- ImportSheet(d$wb_info, schema)
@@ -265,7 +265,7 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
     df_codes <- unique(datapackimporter::rCOP18deMapT[, c("pd_2019_P", "DataPackCode")]) %>%
       na.omit() %>%
       dplyr::distinct()
-
+    
     # Generate the sums
     sums <- d$data %>%
       dplyr::mutate(
@@ -278,9 +278,9 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
       dplyr::select(match_code, value) %>%
       dplyr::group_by(match_code) %>%
       dplyr::summarise(value = sum(value, na.rm = TRUE))
-
+    
     # Pad with zeros
-
+    
     df_zeros <- df_codes %>%
       dplyr::mutate(match_code = gsub("_dsd$", "", DataPackCode)) %>%
       dplyr::mutate(match_code = gsub("_ta$", "", match_code)) %>%
@@ -288,7 +288,7 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
       dplyr::distinct() %>%
       dplyr::select(match_code) %>%
       dplyr::mutate(value = 0)
-
+    
     sums <- sums %>%
       dplyr::bind_rows(df_zeros) %>%
       dplyr::group_by(match_code) %>%
@@ -296,7 +296,7 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
       dplyr::mutate(value = round_trunc(value))
     d$sums<-sums
   }
-
+  
   # Import the follow on mechs
   if (d$wb_info$wb_type == "NORMAL") {
     d <- ImportFollowOnMechs(d) } 
