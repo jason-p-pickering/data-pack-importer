@@ -37,7 +37,7 @@ distribution_method<-2017
 template_copy<-generate_negative_values()
 #Warning is expected with negative values
 expect_warning(d<-ImportSheets(template_copy, support_files=support_files, distribution_method),
-               "Negative values were found in the data in sheet GEND_GBV!") 
+               "Negative values were found in sheet GEND_GBV") 
 expect_equal(d$data$dataelement, "NTzodLPuWgg")
 expect_equal(d$data$period,"2018Oct")
 expect_equal(d$data$orgunit,"Y6TnOG79VvP")

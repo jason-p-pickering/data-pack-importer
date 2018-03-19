@@ -91,7 +91,7 @@ import_site_tool_sheet<-function(wb_info, schema) {
   #Data checks
   get_site_tool_duplicates(d,sheet_name = schema$sheet_name)
   check_mechs_by_code(d = d, wb_info = wb_info, sheet_name = schema$sheet_name)
-  check_negative_numbers(d, sheet_name = schema$sheet_name)
+  check_negative_numbers(d, schema)
   
   #DHIS2 form
   d <- d %>%
