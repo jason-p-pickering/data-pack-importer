@@ -59,12 +59,10 @@ prepare_export_to_datim <- function(d) {
     dplyr::filter(!(value < 1))
   
   
-
   #Compute HTS_TST Numerator values from HTS Modalities
   if (d$wb_info$wb_type %in% c("HTS_SITE","HTS")) {
     
-    #We need to be sure we ONLY have HTS data here. 
-    
+    #We need to be sure we ONLY have HTS data here.
     hts_codes <- datapackimporter::rCOP18deMapT %>%
       dplyr::filter( indicator == "HTS_TST" & !is.na(DataPackCode) & !is.na(pd_2019_P)) %>%
       tidyr::separate(pd_2019_S,into=c("pd_2019_S_de","pd_2019_S_coc"),sep="\\.",remove=T) %>%
@@ -72,7 +70,7 @@ prepare_export_to_datim <- function(d) {
       dplyr::select(pd_2019_S_de, pd_2019_P_de, supportType, Modality) %>%
       dplyr::distinct()
     
-    hts_des <- c(hts_codes[, "pd_2019_S_de"], hts_codes[, "pd_2019_P_de"])
+    hts_des <- c(hts_codes[,"pd_2019_S_de"], hts_codes[, "pd_2019_P_de"])
     #Only HTS data should be here
     d$data <- d$data %>% dplyr::filter(dataelement %in% hts_des)
     
@@ -80,7 +78,7 @@ prepare_export_to_datim <- function(d) {
       dplyr::filter( Modality !="") 
     
     d_hts <- d$data %>%
-      dplyr::filter(dataelement %in% dplyr::case_when(d$wb_info$wb_type=="HTS_SITE" ~ hts_numerator_codes $pd_2019_S_de,
+      dplyr::filter(dataelement %in% dplyr::case_when(d$wb_info$wb_type=="HTS_SITE" ~ hts_numerator_codes$pd_2019_S_de,
                                                       d$wb_info$wb_type=="HTS" ~ hts_numerator_codes$pd_2019_P_de)) %>%
       dplyr::inner_join(hts_codes,by=c("dataelement" =
                                         dplyr::case_when(d$wb_info$wb_type=="HTS_SITE" ~ "pd_2019_S_de",
