@@ -44,7 +44,7 @@ disagg_tools="/vagrant/disagg_tools/"
 disagg_tool=paste0(disagg_tools, filename)
 
 #Parse the PNSU data
-DataPackR(disagg_tool, distribution_method = distribution_year, support_files_path = support_files)
+d<-DataPackR(disagg_tool, distribution_method = distribution_year, support_files_path = support_files)
 ```
 
 It creates the following files:
