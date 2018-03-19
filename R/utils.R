@@ -37,12 +37,13 @@ check_mechs_by_code <- function(d, wb_info, sheet_name ) {
   return(TRUE)
 }
 
-check_negative_numbers <- function(d, sheet_name) {
+check_negative_numbers <- function(d, schema) {
+  
   has_negative_numbers <- as.numeric(d$value) < 0
   
   if (any(has_negative_numbers)) {
-    warning("Negative values were found in the data in sheet ", sheet_name, "!")
-    warning(paste0(utils::capture.output(d[which(has_negative_numbers), ]), collapse = "\n"))
+   msg<-paste0("Negative values were found in sheet ", schema$sheet_name )
+   warning(msg)
   } else {
     return(NULL)
   }
