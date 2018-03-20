@@ -100,5 +100,13 @@ import_site_tool_sheet<-function(wb_info, schema) {
     tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
     dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo = uid, value)
   
+  check_missing<-function(x) {
+    any(!complete.cases(x))
+  }
+  
+  if (check_missing(d) & NROW(d) > 0 ) {
+    warning("Duplicates found in sheet",schema$sheet_name)
+  }
+  
   return(d)
 }
