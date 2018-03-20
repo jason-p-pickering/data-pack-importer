@@ -25,13 +25,6 @@ get_site_tool_duplicates <- function(d,sheet_name) {
   }
 }
 
-check_missing_field<-function(d,schema,field){
-  foo<- d %>% dplyr::pull(field)
-  if (any(is.na(foo))) {
-    warning(paste0("Missing rows in detected in sheet ", schema$sheet_name, " in field `", field,"`"))
-  }
-}
-
 #' import_site_tool
 #'
 #' @param wb_info Workbook info object
@@ -70,9 +63,9 @@ import_site_tool_sheet<-function(wb_info, schema) {
     # Dedupe should always be dropped.
     dplyr::filter(., !(Mechanism %in% c("0", "00000", "1", "00001")))
 
-  check_missing_field(d=d,schema = schema,field = "Type")
-  check_missing_field(d,schema,field="Mechanism")
-  check_missing_field(d,schema,field="Site")
+  check_missing_field(d, schema, field = "Type")
+  check_missing_field(d, schema, field="Mechanism")
+  check_missing_field(d, schema, field="Site")
   
   unallocated <- dplyr::filter(d, grepl("NOT YET DISTRIBUTED", Site)) %>%
     dplyr::pull(Site) %>%
