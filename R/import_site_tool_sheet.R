@@ -27,7 +27,7 @@ get_site_tool_duplicates <- function(d,sheet_name) {
 
 check_missing_type<-function(d,schema){
   if (any(is.na(d$Type))) {
-    warning("Missing type detected in sheet ", schema$sheet_name,". Must be DSD or TA!")
+    warning(paste("Missing type detected in sheet ", schema$sheet_name,". Must be DSD or TA!"))
   }
 }
 
@@ -106,12 +106,12 @@ import_site_tool_sheet<-function(wb_info, schema) {
     tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
     dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo = uid, value)
   
-  check_missing<-function(x) {
+  check_any_missing<-function(x) {
     any(!complete.cases(x))
   }
   
-  if (check_missing(d) & NROW(d) > 0 ) {
-    warning("Duplicates found in sheet",schema$sheet_name)
+  if (check_any_missing(d) & NROW(d) > 0 ) {
+    warning(paste("Duplicates found in sheet",schema$sheet_name))
   }
   
   return(d)
