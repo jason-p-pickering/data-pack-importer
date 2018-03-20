@@ -25,6 +25,11 @@ get_site_tool_duplicates <- function(d,sheet_name) {
   }
 }
 
+check_missing_type<-function(d,schema){
+  if (any(is.na(d$Type))) {
+    warning("Missing type detected in sheet ", schema$sheet_name,". Must be DSD or TA!")
+  }
+}
 
 #' import_site_tool
 #'
@@ -92,10 +97,11 @@ import_site_tool_sheet<-function(wb_info, schema) {
   get_site_tool_duplicates(d,sheet_name = schema$sheet_name)
   check_mechs_by_code(d = d, wb_info = wb_info, sheet_name = schema$sheet_name)
   check_negative_numbers(d, schema)
+  check_missing_type(d,schema)
   
   #DHIS2 form
   d <- d %>%
-    dplyr::left_join(mechs, by = c("mech_code" = "code")) %>%
+    dplyr::inner_join(mechs, by = c("mech_code" = "code")) %>%
     dplyr::left_join(de_map, by = "DataPackCode") %>%
     tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
     dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo = uid, value)
