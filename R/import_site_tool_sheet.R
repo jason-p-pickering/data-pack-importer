@@ -25,9 +25,10 @@ get_site_tool_duplicates <- function(d,sheet_name) {
   }
 }
 
-check_missing_type<-function(d,schema){
-  if (any(is.na(d$Type))) {
-    warning(paste("Missing type detected in sheet ", schema$sheet_name,". Must be DSD or TA!"))
+check_missing_field<-function(d,schema,field){
+  foo<- d %>% dplyr::pull(field)
+  if (any(is.na(foo))) {
+    warning(paste0("Missing rows in detected in sheet ", schema$sheet_name, " in field `", field,"`"))
   }
 }
 
@@ -68,6 +69,10 @@ import_site_tool_sheet<-function(wb_info, schema) {
     # Special handling for dedupe which is coerced to 0 and 1
     # Dedupe should always be dropped.
     dplyr::filter(., !(Mechanism %in% c("0", "00000", "1", "00001")))
+
+  check_missing_field(d=d,schema = schema,field = "Type")
+  check_missing_field(d,schema,field="Mechanism")
+  check_missing_field(d,schema,field="Site")
   
   unallocated <- dplyr::filter(d, grepl("NOT YET DISTRIBUTED", Site)) %>%
     dplyr::pull(Site) %>%
@@ -97,12 +102,11 @@ import_site_tool_sheet<-function(wb_info, schema) {
   get_site_tool_duplicates(d,sheet_name = schema$sheet_name)
   check_mechs_by_code(d = d, wb_info = wb_info, sheet_name = schema$sheet_name)
   check_negative_numbers(d, schema)
-  check_missing_type(d,schema)
-  
+
   #DHIS2 form
   d <- d %>%
     dplyr::inner_join(mechs, by = c("mech_code" = "code")) %>%
-    dplyr::left_join(de_map, by = "DataPackCode") %>%
+    dplyr::inner_join(de_map, by = "DataPackCode") %>%
     tidyr::separate(., pd_2019_S, c("dataelement", "categoryoptioncombo")) %>%
     dplyr::select(dataelement, period, orgunit, categoryoptioncombo, attributeoptioncombo = uid, value)
   
