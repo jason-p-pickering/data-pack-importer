@@ -105,9 +105,11 @@ test_that("can validate good NORMAL template" , {
    file.copy(from = test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"), to=template_copy)
    wb = openxlsx::loadWorkbook(template_copy)
    openxlsx::writeData(wb = wb,sheet="Home", x="Botswana",xy = c(15,1))
-   openxlsx::writeData(wb = wb,sheet="Home", x="foo",xy = c(15,3))
+   openxlsx::writeData(wb = wb,sheet="Home", x="",xy = c(15,3))
    openxlsx::writeData(wb = wb,sheet="Home", x="l1KFEXKI4Dg",xy = c(15,4))
    openxlsx::saveWorkbook(wb = wb,file = template_copy,overwrite = TRUE)
-   
- })
+   expect_error(ValidateWorkbook(template_copy,
+                    support_files=support_files, distribution_method),
+                "Are you sure this is a disagg or site review tool?")
+   unlink(template_copy)})
  
