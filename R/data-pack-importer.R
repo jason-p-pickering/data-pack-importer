@@ -97,8 +97,11 @@ GetWorkbookInfo <- function(wb_path, distribution_method=NA, support_files_path=
     stop("Could not access support files directory!")
   }
   
-  
   wb_type <- names(readxl::read_excel(wb_path, sheet = "Home", range = "O3"))
+  
+  if (is.na(wb_type) | !(wb_type %in% c("normal","hts","NORMAL_SITE","HTS_SITE")) ) {
+    stop("Are you sure this is a disagg or site review tool?")
+  }
   
   if (wb_type == "normal") {
     wb_type <- "NORMAL"
