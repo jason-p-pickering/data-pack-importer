@@ -98,3 +98,18 @@ test_that("can validate good NORMAL template" , {
                                   support_files=support_files, distribution_method)))
    unlink(template_copy)})
  
+ test_that("can fail if not a valid type of tool" , {
+   support_files <- test_support_files_directory()
+   distribution_method<-2017
+   template_copy=paste0(tempfile(),".xlsx")
+   file.copy(from = test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx"), to=template_copy)
+   wb = openxlsx::loadWorkbook(template_copy)
+   openxlsx::writeData(wb = wb,sheet="Home", x="Botswana",xy = c(15,1))
+   openxlsx::writeData(wb = wb,sheet="Home", x="",xy = c(15,3))
+   openxlsx::writeData(wb = wb,sheet="Home", x="l1KFEXKI4Dg",xy = c(15,4))
+   openxlsx::saveWorkbook(wb = wb,file = template_copy,overwrite = TRUE)
+   expect_error(ValidateWorkbook(template_copy,
+                    support_files=support_files, distribution_method),
+                "Are you sure this is a disagg or site review tool?")
+   unlink(template_copy)})
+ 
