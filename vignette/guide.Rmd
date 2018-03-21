@@ -140,7 +140,7 @@ getInvalidMechanisms(d)
 For site level tools, invoke this command: 
 
 ```{r eval=FALSE}
-getInvalidDataElements(d,c("eyI0UOWJnDk","l796jk9SW7q")
+getInvalidDataElements(d,c("eyI0UOWJnDk","l796jk9SW7q"))
 ```
 
 For PSNU level tools, invoke this command
