@@ -66,6 +66,12 @@ empty_dhis_tibble<-function()  {
   ) 
 }
 
+check_missing_field<-function(d,schema,field){
+  foo<- d %>% dplyr::pull(field)
+  if (any(is.na(foo))) {
+    warning(paste0("Missing rows in detected in sheet ", schema$sheet_name, " in field `", field,"`"))
+  }
+}
 
 divide_evenly<-function(x,n) {
   if (n == 0 ) {
