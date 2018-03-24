@@ -149,6 +149,12 @@ For PSNU level tools, invoke this command
 getInvalidDataElements(d,c("msJImKkTJkV","pTuDWXzkAkJ"))
 ```
 
+Mechanisms are associated with specific periods and organisation units. We need to check to be sure that there are no invalid mechanisms in the data payload. Invoke the following command, which should return no rows if all mechanisms are valid. 
+
+```{r eval=FALSE}
+getInvalidMechanisms(d)
+```
+
 For both of these commands, you should not get any rows returned from the function. 
 
 Then run remaining code (one by one or together should work):

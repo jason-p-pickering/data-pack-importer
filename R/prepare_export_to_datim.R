@@ -15,7 +15,8 @@ export_data <- d$data %>%
     attributeoptioncombo,
     value
   ) %>%
-  na.omit()
+  na.omit() %>%
+  dplyr::mutate(value = format(value, scientific = FALSE))
 
 output_file_path <- paste0(
   dirname(d$wb_info$wb_path),
@@ -92,8 +93,7 @@ prepare_export_to_datim <- function(d) {
       dplyr::select(-supportType) %>%
       dplyr::group_by(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo) %>%
       dplyr::summarise(value = sum(value)) %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate_all(as.character)
+      dplyr::ungroup()
     
     d$data <- dplyr::bind_rows(d$data,d_hts)
   }
@@ -102,6 +102,7 @@ prepare_export_to_datim <- function(d) {
   if ( any(duplicated(d$data[,1:5])) ) {
     stop("Duplicates detected in DATIM export object")
   }
+  
   write_datim_export_file(d)
   return(d)
 }
