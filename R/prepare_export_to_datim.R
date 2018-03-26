@@ -36,7 +36,7 @@ utils::write.table(
   row.names = FALSE,
   col.names = TRUE
 )
-print(paste0("Successfully saved output to ", output_file_path))
+message(paste0("Successfully saved output to ", output_file_path))
 
 }
 
@@ -99,7 +99,8 @@ prepare_export_to_datim <- function(d) {
   
   #Be totally sure there is no scientific notation here!
   d$data<- d$data %>% 
-    dplyr::mutate(value = format(value, scientific = FALSE))
+    dplyr::mutate(value = 
+                    trimws(format(value,scientific = FALSE)))
   
   #Check any duplicates
   if ( any(duplicated(d$data[,1:5])) ) {
