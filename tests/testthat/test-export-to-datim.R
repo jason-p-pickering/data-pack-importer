@@ -147,3 +147,34 @@ test_that("can exclude hts keypops data", {
   expect_equal(sum(as.numeric(d$data[d$data$dataelement=="i79NVuApSrF","value"])),500)
   
 })
+
+test_that("can format without scientific notation", {
+  
+  support_files <- 
+    distribution_method<-2017
+  
+  value_a<-list(dataelement = "i79NVuApSrF", # HTS emergency ward
+                period="2018Oct",
+                orgunit="Y6TnOG79VvP",
+                categoryoptioncombo="SYFxsQKDZB6", # Male, 30-34 Pos
+                attributeoptioncombo="BooXMSFBYBU",
+                value="20000000000"
+  )
+  
+  d<-list()
+  d$wb_info$wb_path<-tempfile()
+  d$wb_info$wb_type<-"HTS"
+  d$wb_info$is_clustered<-TRUE
+  d$wb_info$ou_name<-"Botswana"
+  d$wb_info$ou_uid<-"l1KFEXKI4Dg"
+  d$wb_info$support_files_path<-test_support_files_directory()
+  d$wb_info$distribution_method<-2017
+  d$data<-data.frame(value_a,stringsAsFactors = FALSE)
+  
+  d<-prepare_export_to_datim(d)
+  expect_equal(class(d$data$value),"character")
+  #There should be no scientific notation here
+  expect_true(all(d$data$value == "5000000000"))
+  expect_false(all(d$data$value == "5e+09"))
+  
+})

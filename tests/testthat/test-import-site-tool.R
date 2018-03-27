@@ -124,3 +124,34 @@ test_that("can import a site tool", {
   
   unlink(template_copy)
 })
+
+test_that("can not warn on unallocated military data", {
+  
+  support_files <- test_support_files_directory()
+  distribution_method<-2017
+  
+  template_copy=paste0(tempfile(),".xlsx")
+  file.copy(from = test_sheet("SiteLevelReview_TEMPLATE.xlsx"), to=template_copy)
+  wb = openxlsx::loadWorkbook(template_copy)
+  openxlsx::writeData(wb = wb,sheet="Home", x="Botswana",xy = c(15,1))
+  openxlsx::writeData(wb = wb,sheet="Home", x="NORMAL_SITE",xy = c(15,3))
+  openxlsx::writeData(wb = wb,sheet="Home", x="l1KFEXKI4Dg",xy = c(15,4))
+  #Site name
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="_Military Botswana > NOT YET DISTRIBUTED (yDmdrNI3wNW)",xy = c(2,7))
+  #Mechanism name
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="70013 - [Placeholder - 70013 Botswana USAID]",xy = c(3,7))
+  #Type
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="DSD",xy = c(4,7))
+  #Value
+  openxlsx::writeData(wb = wb,sheet="GEND_GBV", x=100,xy = c(5,7))
+  openxlsx::saveWorkbook(wb = wb,file = template_copy,overwrite = TRUE)
+  expect_silent(d<-ImportSheets(template_copy, support_files=support_files, distribution_method))
+  expect_equivalent(names(d),c("wb_info","schemas","data"))
+  expect_equal(d$data$dataelement,"YpXUnecwj4Z")
+  expect_equal(d$data$orgunit, "yDmdrNI3wNW")
+  expect_equal(d$data$period, "2018Oct")
+  expect_equal(d$data$categoryoptioncombo ,"HllvX50cXC0")
+  expect_equal(d$data$attributeoptioncombo , "BooXMSFBYBU")
+  
+  unlink(template_copy)
+})

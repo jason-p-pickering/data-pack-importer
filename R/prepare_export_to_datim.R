@@ -15,8 +15,7 @@ export_data <- d$data %>%
     attributeoptioncombo,
     value
   ) %>%
-  na.omit() %>%
-  dplyr::mutate(value = format(value, scientific = FALSE))
+  na.omit()
 
 output_file_path <- paste0(
   dirname(d$wb_info$wb_path),
@@ -37,7 +36,7 @@ utils::write.table(
   row.names = FALSE,
   col.names = TRUE
 )
-print(paste0("Successfully saved output to ", output_file_path))
+message(paste0("Successfully saved output to ", output_file_path))
 
 }
 
@@ -55,10 +54,10 @@ prepare_export_to_datim <- function(d) {
     d <- distributeCluster(d)
   } 
   
+  #Filter any negative numbers here
   d$data <- d$data %>%
-    dplyr::mutate(value = as.character(round_trunc(as.numeric(value)))) %>%
+    dplyr::mutate(value = round_trunc(as.numeric(value))) %>% 
     dplyr::filter(!(value < 1))
-  
   
   #Compute HTS_TST Numerator values from HTS Modalities
   if (d$wb_info$wb_type %in% c("HTS_SITE","HTS")) {
@@ -97,6 +96,11 @@ prepare_export_to_datim <- function(d) {
     
     d$data <- dplyr::bind_rows(d$data,d_hts)
   }
+  
+  #Be totally sure there is no scientific notation here!
+  d$data<- d$data %>% 
+    dplyr::mutate(value = 
+                    trimws(format(value,scientific = FALSE)))
   
   #Check any duplicates
   if ( any(duplicated(d$data[,1:5])) ) {
