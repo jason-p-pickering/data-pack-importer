@@ -68,6 +68,7 @@ import_site_tool_sheet<-function(wb_info, schema) {
   check_missing_field(d, schema, field="Site")
   
   unallocated <- dplyr::filter(d, grepl("NOT YET DISTRIBUTED", Site)) %>%
+    dplyr::filter(!grepl("_Military",Site)) %>% 
     dplyr::pull(Site) %>%
     unique() %>%
     stringr::str_replace(., " > NOT YET DISTRIBUTED", "")
