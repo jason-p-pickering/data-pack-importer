@@ -92,7 +92,7 @@ prepare_export_to_datim <- function(d) {
                                                    supportType == "TA" & d$wb_info$wb_type == "HTS" ~ "D131hA9xpEx")) %>%
       dplyr::select(-supportType) %>%
       dplyr::group_by(dataelement,period,orgunit,categoryoptioncombo,attributeoptioncombo) %>%
-      dplyr::summarise(value = sum(value)) %>%
+      dplyr::summarise(value = as.character(sum(value))) %>%
       dplyr::ungroup()
     
     d$data <- dplyr::bind_rows(d$data,d_hts)
