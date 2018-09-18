@@ -3,7 +3,7 @@ context("roll_up_hts_data")
 
 test_that("can roll up clustered hts data", {
   
-  support_files <- 
+  support_files <-  test_support_files_directory()
   distribution_method<-2017
   
   value_a<-list(dataelement = "i79NVuApSrF", # HTS emergency ward
@@ -103,8 +103,9 @@ test_that("can roll up non-clustered  psnu hts data", {
 
 test_that("can exclude hts keypops data", {
   
-  support_files <- 
-    distribution_method<-2017
+  support_files<-test_support_files_directory()
+  
+  distribution_method<-2017
   
   value_a<-list(dataelement = "i79NVuApSrF", # HTS emergency ward
                 period="2018Oct",
