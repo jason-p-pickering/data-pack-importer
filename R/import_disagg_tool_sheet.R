@@ -35,6 +35,7 @@ check_psnu_duplicates<-function(d,sheet_name,wb_info) {
 #'
 #'
 import_disagg_tool_sheet <- function(wb_info, schema) {
+  messages<-NULL
   cell_range <- readxl::cell_limits(
     c(schema$row, schema$start_col),
     c(NA, schema$end_col)
@@ -48,7 +49,8 @@ import_disagg_tool_sheet <- function(wb_info, schema) {
   )
 
   if (NROW(d) == 0) {
-    return(empty_dhis_tibble())
+    return(list(sheet_data=empty_dhis_tibble(),
+                messages=NULL))
   }
 
   mechs <- datapackimporter::mechs
@@ -98,7 +100,8 @@ import_disagg_tool_sheet <- function(wb_info, schema) {
   na_orgunits <- is.na(d$orgunit)
   if (any(na_orgunits)) {
     na_rows <- paste((which(na_orgunits) + schema$row), sep = "", collapse = ",")
-    warning(paste("Organisation units with NULL UIDs were found in sheet", schema$sheet_name, "in rows ", na_rows))
+    msg<-paste("Organisation units with NULL UIDs were found in sheet", schema$sheet_name, "in rows ", na_rows)
+    messages<-append(msg,messages)
   }
 
   d <- d %>%
@@ -123,7 +126,9 @@ import_disagg_tool_sheet <- function(wb_info, schema) {
       value
     )
   # At this point, there should be no significant negative numbers
-  check_negative_numbers(d, schema)
-
-  return(d)
+  msg<-check_negative_numbers(d, schema)
+  if(!is.null(msg)) {
+    messages<-append(msg,messages)
+  }
+  return(list(sheet_data=d,messages=messages))
 }

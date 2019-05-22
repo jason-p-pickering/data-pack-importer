@@ -2,10 +2,10 @@
 validate_follow_on_mechs_sheet<-function(d_follow_on,d) {
   
   is_valid<-TRUE
-  
+  messages<-NULL
   #Missing rows
   if ( any( is.na(d_follow_on[,c("closingCode","followOnCode")]) ) ) {
-    warning("Blank mechanisms were found in the Follow-on mechs sheet!")
+    msg<-"Blank mechanisms were found in the Follow-on mechs sheet!"
     is_valid<-FALSE
   }
   
