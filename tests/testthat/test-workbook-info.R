@@ -14,7 +14,8 @@ test_that("can generate workbook info", {
        "ou_uid",
        "is_clustered",
        "distribution_method",
-       "support_files_path")
+       "support_files_path",
+       "messages")
 
        x <-
      GetWorkbookInfo(
@@ -30,10 +31,11 @@ expect_equal(x$wb_info$wb_path, test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx
 expect_is(as.POSIXlt(x$wb_info$timestamp), "POSIXlt")
 expect_equal(x$wb_info$wb_type, "NORMAL")
 expect_equal(x$wb_info$ou_name, "OU")
-expect_equal(x$wb_info$ou_uid, "X__1")
+expect_equal(x$wb_info$ou_uid, "..1")
 expect_equal(x$wb_info$is_clustered, FALSE)
 expect_equal(x$wb_info$distribution_method, distribution_method)
 expect_equal(x$wb_info$support_files_path, support_files)
+expect_type(x$wb_info$messages,"list")
 
 })
 
@@ -81,7 +83,7 @@ test_that("can validate good NORMAL template" , {
    openxlsx::addWorksheet(wb,sheetName = "ExtraSheet")
    openxlsx::writeData(wb = wb,sheet="ExtraSheet", x="Botswana",xy = c(1,1))
    openxlsx::saveWorkbook(wb,file = template_copy,overwrite = TRUE)
-   expect_silent(ValidateWorkbook(template_copy,
+   expect_message(ValidateWorkbook(template_copy,
                                  support_files=support_files, distribution_method))
    unlink(template_copy)})
  
@@ -94,8 +96,15 @@ test_that("can validate good NORMAL template" , {
    openxlsx::removeTable(wb,"GEND_GBV","gend_gbv_T")
    openxlsx::writeData(wb = wb,sheet="GEND_GBV", x="foo",xy = c(48,6))
    openxlsx::saveWorkbook(wb,file = template_copy,overwrite = TRUE)
-   expect_error(suppressWarnings(ValidateWorkbook(template_copy,
+   #This comes from 
+   #
+   #New names:                                                                                                 
+   #   * `` -> `..1`
+   
+   expect_message(suppressWarnings(foo<-ValidateWorkbook(template_copy,
                                   support_files=support_files, distribution_method)))
+   expect_type(foo$wb_info$messages,"list")
+   expect_equal(foo$wb_info$messages[[1]][1],"The following sheets were invalid:GEND_GBV")
    unlink(template_copy)})
  
  test_that("can fail if not a valid type of tool" , {

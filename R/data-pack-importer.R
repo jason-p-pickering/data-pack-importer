@@ -4,11 +4,11 @@
 #' @description Validates the layout of a single sheet based on its schema definition.
 #' @param d Info about the workbook.
 #' @param this_sheet A particular sheet to validate.
-#' @return Returns a boolean value TRUE if the sheet is valid, otherwise, FALSE.
+#' @return Returns the d composite object. 
 #'
 ValidateSheet <- function(d, this_sheet) {
   schema <- rlist::list.find(d$schemas$schema, sheet_name == this_sheet)
-  if (length(schema) != 1) {
+  if ( length(schema) != 1) {
     stop("Could not find the exact schema for this sheet!")
   } else {
     schema <- schema[[1]]
@@ -29,7 +29,7 @@ ValidateSheet <- function(d, this_sheet) {
     },
     error = function(err) {
       msg<-paste0("Could not parse sheet ", this_sheet,". File may be corrupt!")
-      stop(msg)
+      d$wb_info$messages<-append(msg, d$wb_info$messages)
     },
     finally = {}
   )
@@ -41,8 +41,8 @@ ValidateSheet <- function(d, this_sheet) {
     fields_compare <- data.frame(wanted = fields_want, got = fields_got, stringsAsFactors = FALSE) %>%
       dplyr::mutate(ok = fields_want == fields_got) %>%
       dplyr::filter(!ok)
-    warning(paste0("Some fields did not match for ", this_sheet))
-    print(fields_compare)
+    msg <- paste0("Some fields did not match for ", this_sheet)
+    d$wb_info$messages<-append(msg, d$wb_info$messages)
     return(FALSE)
   }
   
@@ -76,7 +76,8 @@ ValidateSheets <- function(d) {
 #'    \item timestamp: Timestamp of when this script was run
 #'    \item wb_type: Should either be HTS or NORMAL
 #'    \item ou_name: Name of the operating unit
-#'    \item ou_uid: UID of the operating unit }
+#'    \item ou_uid: UID of the operating unit
+#'    \item messages: List of warnings and errors }
 #'
 #'
 GetWorkbookInfo <- function(wb_path, distribution_method=NA, support_files_path=NA) {
@@ -132,7 +133,8 @@ GetWorkbookInfo <- function(wb_path, distribution_method=NA, support_files_path=
       ou_uid = ou_uid,
       is_clustered = ou_name %in% datapackimporter::clusters$operatingunit,
       distribution_method = distribution_method,
-      support_files_path = support_files_path
+      support_files_path = support_files_path,
+      messages = list()
     ),
     schemas = schemas
   ))
@@ -168,16 +170,20 @@ ValidateWorkbook <- function(wb_path, distribution_method=NA, support_files_path
   if (!all(all_there)) {
     stop(paste0("Some tables appear to be missing!:", paste(expected_sheets[!(all_there)], sep = "", collapse = ",")))
   }
+  
   validation_results <- ValidateSheets(d)
+  
   if (any(!(validation_results))) {
     invalid_sheets <-
       paste(names(validation_results)[!validation_results], sep = "", collapse = ",")
     msg <- paste0("The following sheets were invalid:", invalid_sheets)
-    stop(msg)
-  } else {
-    return(d)
-  }
+    d$wb_info$messages<-append(msg,d$wb_info$messages)
+  } 
+  
+ return(d)  
+
 }
+
 
 
 
@@ -255,7 +261,7 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
   
   sheet_name <- NULL
   
-  for (i in 1:length(sheets_to_import)) {
+  for ( i in seq_along(sheets_to_import) ) {
     schema <- rlist::list.find(d$schemas$schema, sheet_name == sheets_to_import[i])[[1]]
     df_parsed <- ImportSheet(d$wb_info, schema)
     df <- dplyr::bind_rows(df, df_parsed)
