@@ -211,6 +211,7 @@ ImportSheet <- function(wb_info, schema) {
   
   if (schema$method == "standard") {
     d<-import_disagg_tool_sheet(wb_info,schema)
+    
   } else if (schema$method == "impatt") {
     
     d<-import_impatt_sheet(wb_info,schema)
@@ -221,7 +222,8 @@ ImportSheet <- function(wb_info, schema) {
     
   } else {
     #TODO: Error out here instead
-    d <- empty_dhis_tibble()
+    d <- list(sheet_data=empty_dhis_tibble(),
+              messages=NULL)
   }
   
   return(d)
@@ -264,7 +266,8 @@ ImportSheets <- function(wb_path=NA, distribution_method=NA, support_files_path=
   for ( i in seq_along(sheets_to_import) ) {
     schema <- rlist::list.find(d$schemas$schema, sheet_name == sheets_to_import[i])[[1]]
     df_parsed <- ImportSheet(d$wb_info, schema)
-    df <- dplyr::bind_rows(df, df_parsed)
+    df <- dplyr::bind_rows(df, df_parsed$sheet_data)
+    d$wb_info$messages<-append(df_parsed$messages,d$wb_info$messages)
   }
   
   d$data<-df

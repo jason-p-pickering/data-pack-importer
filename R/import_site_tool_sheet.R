@@ -42,7 +42,8 @@ import_site_tool_sheet<-function(wb_info, schema) {
 
   d <- readxl::read_excel(wb_info$wb_path, sheet = schema$sheet_name, range = cell_range, col_types = "text") 
   
-  if (NROW(d) == 0) { return(empty_dhis_tibble()) }
+  if (NROW(d) == 0) { return(list(sheet_data=empty_dhis_tibble(),
+                                  messages=NULL)) }
   
   de_map <- datapackimporter::rCOP18deMapT %>%
     dplyr::select(supportType, pd_2019_S, pd_2019_P, DataPackCode) %>%
@@ -63,10 +64,21 @@ import_site_tool_sheet<-function(wb_info, schema) {
     # Dedupe should always be dropped.
     dplyr::filter(., !(Mechanism %in% c("0", "00000", "1", "00001")))
 
-  check_missing_field(d, schema, field = "Type")
-  check_missing_field(d, schema, field="Mechanism")
-  check_missing_field(d, schema, field="Site")
+  messages<-NULL
   
+  check_type <- check_missing_field(d, schema, field = "Type")
+ 
+if (!is.null(check_type)) {
+   messages<-check_type
+ }
+  check_mech <- check_missing_field(d, schema, field = "Mechanism")
+if (!is.null(check_mech)) {
+  messages<-append(check_mech,messages)
+}
+  check_site <- check_missing_field(d, schema, field = "Site")
+if (!is.null(check_site)) {
+  messages<-append(check_site,messages)
+}                      
   unallocated <- dplyr::filter(d, grepl("NOT YET DISTRIBUTED", Site)) %>%
     dplyr::pull(Site) %>%
     unique() %>%
@@ -80,7 +92,7 @@ import_site_tool_sheet<-function(wb_info, schema) {
         ":",
         paste(unallocated, sep = "", collapse = ",")
       )
-    warning(msg)
+    messages<-append(msg,messages)
   }
   
   d <- d %>%
@@ -108,8 +120,9 @@ import_site_tool_sheet<-function(wb_info, schema) {
   }
   
   if (check_any_missing(d) & NROW(d) > 0 ) {
-    warning(paste("Duplicates found in sheet",schema$sheet_name))
+    msg<-paste("Duplicates found in sheet",schema$sheet_name)
+    messages<-append(msg,messages)
   }
   
-  return(d)
+  list(sheet_data=d,messages=messages)
 }

@@ -43,7 +43,7 @@ check_negative_numbers <- function(d, schema) {
   
   if (any(has_negative_numbers)) {
    msg<-paste0("Negative values were found in sheet ", schema$sheet_name )
-   warning(msg)
+   return(msg)
   } else {
     return(NULL)
   }
@@ -68,8 +68,11 @@ empty_dhis_tibble<-function()  {
 
 check_missing_field<-function(d,schema,field){
   foo<- d %>% dplyr::pull(field)
+  
   if (any(is.na(foo))) {
-    warning(paste0("Missing rows in detected in sheet ", schema$sheet_name, " in field `", field,"`"))
+    return(paste0("Missing rows in detected in sheet ", schema$sheet_name, " in field `", field,"`"))
+  } else {
+    return(NULL)
   }
 }
 
