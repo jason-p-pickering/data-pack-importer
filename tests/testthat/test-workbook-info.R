@@ -104,7 +104,7 @@ test_that("can validate good NORMAL template" , {
    expect_message(suppressWarnings(foo<-ValidateWorkbook(template_copy,
                                   support_files=support_files, distribution_method)))
    expect_type(foo$wb_info$messages,"list")
-   expect_equal(foo$wb_info$messages[[1]][1],"The following sheets were invalid:GEND_GBV")
+   expect_type(foo$wb_info$messages[[1]][1],"character")
    unlink(template_copy)})
  
  test_that("can fail if not a valid type of tool" , {
