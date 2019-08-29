@@ -30,7 +30,7 @@ expect_equal(x$wb_info$wb_path, test_sheet("COP18DisaggToolTemplate_5304cdb.xlsx
 expect_is(as.POSIXlt(x$wb_info$timestamp), "POSIXlt")
 expect_equal(x$wb_info$wb_type, "NORMAL")
 expect_equal(x$wb_info$ou_name, "OU")
-expect_equal(x$wb_info$ou_uid, "X__1")
+expect_equal(x$wb_info$ou_uid, "...1")
 expect_equal(x$wb_info$is_clustered, FALSE)
 expect_equal(x$wb_info$distribution_method, distribution_method)
 expect_equal(x$wb_info$support_files_path, support_files)
@@ -81,7 +81,7 @@ test_that("can validate good NORMAL template" , {
    openxlsx::addWorksheet(wb,sheetName = "ExtraSheet")
    openxlsx::writeData(wb = wb,sheet="ExtraSheet", x="Botswana",xy = c(1,1))
    openxlsx::saveWorkbook(wb,file = template_copy,overwrite = TRUE)
-   expect_silent(ValidateWorkbook(template_copy,
+   expect_message(ValidateWorkbook(template_copy,
                                  support_files=support_files, distribution_method))
    unlink(template_copy)})
  
