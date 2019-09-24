@@ -109,3 +109,11 @@
 #'
 #' @format Schema of the Normal site level tool
 "main_site_schema"
+
+#' @docType data
+#' @title validation_rules
+#' @description Dataframe of validatation rules used for COP18
+#' @usage data(validation_rules)
+#'
+#' @format Dataframe of validatation rules used for COP18
+"validation_rules"
