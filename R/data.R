@@ -111,9 +111,9 @@
 "main_site_schema"
 
 #' @docType data
-#' @title validation_rules
+#' @title vr
 #' @description Dataframe of validatation rules used for COP18
-#' @usage data(validation_rules)
+#' @usage data(vr)
 #'
 #' @format Dataframe of validatation rules used for COP18
-"validation_rules"
+"vr"
