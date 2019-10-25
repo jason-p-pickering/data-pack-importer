@@ -98,8 +98,7 @@ produceSiteToolSchemas <- function(sheet_path,mode) {
 processMechs<-function() {
   
   url<-paste0(getOption("baseurl"),"api/sqlViews/fgUtV6e9YIX/data.csv")
-  d<-read.csv(url,stringsAsFactors = FALSE)
-  return(d[,c("code","uid")])
+  read.csv(url,stringsAsFactors = FALSE)
 }
 
 
@@ -242,7 +241,7 @@ generate_support_files_schemas<- function(support_files_path) {
     "distrClusterFY18.rda",
     "distrSiteFY17.rda" ,
     "distrSiteFY18.rda" ,
-    "mech_list.rda",
+    "mechs.rda",
     "ous_list.rda"
   )
   support_files <- paste0(support_files_path, file_names)
