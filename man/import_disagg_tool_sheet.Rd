@@ -14,3 +14,6 @@ import_disagg_tool_sheet(wb_info, schema)
 \value{
 A DHIS2 compatible import data frame
 }
+\description{
+import_disagg_tool_sheet(wb_info,schema)
+}

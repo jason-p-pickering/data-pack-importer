@@ -4,7 +4,8 @@
 \alias{GetWorkbookInfo}
 \title{GetWorkbookInfo(wb_path,distribution_method,support_files_path)}
 \usage{
-GetWorkbookInfo(wb_path, distribution_method = NA, support_files_path = NA)
+GetWorkbookInfo(wb_path, distribution_method = NA,
+  support_files_path = NA)
 }
 \arguments{
 \item{wb_path}{The absolute file path to the workbook.}

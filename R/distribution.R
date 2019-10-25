@@ -253,7 +253,7 @@ distributeSite <- function(d, Pcts=NULL ) {
   # dplyr::select(site,mechanism,type=supportType,dp_code=DataPackCode,value)
 
 
-  mechanisms <- readRDS(paste0(d$wb_info$support_files_path, "mech_list.rda")) %>%
+  mechanisms <- datapackimporter::mechs %>%
     dplyr::select(mechanism, attributeoptioncombo = uid, ou) %>%
     dplyr::filter(ou == d$wb_info$ou_name) %>%
     # Only allow data entry in Site level tool against Mechanisms already seen in Disagg Tool

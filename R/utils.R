@@ -20,7 +20,7 @@ get_distribution_method <- function(distribution_method=NA) {
 #'
 check_mechs_by_code <- function(d, wb_info, sheet_name ) {
   
-  mechs_wanted <- readRDS(paste0(wb_info$support_files_path, "mech_list.rda")) %>%
+  mechs_wanted <- datapackimporter::mechs %>%
     dplyr::filter(ou == wb_info$ou_name) %>%
     dplyr::pull(code)
   

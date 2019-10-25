@@ -9,6 +9,9 @@ prepare_export_to_datim(d)
 \arguments{
 \item{d}{Data object from ImportSheets or parse_site_level_tool}
 }
+\value{
+Object with aggregatedHTS data, where applicable. In cases of clustered data, the data will be distributed to PSNU level.
+}
 \description{
 Prepares a PSNU or Site level object for import to DATIM.
 }

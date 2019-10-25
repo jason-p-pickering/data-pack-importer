@@ -9,3 +9,6 @@ empty_dhis_tibble()
 \value{
 An empty tibble with DE, perod, orgunit, category option combo, attribute option combo, value
 }
+\description{
+empty_datim_tibble
+}

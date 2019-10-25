@@ -16,3 +16,6 @@ check_mechs_by_code(d, wb_info, sheet_name)
 \value{
 TRUE if no invalid mechanisms were found, otherwise issues a warning and returns FALSE.
 }
+\description{
+check_mechs_by_code(d,sheet_name,mechanisms)
+}
