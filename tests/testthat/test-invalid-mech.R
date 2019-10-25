@@ -32,7 +32,7 @@ test_that("can fail bad mechanisms in psnu data", {
   support_files <- test_support_files_directory()
   distribution_method <- 2017
   # Confirm that the mechs do not exist in our test file
-  test_mechs <- readRDS(paste0(support_files, "mech_list.rda"))
+  test_mechs <- readRDS(paste0(support_files, "mechs.rda"))
   expect_equal(any(test_mechs$code %in% "7212"), FALSE)
 
   template_copy <- generate_invalid_mech_data()

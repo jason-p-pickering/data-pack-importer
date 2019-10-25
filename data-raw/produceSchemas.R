@@ -224,7 +224,7 @@ generate_support_files_md5s<- function(support_files_path) {
     "distrClusterFY18.rda",
     "distrSiteFY17.rda" ,
     "distrSiteFY18.rda" ,
-    "mech_list.rda",
+    "mechs.rda",
     "ous_list.rda" ,
     "SiteLevelReview_HTS_TEMPLATE.xlsx" ,
     "SiteLevelReview_TEMPLATE.xlsx"

@@ -13,8 +13,8 @@ setup_mechs<-function() {
                code="70014",
                uid="eda4jL580Kb",
                ou="Botswana")
-  mech_list<-rbind.data.frame(mech_A,mech_B,stringsAsFactors = FALSE)
-  saveRDS(mech_list,file=paste0(test_support_files_directory(),"mech_list.rda"))
+  mechs<-rbind.data.frame(mech_A,mech_B,stringsAsFactors = FALSE)
+  saveRDS(mechs,file=paste0(test_support_files_directory(),"mechs.rda"))
 }
 
 test_that("can warn on duplicate psnu data", {

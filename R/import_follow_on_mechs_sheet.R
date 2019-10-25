@@ -37,7 +37,7 @@ validate_follow_on_mechs_sheet<-function(d_follow_on,d) {
     is_valid<-FALSE
   }
   #Non-existent closing mechs
-  mechs_wanted <- readRDS(paste0(d$wb_info$support_files_path, "mech_list.rda")) %>%
+  mechs_wanted <- datapackimporter::mechs %>%
     dplyr::filter(ou == d$wb_info$ou_name) %>%
     dplyr::pull(code)
   
